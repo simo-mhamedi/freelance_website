@@ -1,0 +1,42 @@
+.actions{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
+}
+.title-user-infos{
+    font-style: normal;
+font-weight: 600;
+font-size: 28px;
+line-height: 22px;
+/* identical to box height, or 48% */
+
+display: flex;
+align-items: center;
+text-transform: uppercase;
+
+color: #108A00;
+}
+.subtitle-user-infos{
+    font-style: normal;
+font-weight: 600;
+font-size: 10px;
+line-height: 22px;
+/* identical to box height, or 109% */
+
+display: flex;
+align-items: center;
+text-transform: uppercase;
+
+color: #000000;
+}
+.next-btn{
+    background: #00A453;
+    border-radius: 14px;
+}
+.back-btn{
+    background: #007FED;
+border-radius: 14px;
+}

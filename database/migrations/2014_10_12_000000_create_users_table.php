@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string("rcCompany");
             $table->string("city");
             $table->string("country");
+            $table->string('role')->default('user');
             $table->string("tele");
             $table->string("desc_Activity");
             $table->rememberToken();

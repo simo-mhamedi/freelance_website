@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegistrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('base/auth/registration');
+// });
+
+
+Route::get('/user-infos',[RegistrationController::class,'userInfos']);
+Route::post('/to-company-infos', [RegistrationController::class,'toCompanyInfos'])->name("to-company-infos");
+Route::get('/company-infos', [RegistrationController::class,'companyInfos']);
+Route::post('/to-user-category-infos', [RegistrationController::class,'toUserCategoryInfos'])->name("to-user-category-infos");
+Route::get('/user-category-infos', [RegistrationController::class,'userCategoryInfos'])->name("user-category-infos");
