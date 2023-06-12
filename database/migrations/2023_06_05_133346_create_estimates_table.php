@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('estimates', function (Blueprint $table) {
-            $table->string('reference')->primary();
-            $table->bigInteger('request_number')->notNull();
-            $table->foreign('request_number')
-            ->references('requestNumber')->on('requests')->onDelete('cascade');
-            $table->string('user_mail')->notNull();
-            $table->foreign('user_mail')
-            ->references('email')->on('users')->onDelete('cascade');
+            $table->id();
+            $table->string('reference');
+            $table->unsignedBigInteger('request_id')->notNull();
+            $table->foreign('request_id')
+            ->references('id')->on('requests')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->notNull();
+            $table->foreign('user_id')
+            ->references('id')->on('users')->onDelete('cascade');
             $table->date('estimate_date');
             $table->string('rating');
             $table->string('file');

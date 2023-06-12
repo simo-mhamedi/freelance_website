@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('requests', function (Blueprint $table) {
-            $table->bigInteger('requestNumber')->primary();
+            $table->id();
+            $table->bigInteger('requestNumber');
             $table->string('title');
             $table->string('description');
             $table->string('price_min');
@@ -20,10 +21,10 @@ return new class extends Migration
             $table->date("date_request");
             $table->string("date_deadline");
             $table->string("status");
-            $table->string('user_mail')->notNull();
+            $table->unsignedBigInteger('user_id')->notNull();
             $table->timestamps();
-            $table->foreign('user_mail')
-            ->references('email')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')
+            ->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('userCategorys', function (Blueprint $table) {
+        Schema::create('User_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('user_mail')->notNull();
-            $table->foreign('user_mail')
-            ->references('email')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->notNull();
+            $table->foreign('user_id')
+            ->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('category_id')->notNull();
             $table->foreign('category_id')
-            ->references('id')->on('categorys');
+            ->references('id')->on('categories');
             $table->timestamps();
         });
     }

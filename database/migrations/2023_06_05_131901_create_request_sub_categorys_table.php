@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requestSubCategorys', function (Blueprint $table) {
+        Schema::create('Request_sub_categories', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('request_number')->notNull();
-            $table->foreign('request_number')
-            ->references('requestNumber')->on('requests')->onDelete('cascade');
+            $table->unsignedBigInteger('request_id')->notNull();
+            $table->foreign('request_id')
+            ->references('id')->on('requests')->onDelete('cascade');
             $table->unsignedBigInteger('subCategory_id')->notNull();
             $table->foreign('subCategory_id')
-            ->references('id')->on('subCategorys');
+            ->references('id')->on('sub_categories');
             $table->timestamps();
         });
     }
