@@ -45,7 +45,7 @@ class UserCategorieCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('user_id');
-        CRUD::column('category_id');
+        CRUD::column('sub_category_id');
         CRUD::column('created_at');
         CRUD::column('updated_at');
 
@@ -73,7 +73,7 @@ class UserCategorieCrudController extends CrudController
             'rules' => 'required',
         ]);
         CRUD::addField([
-            'name' => 'category_id',
+            'name' => 'sub_category_id',
             'label' => 'sub categorys',
             'type' => 'enum',
             'options' => $this->getAllRequests(),
@@ -92,7 +92,7 @@ class UserCategorieCrudController extends CrudController
     }
     protected function getAllRequests()
     {
-        $requests = Categorie::pluck('categoryName', 'id')->toArray();
+        $requests = Sub_categorie::pluck('subCategoryName', 'id')->toArray();
         return $requests;
     }
 
@@ -115,12 +115,12 @@ class UserCategorieCrudController extends CrudController
             'default' => $userCategory->user_id,
         ]);
         CRUD::addField([
-            'name' => 'category_id',
+            'name' => 'sub_category_id',
             'label' => 'sub categorys',
             'type' => 'enum',
             'options' => $this->getAllRequests(),
             'rules' => 'required',
-            'default' => $userCategory->category_id,
+            'default' => $userCategory->sub_category_id,
         ]);
     }
 }

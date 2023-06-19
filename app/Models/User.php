@@ -43,8 +43,7 @@ class User extends Authenticatable
         $disk = "public";
         $destination_path = 'files/images';
         $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path, $fileName = null);
-
-    // return $this->attributes[{$attribute_name}]; // uncomment if this is a translatable field
+        // return $this->attributes[{$attribute_name}]; // uncomment if this is a translatable field
     }
     /**
      * The attributes that should be hidden for serialization.

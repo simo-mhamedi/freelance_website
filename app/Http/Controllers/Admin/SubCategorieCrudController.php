@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\SubCategorieRequest;
+use App\Models\Categorie;
+use App\Models\SubCategorie;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -21,7 +23,7 @@ class SubCategorieCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -33,7 +35,7 @@ class SubCategorieCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -46,35 +48,55 @@ class SubCategorieCrudController extends CrudController
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
     protected function setupCreateOperation()
     {
         CRUD::field('subCategoryName');
-
+        CRUD::addField([
+            'name' => 'category_id',
+            'label' => 'sub category',
+            'type' => 'enum',
+            'options' => $this->getAllSCategorys(),
+            'rules' => 'required',
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
     }
-
+    protected function getAllSCategorys()
+    {
+        $requests = Categorie::pluck('categoryName', 'id')->toArray();
+        return $requests;
+    }
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        CRUD::field('subCategoryName');
+        $currentId = $this->crud->getCurrentEntryId();
+        $category = SubCategorie::find($currentId);
+        CRUD::addField([
+            'name' => 'category_id',
+            'label' => 'category',
+            'type' => 'enum',
+            'options' => $this->getAllSCategorys(),
+            'rules' => 'required',
+            'default' => $category->category_id,
+        ]);
     }
 }

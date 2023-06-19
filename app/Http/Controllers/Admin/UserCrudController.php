@@ -65,19 +65,20 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-
         CRUD::setValidation(UserRequest::class);
         CRUD::field('name')->validationRules('required');
         CRUD::field('email')->validationRules('required');
         CRUD::field('password')->validationRules('required');
-        CRUD::addField([   // Upload
-            'name'      => 'image',
-            'label'     => 'Image',
-            'type'      => 'upload',
-            'upload'    => true,
-            'disk'    => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
+        CRUD::addField([
+            // Upload
+            'name' => 'image',
+            'label' => 'Image',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
             // optional:
-        ]);        CRUD::field('name')->validationRules('required');
+        ]);
+        CRUD::field('name')->validationRules('required');
         CRUD::field('companyName')->validationRules('required');
         CRUD::field('companyRepresentative')->validationRules('required');
         CRUD::field('rcCompany')->validationRules('required');
@@ -85,8 +86,10 @@ class UserCrudController extends CrudController
         CRUD::field('country')->validationRules('required');
         CRUD::field('tele')->validationRules('required');
         CRUD::field('desc_Activity')->validationRules('required');
-        CRUD::field('role')->type('enum')->options(['user' => 'User', 'admin' => 'Admin'])->validationRules('required');
-
+        CRUD::field('role')
+            ->type('enum')
+            ->options(['user' => 'User', 'admin' => 'Admin'])
+            ->validationRules('required');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -103,20 +106,20 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-
         CRUD::setValidation(UserRequest::class);
         CRUD::field('name');
         CRUD::field('email');
         CRUD::field('password');
-    // CRUD::field('id');
-    CRUD::addField([   // Upload
-        'name'      => 'image',
-        'label'     => 'Image',
-        'type'      => 'upload',
-        'upload'    => true,
-        'disk'    => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
-        // optional:
-    ]);
+        // CRUD::field('id');
+        CRUD::addField([
+            // Upload
+            'name' => 'image',
+            'label' => 'Image',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
+            // optional:
+        ]);
         CRUD::field('companyName');
         CRUD::field('companyRepresentative');
         CRUD::field('rcCompany');
@@ -124,7 +127,8 @@ class UserCrudController extends CrudController
         CRUD::field('country');
         CRUD::field('tele');
         CRUD::field('desc_Activity');
-        CRUD::field('role')->type('enum')->options(['user' => 'User', 'admin' => 'Admin']);
+        CRUD::field('role')
+            ->type('enum')
+            ->options(['user' => 'User', 'admin' => 'Admin']);
     }
-
 }

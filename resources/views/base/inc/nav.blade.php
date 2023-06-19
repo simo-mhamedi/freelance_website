@@ -14,14 +14,24 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">NOS TARIF</a>
                 </li>
+                @guest
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="modal" data-target="#exampleModalLong"><i class="fa fa-plus-circle"></i>
                         DEPOSER VOTRE DEMMADE</a>
                 </li>
+                @endguest
+                @auth
+                <li class="nav-item">
+                    <a class="nav-link"  href="{{ route('newRequest') }}"><i class="fa fa-plus-circle"></i>
+                        DEPOSER VOTRE DEMMADE</a>
+                </li>
+                @endauth
+                @guest
                 <li class="nav-item">
                     <button class="btn btn-success">M'INSCRIRE <i class="fa fa-user"></i>
                     </button>
                 </li>
+                @endguest
             </ul>
         </div>
     </div>

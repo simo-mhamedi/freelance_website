@@ -11,7 +11,8 @@ class Sub_categorie extends Model
     use CrudTrait;
     use HasFactory;
     protected $fillable = [
-        'subCategoryName'
+        'subCategoryName',
+        'category_id'
     ];
     /*
     |--------------------------------------------------------------------------

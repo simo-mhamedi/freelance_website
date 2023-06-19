@@ -16,9 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->notNull();
             $table->foreign('user_id')
             ->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('category_id')->notNull();
-            $table->foreign('category_id')
-            ->references('id')->on('categories');
+            $table->unsignedBigInteger('sub_category_id')->notNull();
+            $table->foreign('sub_category_id')
+            ->references('id')->on('sub_categories');
             $table->timestamps();
         });
     }

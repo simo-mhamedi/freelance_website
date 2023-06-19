@@ -12,6 +12,6 @@ class User_categorie extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'category_id',
+        'sub_category_id',
     ];
 }

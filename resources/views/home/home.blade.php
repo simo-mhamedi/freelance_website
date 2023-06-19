@@ -94,4 +94,3 @@ background-color: #E4EBE4;padding:60px">
         </div>
     </div>
 @endsection
-@include('base.inc.footer')

@@ -270,7 +270,10 @@ return [
         \Backpack\CRUD\app\Http\Middleware\AuthenticateSession::class,
         // \Backpack\CRUD\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
     ],
-
+    'authentication' => [
+        // Other authentication options
+        'registration_open' => false,
+    ],
     // Alias for that middleware
     'middleware_key' => 'admin',
     // Note: It's recommended to use the backpack_middleware() helper everywhere, which pulls this key for you.
