@@ -22,14 +22,14 @@
                 @endguest
                 @auth
                 <li class="nav-item">
-                    <a class="nav-link"  href="{{ route('newRequest') }}"><i class="fa fa-plus-circle"></i>
+                        <a class="nav-link"  href="{{ route('newRequest') }}"><i class="fa fa-plus-circle"></i>
                         DEPOSER VOTRE DEMMADE</a>
                 </li>
                 @endauth
                 @guest
                 <li class="nav-item">
-                    <button class="btn btn-success">M'INSCRIRE <i class="fa fa-user"></i>
-                    </button>
+                    <a  href="{{ route('user-infos') }}" class="btn btn-success">M'INSCRIRE <i class="fa fa-user"></i>
+                    </a>
                 </li>
                 @endguest
             </ul>

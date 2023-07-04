@@ -22,6 +22,9 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 // });
 
 Route::get('/',[baseApp::class,'index'])->name('home');
+Route::get('/dashboard',[baseApp::class,'dashboard'])->name('dashboard');
+Route::get('/select-estimates',[baseApp::class,'selectEtimates'])->name('select-estimates');
+Route::get('/estimate',[baseApp::class,'estimate'])->name('estimate');
 Route::get('/login',[RegistrationController::class,'signInView'])->name('login');
 Route::post('/loginProc',[RegistrationController::class,'signIn'])->name('loginProc');
 

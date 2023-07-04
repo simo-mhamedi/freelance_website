@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserMembershipRequest;
 use App\Models\membership;
-use App\Models\userMembership;
+use App\Models\User;
 use App\Models\user_membership;
-use Illuminate\Foundation\Auth\User;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class UserCrudController
+ * Class UserMembershipCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class UserCrudController extends CrudController
+class UserMembershipCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -30,9 +29,9 @@ class UserCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\User::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
-        CRUD::setEntityNameStrings('user', 'users');
+        CRUD::setModel(\App\Models\UserMembership::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/user-membership');
+        CRUD::setEntityNameStrings('user membership', 'user memberships');
     }
 
     /**
@@ -43,17 +42,13 @@ class UserCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('name');
-        CRUD::column('email');
-        CRUD::column('password');
-        CRUD::field('name');
-        CRUD::field('email');
-        CRUD::field('password');
-        CRUD::field('image');
-        CRUD::field('name');
-        CRUD::field('companyName');
-        CRUD::field('has_Membership');
-        CRUD::field('role');
+        CRUD::column('membership_id');
+        CRUD::column('user_id');
+        CRUD::column('estimates_restNumber');
+        CRUD::column('estimates_number');
+        CRUD::column('created_at');
+        CRUD::column('updated_at');
+
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
@@ -69,31 +64,10 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(UserRequest::class);
-        CRUD::field('name')->validationRules('required');
-        CRUD::field('email')->validationRules('required');
-        CRUD::field('password')->validationRules('required');
-        CRUD::addField([
-            // Upload
-            'name' => 'image',
-            'label' => 'Image',
-            'type' => 'upload',
-            'upload' => true,
-            'disk' => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
-            // optional:
+        CRUD::setValidation([
+            // 'name' => 'required|min:2',
         ]);
-        CRUD::field('name')->validationRules('required');
-        CRUD::field('companyName')->validationRules('required');
-        CRUD::field('companyRepresentative')->validationRules('required');
-        CRUD::field('rcCompany')->validationRules('required');
-        CRUD::field('city')->validationRules('required');
-        CRUD::field('country')->validationRules('required');
-        CRUD::field('tele')->validationRules('required');
-        CRUD::field('desc_Activity')->validationRules('required');
-        CRUD::field('role')
-            ->type('enum')
-            ->options(['user' => 'User', 'admin' => 'Admin'])
-            ->validationRules('required');
+
         CRUD::addField([
             'name' => 'membership_id',
             'label' => 'membership',
@@ -101,7 +75,15 @@ class UserCrudController extends CrudController
             'options' => $this->getAllMemberships(),
             'rules' => 'required',
         ]);
-        CRUD::field('has_Membership');
+        CRUD::addField([
+            'name' => 'user_id',
+            'label' => 'user',
+            'type' => 'enum',
+            'options' => $this->getAllUsers(),
+            'rules' => 'required',
+        ]);
+        CRUD::field('estimates_restNumber');
+        CRUD::field('estimates_number');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -121,30 +103,6 @@ class UserCrudController extends CrudController
         $currentId = $this->crud->getCurrentEntryId();
         $users = User::pluck('email', 'id')->toArray();
         $membership = user_membership::find($currentId);
-        CRUD::setValidation(UserRequest::class);
-        CRUD::field('name');
-        CRUD::field('email');
-        CRUD::field('password');
-        // CRUD::field('id');
-        CRUD::addField([
-            // Upload
-            'name' => 'image',
-            'label' => 'Image',
-            'type' => 'upload',
-            'upload' => true,
-            'disk' => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
-            // optional:
-        ]);
-        CRUD::field('companyName');
-        CRUD::field('companyRepresentative');
-        CRUD::field('rcCompany');
-        CRUD::field('city');
-        CRUD::field('country');
-        CRUD::field('tele');
-        CRUD::field('desc_Activity');
-        CRUD::field('role')
-            ->type('enum')
-            ->options(['user' => 'User', 'admin' => 'Admin']);
         if ($membership) {
             CRUD::addField([
                 'name' => 'membership_id',
@@ -152,6 +110,13 @@ class UserCrudController extends CrudController
                 'type' => 'enum',
                 'options' => $users,
                 'default' => $membership->membership_id,
+            ]);
+            CRUD::addField([
+                'name' => 'user_id',
+                'label' => 'user',
+                'type' => 'enum',
+                'options' => $users,
+                'default' => $membership->user_id,
             ]);
         }
         else{
@@ -162,13 +127,26 @@ class UserCrudController extends CrudController
                 'options' => $this->getAllMemberships(),
                 'rules' => 'required',
             ]);
+            CRUD::addField([
+                'name' => 'user_id',
+                'label' => 'user',
+                'type' => 'enum',
+                'options' => $this->getAllUsers(),
+                'rules' => 'required',
+            ]);
         }
-
-        CRUD::field('has_Membership');
+        CRUD::field('estimates_restNumber');
+        CRUD::field('estimates_number');
     }
+
     protected function getAllMemberships()
     {
         $memberships = membership::pluck('name', 'id')->toArray();
         return $memberships;
+    }
+    protected function getAllUsers()
+    {
+        $users = User::pluck('email', 'id')->toArray();
+        return $users;
     }
 }

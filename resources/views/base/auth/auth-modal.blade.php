@@ -8,8 +8,8 @@
             </div> --}}
             <h5 class="modal-title auth-title" id="exampleModalLongTitle">AUthentifiez vous</h5>
             <div class="btns">
-                <button class="btn btn-success auth-btn">CONNEXION</button>
-                <button class="btn btn-success auth-btn">m’inscrire</button>
+                <a href="{{ route('login') }}" class="btn btn-success auth-btn">CONNEXION</a>
+                <a href="{{ route('user-infos') }}" class="btn btn-success auth-btn">m’inscrire</a>
 
             </div>
 

@@ -60,12 +60,17 @@
         <a title="Sign In"
         href="{{ route('user-infos') }}"
         style="
-background: #FFFFFF !important;
-color: #108A00;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-border: 2px solid #108A00;
-border-radius: 14px !important;
-width:60%;
+    background: #FFFFFF !important;
+    color: #108A00;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: 2px solid #108A00;
+    border-radius: 14px !important;
+    width: 60%;
+    text-align: center;
+    text-decoration: none;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 "
             class="sign-in_btn">
             <span>Inscrivez vous  </span>

@@ -23,5 +23,6 @@ Route::group([
     Route::crud('sub-categorie', 'SubCategorieCrudController');
     Route::crud('request', 'RequestCrudController');
     Route::get('charts/weekly-users', 'Charts\WeeklyUsersChartController@response')->name('charts.weekly-users.index');
+    Route::crud('membership', 'MembershipCrudController');
+    Route::crud('user-membership', 'UserMembershipCrudController');
 });
- // this should be the absolute last line of this file

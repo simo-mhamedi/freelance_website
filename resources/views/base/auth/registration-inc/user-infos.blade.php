@@ -62,9 +62,9 @@
         <br>
 
         <div class="actions">
-            <button href="{{ url()->previous() }}" title="Sign In" type="submit" class="sign-in_btn back-btn">
+            <a href="{{ route('login') }}" title="Sign In" type="submit" class="sign-in_btn back-btn">
                 <span>PRECEDENT</span>
-            </button>
+            </a>
             <button title="Sign In" type="submit" class="sign-in_btn next-btn">
                 <span>SUIVANT</span>
             </button>

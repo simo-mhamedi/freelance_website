@@ -7,3 +7,6 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user-categorie') }}"><i class="nav-icon la la-group"></i> User categories</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('categorie') }}"><i class="nav-icon la la la-th-large"></i> Categories</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('sub-categorie') }}"><i class="nav-icon la la la-th-list"></i> Sub categories</a></li>
+
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('membership') }}"><i class="nav-icon la la-question"></i> Memberships</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user-membership') }}"><i class="nav-icon la la-question"></i> User memberships</a></li>

@@ -79,7 +79,8 @@
         right: 25%;
         position: absolute;
         border-radius: 5px;
-        background: #17a2b8;
+        background: rgba(0, 164, 83, 1);
+
     }
 
     .range-input {
@@ -101,7 +102,7 @@
         height: 17px;
         width: 17px;
         border-radius: 50%;
-        background: #17a2b8;
+        background: rgba(0, 164, 83, 1);
         pointer-events: auto;
         -webkit-appearance: none;
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
@@ -112,7 +113,7 @@
         width: 17px;
         border: none;
         border-radius: 50%;
-        background: #17a2b8;
+        background: rgba(0, 164, 83, 1);
         pointer-events: auto;
         -moz-appearance: none;
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
@@ -282,16 +283,8 @@ top: 250px;
 ">
         <div class="input_container">
             <label class="input_label" for="email_field">titre demande</label>
-            <svg fill="none" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg"
-                class="icon">
-                <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#141B34"
-                    d="M7 8.5L9.94202 10.2394C11.6572 11.2535 12.3428 11.2535 14.058 10.2394L17 8.5"></path>
-                <path stroke-linejoin="round" stroke-width="1.5" stroke="#141B34"
-                    d="M2.01577 13.4756C2.08114 16.5412 2.11383 18.0739 3.24496 19.2094C4.37608 20.3448 5.95033 20.3843 9.09883 20.4634C11.0393 20.5122 12.9607 20.5122 14.9012 20.4634C18.0497 20.3843 19.6239 20.3448 20.7551 19.2094C21.8862 18.0739 21.9189 16.5412 21.9842 13.4756C22.0053 12.4899 22.0053 11.5101 21.9842 10.5244C21.9189 7.45886 21.8862 5.92609 20.7551 4.79066C19.6239 3.65523 18.0497 3.61568 14.9012 3.53657C12.9607 3.48781 11.0393 3.48781 9.09882 3.53656C5.95033 3.61566 4.37608 3.65521 3.24495 4.79065C2.11382 5.92608 2.08114 7.45885 2.01576 10.5244C1.99474 11.5101 1.99475 12.4899 2.01577 13.4756Z">
-                </path>
-            </svg>
-            <input name="title" placeholder="EX : DEVIS ALLIMINIUM pour 100 tonnes" title="Inpit title" name="input-name"
-                type="text" class="input_field title" id="email_field">
+            <input name="title"style="padding:5px !important" placeholder="EX : DEVIS ALLIMINIUM pour 100 tonnes" title="Inpit title" name="input-name"
+                type="text" class="input_field inp-title" id="email_field">
         </div>
         <div class="input_container">
             <div class="form-group">
@@ -308,17 +301,10 @@ top: 250px;
                     id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
         </div>
-        <div class="container">
-            <div class="form">
-                <div class="file-upload-wrapper" data-text="Select your file!">
-                    <input name="file-upload-field" type="file" class="file-upload-field" value="">
-                </div>
-            </div>
-        </div>
         <div class="input_container">
             <div class="form-group">
                 <label class="input_label" for="email_field">DESCRIPTIF demande</label>
-                <input type="date" class="date_deadline" name="date_deadline">
+                <input type="date" style="padding: 6px !important ;border-reduis:5px" class="date_deadline" name="date_deadline">
             </div>
         </div>
         <div class="input_container">
@@ -512,7 +498,7 @@ top: 250px;
             });
 
             var jsonList = JSON.stringify(list);
-            var title = JSON.stringify(document.querySelector(".title").value);
+            var title = JSON.stringify(document.querySelector(".inp-title").value);
             var description = JSON.stringify(document.querySelector(".description").value);
             var date_deadline = JSON.stringify(document.querySelector(".date_deadline").value);
             var input_min = JSON.stringify(document.querySelector(".input-min").value);
@@ -536,7 +522,7 @@ top: 250px;
                 },
                 success: function(response) {
                     // Handle the response from the server
-                    // window.location.href = '{{ route('home') }}';
+                    window.location.href = '{{ route('dashboard') }}';
                 },
                 error: function(xhr) {
                     // // Handle any errors that occur during the request

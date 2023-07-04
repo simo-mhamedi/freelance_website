@@ -10,7 +10,10 @@ class Estimate extends Model
 {
     use CrudTrait;
     use HasFactory;
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     protected $fillable = [
         'reference',
         'request_id',

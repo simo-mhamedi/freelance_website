@@ -27,13 +27,33 @@
     </script>
 
     <title>Freelance</title>
+    <style>
+        .dsc {
+            display: flex;
+            flex-direction: row;
+            margin: 20px
+        }
+    </style>
 </head>
 
 <body>
     @include('base.inc.nav')
-    <div id="content">
-        @yield('content')
-    </div>
+    @if (request()->routeIs('dashboard') || request()->routeIs('estimate'))
+        <div class="dsc">
+            <div class="sideBare">
+                @include('base.dashboard.side-bare')
+            </div>
+            <div id="content" style="margin: 20px;width:100%; height: 100%">
+                @yield('content')
+            </div>
+        </div>
+    @else
+        <div id="content" style="height: 100%;">
+            @yield('content')
+        </div>
+    @endif
+
+
     @include('base.auth.auth-modal')
     <script src="{{ URL::asset('tel/javaScript.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -42,8 +62,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </body>
 
 </html>

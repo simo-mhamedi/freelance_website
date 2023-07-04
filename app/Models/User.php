@@ -18,6 +18,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function estimates()
+    {
+        return $this->hasMany(Estimate::class);
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -36,6 +40,8 @@ class User extends Authenticatable
         'role',
         'tele',
         'desc_Activity',
+        'has_Membership',
+        'membership_id',
     ];
     public function setImageAttribute($value)
     {
