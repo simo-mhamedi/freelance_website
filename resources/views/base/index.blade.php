@@ -38,7 +38,16 @@
 
 <body>
     @include('base.inc.nav')
-    @if (request()->routeIs('dashboard') || request()->routeIs('estimate'))
+    @if (request()->routeIs('dashboard') || request()->routeIs('estimate')
+    || request()->routeIs('select-estimates')
+    || request()->routeIs('select-date-estimates')
+    || request()->routeIs('search-estimates')
+    || request()->routeIs('estimate_send')
+    || request()->routeIs('select-send-estimates')
+    || request()->routeIs('select-send-date-estimates')
+    || request()->routeIs('request')
+    || request()->routeIs('searsh-request')
+    )
         <div class="dsc">
             <div class="sideBare">
                 @include('base.dashboard.side-bare')

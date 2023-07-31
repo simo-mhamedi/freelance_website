@@ -28,4 +28,20 @@ class Request extends Model
 {
     return $this->hasMany(Request::class, 'user_id');
 }
+public function estimates()
+{
+    return $this->hasMany(Estimate::class, 'request_id');
+}
+
+public function getEstimateCountAttribute()
+{
+    return $this->estimates()->count();
+}
+
+
+
+public function estimate()
+{
+    return $this->belongsTo(Estimate::class);
+}
 }

@@ -66,14 +66,20 @@ class EstimateCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
+        $options = function () {
+            return Request::pluck('title', 'id')->toArray();
+        };
+
         CRUD::field('reference')->validationRules('required');
-        CRUD::addField([
-            'name' => 'request_id',
-            'label' => 'request',
-            'type' => 'enum',
-            'options' => $this->getAllRequests(),
-            'rules' => 'required',
-        ]);
+      CRUD::addField([
+    'name' => 'request_id',
+    'label' => 'Request',
+    'type' => 'enum',
+    'options' => $options(),
+    'allows_null' => true,
+    'rules' => ['required'],
+]);
+
         CRUD::addField([
             'name' => 'user_id',
             'label' => 'user',

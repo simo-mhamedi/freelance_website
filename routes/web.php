@@ -28,6 +28,8 @@ Route::get('/estimate',[baseApp::class,'estimate'])->name('estimate');
 Route::get('/login',[RegistrationController::class,'signInView'])->name('login');
 Route::post('/loginProc',[RegistrationController::class,'signIn'])->name('loginProc');
 
+
+
 Route::get('/user-infos',[RegistrationController::class,'userInfos'])->name("user-infos");
 Route::post('/to-company-infos', [RegistrationController::class,'toCompanyInfos'])->name("to-company-infos");
 Route::get('/company-infos', [RegistrationController::class,'companyInfos']);
@@ -40,3 +42,20 @@ Route::get('/back-user-infos', [RegistrationController::class,'backToUserInfo'])
 Route::get('/back-company-infos', [RegistrationController::class,'backToCompanyInfos'])->name('back-company-infos');
 Route::get('/new-request', [baseApp::class,'newRequest'])->name('newRequest');
 Route::post('/save-new-request', [baseApp::class,'saveNewRequest'])->name('saveNewRequest');
+
+Route::get('/select-date-estimates',[baseApp::class,'selectDateEtimates'])->name('select-date-estimates');
+Route::get('/search-estimates',[baseApp::class,'searchEtimates'])->name('search-estimates');
+
+
+Route::get('/estimate_send',[baseApp::class,'estimateSend'])->name('estimate_send');
+Route::get('/select-send-estimates',[baseApp::class,'selectSendEtimates'])->name('select-send-estimates');
+
+Route::get('/select-send-date-estimates',[baseApp::class,'selectSendDateEtimates'])->name('select-send-date-estimates');
+Route::get('/search-send-estimates',[baseApp::class,'searchSendEtimates'])->name('search-send-estimates');
+Route::get('/requests',[baseApp::class,'request'])->name('request');
+Route::delete('/delete-request/{id}', [BaseApp::class, 'deleteRequest'])->name('delete-request');
+
+Route::get('/searsh-request', [BaseApp::class, 'searchRequest'])->name('searsh-request');
+Route::get('/delete-selected-requests', [BaseApp::class, 'deleteSelectedRequest'])->name('delete-selected-requests');
+
+Route::get('/update-request-view', [BaseApp::class, 'updateRequestView'])->name('update-request-view');

@@ -36,7 +36,9 @@
         margin: 5px;
         border-radius: 10px
     }
-    .title{text-align: center !important;
+
+    .title {
+        text-align: center !important;
         text-transform: uppercase;
         font-size: 40px !important;
         color: #108a00 !important;
@@ -45,11 +47,11 @@
     }
 </style>
 @section('content')
-<div class="title">devis recus</div>
+    <div class="title">devis envoyés</div>
     <div class="actions">
         <!-- Example single danger button -->
         <div class="left">
-            <form style="width: 40%" method="GET" action="{{ route('select-estimates') }}" id="selectForm">
+            <form style="width: 40%" method="GET" action="{{ route('select-send-estimates') }}" id="selectForm">
                 <select class="form-select" name="id" style="border-radius: 10px; padding: 10px" id="requestSelect">
                     <option value="">DEMANDE</option>
                     @foreach ($requests as $request)
@@ -60,7 +62,7 @@
                     @endforeach
                 </select>
             </form>
-            <form style="width: 40%" method="GET" action="{{ route('select-date-estimates') }}" id="dateForm">
+            <form style="width: 40%" method="GET" action="{{ route('select-send-date-estimates') }}" id="dateForm">
                 <input value="{{ isset($data) ? $data : '' }}" type="date" name="date"
                     style="
     height: 43px;border-radius: 14px;
@@ -99,34 +101,58 @@ background: #108A00;"
             </thead>
 
             <tbody id="estimates">
-                @foreach ($estimate_recus as $estimate_recu)
+                @foreach ($paginatedEstimates as $estimate_recu)
                     <tr>
-                        <th scope="row">{{ $estimate_recu->reference }}</th>
-                        <td>{{ $estimate_recu->user->companyName }}</td>
-                        <td>{{ $estimate_recu->estimate_date }}</td>
-                        <td style="color:rgba(16, 138, 0, 1);cursor:pointer"><a data-toggle="modal"
-                                data-target="#exampleModalLong">voir offre</a>
+                        <td>
+                            @if ($estimate_recu !== null)
+                        {{ $estimate_recu->reference }}
+                        <!-- Other table cells or data for each estimate -->
+                @endif
+                        </td>
+                <td>
+                    @if ($estimate_recu !== null)
+                    {{ $estimate_recu->user->companyName  }}
+                    <!-- Other table cells or data for each estimate -->
+            @endif
+     </td>
+                <td>
+                    @if ($estimate_recu !== null)
+                    {{ $estimate_recu->estimate_date   }}
+                    <!-- Other table cells or data for each estimate -->
+            @endif
+                </td>
+                <td style="color:rgba(16, 138, 0, 1);cursor:pointer">
+                    @if ($estimate_recu !== null)
 
-                            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-lg" role="document">
-                                    <div style="    height: 80% !important;" class="modal-content">
-                                        <div class="modal-body">
-                                            <!-- Or embed a video -->
-                                            <iframe style="width: 100%;height:100%"
-                                                src="/storage/{{ $estimate_recu->file }}" frameborder="0"
-                                                allowfullscreen></iframe>
-                                        </div>
-                                    </div>
+                    <a data-toggle="modal"
+                        data-target="#exampleModalLong">voir offre</a>
+
+                    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div style="    height: 80% !important;" class="modal-content">
+                                <div class="modal-body">
+                                    <iframe style="width: 100%;height:100%" src="/storage/{{ $estimate_recu->file }}"
+                                        frameborder="0" allowfullscreen></iframe>
+                                    <!-- Other table cells or data for each estimate -->
+
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
     </div>
+    @endif
+
     </td>
     <td style="display: flex;align-items:center;">
+        @if ($estimate_recu !== null)
         @for ($i = 0; $i < $estimate_recu->rating; $i++)
-            <span style="color: orange" class="fa fa-star checked"></span>
-        @endfor
+        <span style="color: orange" class="fa fa-star checked"></span>
+    @endfor
+        <!-- Other table cells or data for each estimate -->
+@endif
+
 
     </td>
     </tr>
@@ -136,7 +162,7 @@ background: #108A00;"
 
     </div>
     <div class="paginate">
-        {{ $estimate_recus->links() }}
+        {{ $paginatedEstimates->links() }}
     </div>
 @endsection
 <script>

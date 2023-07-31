@@ -18,6 +18,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function requests()
+{
+    return $this->hasMany(Request::class, 'user_id');
+}
+
     public function estimates()
     {
         return $this->hasMany(Estimate::class);

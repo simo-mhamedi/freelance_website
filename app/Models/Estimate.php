@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Estimate extends Model
 {
@@ -14,6 +15,7 @@ class Estimate extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     protected $fillable = [
         'reference',
         'request_id',
@@ -23,6 +25,7 @@ class Estimate extends Model
         'rating',
         'file'
     ];
+
     public function setFileAttribute($value)
     {
         $attribute_name = "file";

@@ -30,21 +30,26 @@
     <ul class="nav nav-pills flex-column mb-auto" style="width: 100%">
         <li class="nav-item">
             <a href="{{ route('dashboard') }}" class="{{ (request()->is('dashboard')) ? 'nav-link active' : 'nav-link  text-white' }}" aria-current="page">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#home" />
-                </svg>
+                <i class=" bi me-2 fa fa-clipboard board-icon"></i>
+
                 TABLEAUX DE BORD
             </a>
         </li>
+        <li class="nav-item">
+            <a href="{{ route('request') }}" class="{{ (request()->is('requests')) || (request()->is('searsh-request')) ? 'nav-link active' : 'nav-link  text-white' }}" aria-current="page">
+                <i class="bi me-2 fa fa-paper-plane request-icon"></i>
+                MES DEMANDES
+            </a>
+        </li>
         <li>
-            <a  href="{{ route('estimate') }}" class="{{ (request()->is('estimate')) ? 'nav-link active' : 'nav-link  text-white' }}">
+            <a  href="{{ route('estimate') }}" class="{{ (request()->is('estimate')) || (request()->is('select-estimates'))|| (request()->is('select-date-estimates')) || (request()->is('search-estimates'))  ? 'nav-link active' : 'nav-link  text-white' }}">
                 <i class="fa fa-comments bi me-2"></i>
 
                 DEVIS RECUS
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link text-white">
+            <a href="{{ route('estimate_send') }}" class="{{ (request()->is('estimate_send')) || (request()->is('select-send-estimates'))|| (request()->is('select-send-date-estimates')) || (request()->is('sselect-send-date-estimates'))  ? 'nav-link active' : 'nav-link  text-white' }}" class="nav-link text-white">
                 <i class="fa fa-comments bi me-2"></i>
 
                 DEVIS ENVOYES

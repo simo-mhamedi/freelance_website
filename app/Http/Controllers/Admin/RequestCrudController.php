@@ -69,7 +69,7 @@ class RequestCrudController extends CrudController
     protected function setupCreateOperation()
     {
 
-        CRUD::field('requestNumber')->validationRules('required|min:5');;
+        CRUD::field('requestNumber')->validationRules('required|numeric|min:5');
         CRUD::field('title')->validationRules('required');
         CRUD::field('description')->validationRules('required');
         CRUD::field('price_min')->validationRules('required');
@@ -92,7 +92,7 @@ class RequestCrudController extends CrudController
          */
     }
 
-    
+
     protected function getAllUsers()
     {
         $users = User::pluck('email', 'id')->toArray();
