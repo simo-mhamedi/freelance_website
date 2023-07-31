@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('estimates', function (Blueprint $table) {
             $table->id();
-            $table->string('reference');
+            $randomNumber = mt_rand(1000, 100000); // Generate a random number between 1000 and 100000
+            $table->integer('reference')->default($randomNumber);
             $table->unsignedBigInteger('request_id')->notNull();
             $table->foreign('request_id')
             ->references('id')->on('requests')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->notNull();
-            $table->foreign('user_id')
+            $table->unsignedBigInteger('freelancer_id')->notNull();
+            $table->foreign('freelancer_id')
+            ->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('client_id')->notNull();
+            $table->foreign('client_id')
             ->references('id')->on('users')->onDelete('cascade');
             $table->date('estimate_date');
             $table->string('rating');

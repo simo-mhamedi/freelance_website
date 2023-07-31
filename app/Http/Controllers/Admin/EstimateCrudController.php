@@ -70,8 +70,8 @@ class EstimateCrudController extends CrudController
             return Request::pluck('title', 'id')->toArray();
         };
 
-        CRUD::field('reference')->validationRules('required');
-      CRUD::addField([
+  
+        CRUD::addField([
     'name' => 'request_id',
     'label' => 'Request',
     'type' => 'enum',
@@ -81,8 +81,15 @@ class EstimateCrudController extends CrudController
 ]);
 
         CRUD::addField([
-            'name' => 'user_id',
-            'label' => 'user',
+            'name' => 'freelancer_id',
+            'label' => 'freelancer',
+            'type' => 'enum',
+            'options' => $this->getAllUsers(),
+            'rules' => 'required',
+        ]);
+        CRUD::addField([
+            'name' => 'client_id',
+            'label' => 'client',
             'type' => 'enum',
             'options' => $this->getAllUsers(),
             'rules' => 'required',

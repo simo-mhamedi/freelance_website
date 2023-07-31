@@ -1,51 +1,6 @@
 @extends('base.index')
-<style>
-    .left {
-        width: 39%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-evenly;
-    }
-
-    .right {
-        width: 30%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .actions {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center
-    }
-
-    .paginate {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-    }
-
-    .paginate a {
-        text-decoration: none !important;
-        border: 1px solid green !important;
-        color: green !important;
-        margin: 5px;
-        border-radius: 10px
-    }
-    .title{text-align: center !important;
-        text-transform: uppercase;
-        font-size: 40px !important;
-        color: #108a00 !important;
-        margin-bottom: 40px !important;
-
-    }
-</style>
 @section('content')
-<div class="title">devis recus</div>
+<div class="estimate-title">devis recus</div>
     <div class="actions">
         <!-- Example single danger button -->
         <div class="left">
@@ -102,7 +57,7 @@ background: #108A00;"
                 @foreach ($estimate_recus as $estimate_recu)
                     <tr>
                         <th scope="row">{{ $estimate_recu->reference }}</th>
-                        <td>{{ $estimate_recu->user->companyName }}</td>
+                        <td>{{ $estimate_recu->client->companyName }}</td>
                         <td>{{ $estimate_recu->estimate_date }}</td>
                         <td style="color:rgba(16, 138, 0, 1);cursor:pointer"><a data-toggle="modal"
                                 data-target="#exampleModalLong">voir offre</a>

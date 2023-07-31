@@ -11,16 +11,21 @@ class Estimate extends Model
 {
     use CrudTrait;
     use HasFactory;
-    public function user()
+    public function freelancer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,"freelancer_id");
+    }
+    public function client()
+    {
+        return $this->belongsTo(User::class,"client_id");
     }
 
     protected $fillable = [
         'reference',
         'request_id',
         'description',
-        'user_id',
+        'freelancer_id',
+        'client_id',
         'estimate_date',
         'rating',
         'file'

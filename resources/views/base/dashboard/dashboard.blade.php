@@ -1,133 +1,5 @@
 @extends('base.index')
-<style>
-    .dash-title {
-        margin-left: 40px;
-        color: #00A453;
-        font-size: 50px;
-        text-transform: uppercase;
-    }
 
-    .estimate-infos {
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        margin: 20px;
-    }
-    .table{
-        margin: 20px
-    }
-    .rest {
-        width: 324px;
-        height: 189px;
-        flex-shrink: 0;
-        border-radius: 14px 14px 0px 14px;
-        background: #F2F5F2;
-        color: #000;
-        font-size: 60px;
-        text-transform: uppercase;
-        text-align: center
-    }
-
-    .rest .content {
-        color: #000;
-        font-size: 30px;
-        text-transform: uppercase;
-    }
-
-    .propose {
-        width: 324px;
-        height: 189px;
-        flex-shrink: 0;
-        border-radius: 14px;
-        background: #00A453;
-        color: #FFF;
-        font-size: 60px;
-        text-align: center;
-        text-transform: uppercase;
-    }
-
-    .propose .content {
-        color: #FFF;
-        font-size: 30px;
-        line-height: 21.76px;
-        text-transform: uppercase;
-    }
-
-    .week-status {
-        padding: 20px;
-        width: 822px;
-        height: 232px;
-        flex-shrink: 0;
-        border-radius: 14px;
-        background: #F2F5F2;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .week-title {
-        color: #000;
-        font-size: 30px;
-        margin: 10px;
-        text-transform: uppercase;
-    }
-
-    .status {
-        display: flex;
-        align-content: center;
-        justify-content: space-evenly
-    }
-
-    .statu .value {
-        color: #108A00;
-        font-size: 50px;
-        font-weight: 700;
-        text-transform: uppercase;
-    }
-
-    .statu {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .statu .title {
-        color: #000;
-        font-size: 20px;
-        text-transform: uppercase;
-    }
-
-    .chart img {
-        margin: 10px;
-        width: 100px;
-    }
-
-    .statu-with-chart {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-
-    }
-
-    .infos {
-        display: flex;
-        flex-direction: column;
-        align-content: center
-    }
-
-    .next-section .title {
-        color: #000;
-        font-size: 30px;
-        line-height: 21.76px;
-        text-transform: uppercase;
-    }
-    .next-section{
-        margin: 20px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 70%;
-    }
-</style>
 @section('content')
     <div class="dash-title">
         TABLEAUX DE BORD
@@ -161,7 +33,7 @@
         </div>
         <div class="status">
             <div class="statu">
-                <div class="value">130</div>
+                <div class="value">{{$allEstimates}}</div>
                 <div class="title">
                     devis ajoutés
                 </div>
@@ -197,37 +69,76 @@
             Nouveaux devis
 
         </div>
-        <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">REFERENCE</th>
-      <th scope="col">Société</th>
-      <th scope="col">Date depot</th>
-      <th scope="col">DEVIS</th>
-      <th scope="col">Contact</th>
-      <th scope="col">review</th>
+        <table class="table" style="background:#F2F5F2;border-radius:14px ">
+            <thead>
+                <tr>
+                    <th scope="col">REFERENCE</th>
+                    <th scope="col">Société</th>
+                    <th scope="col">Date depot</th>
+                    <th scope="col">DEVIS</th>
+                    <th scope="col">review</th>
+                </tr>
+            </thead>
+
+            <tbody id="estimates">
+                @foreach ($lastsEstimates as $estimate_recu)
+                    <tr>
+                        <td>
+                            @if ($estimate_recu !== null)
+                        {{ $estimate_recu->reference }}
+                        <!-- Other table cells or data for each estimate -->
+                @endif
+                        </td>
+                <td>
+                    @if ($estimate_recu !== null)
+                    {{ $estimate_recu->client->companyName  }}
+                    <!-- Other table cells or data for each estimate -->
+            @endif
+     </td>
+                <td>
+                    @if ($estimate_recu !== null)
+                    {{ $estimate_recu->estimate_date   }}
+                    <!-- Other table cells or data for each estimate -->
+            @endif
+                </td>
+                <td style="color:rgba(16, 138, 0, 1);cursor:pointer">
+                    @if ($estimate_recu !== null)
+
+                    <a data-toggle="modal"
+                        data-target="#exampleModalLong">voir offre</a>
+
+                    <div  class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div style="    height: 90%;" class="modal-dialog modal-lg" role="document">
+                            <div style="    height: 80% !important;" class="modal-content">
+                                <div class="modal-body">
+                                    <iframe style="width: 100%;height:100%" src="/storage/{{ $estimate_recu->file }}"
+                                        frameborder="0" allowfullscreen></iframe>
+                                    <!-- Other table cells or data for each estimate -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+    </div>
+    @endif
+
+    </td>
+    <td style="display: flex;align-items:center;">
+        @if ($estimate_recu !== null)
+        @for ($i = 0; $i < $estimate_recu->rating; $i++)
+        <span style="color: orange" class="fa fa-star checked"></span>
+    @endfor
+        <!-- Other table cells or data for each estimate -->
+@endif
+
+
+    </td>
     </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
+    @endforeach
+    </tbody>
+    </table>
+
     </div>
 @endsection

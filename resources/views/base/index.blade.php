@@ -11,13 +11,18 @@
 
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <link href="{{ URL::asset('tel/style.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('styles/request.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('styles/sendEsitimates.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('styles/dashboardRequest.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('styles/dashboard.css') }}" rel="stylesheet" />
 
     <link href="{{ URL::asset('home/home.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('home/auth-modale.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('home/auth-page.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('home/registration.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="//cdn.tutorialjinni.com/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
-
+    <link  rel="stylesheet" href="{{ URL::asset('countrys/build/css/demo.css') }}" rel="stylesheet" />
+    <link  rel="stylesheet" href="{{ URL::asset('countrys/build/css/countrySelect.css') }}" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -47,6 +52,10 @@
     || request()->routeIs('select-send-date-estimates')
     || request()->routeIs('request')
     || request()->routeIs('searsh-request')
+    || request()->routeIs('search-send-estimates')
+    || request()->routeIs('request-infos-view')
+    || request()->routeIs('search-estimates-from-req')
+    || request()->routeIs('update-profile-infos')
     )
         <div class="dsc">
             <div class="sideBare">
@@ -64,6 +73,7 @@
 
 
     @include('base.auth.auth-modal')
+
     <script src="{{ URL::asset('tel/javaScript.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
@@ -73,6 +83,18 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="{{ URL::asset('countrys/build/js/countrySelect.js') }}"></script>
+        <script>
+            $("#country_selector").countrySelect({
+                // defaultCountry: "jp",
+                // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+                // responsiveDropdown: true,
+                preferredCountries: ['ca', 'gb', 'us']
+            });
+        </script>
 </body>
 
 </html>

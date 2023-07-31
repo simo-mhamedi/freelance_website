@@ -45,6 +45,7 @@ Route::post('/save-new-request', [baseApp::class,'saveNewRequest'])->name('saveN
 
 Route::get('/select-date-estimates',[baseApp::class,'selectDateEtimates'])->name('select-date-estimates');
 Route::get('/search-estimates',[baseApp::class,'searchEtimates'])->name('search-estimates');
+Route::get('/search-estimates-from-req',[baseApp::class,'searchEtimatesFromRequestInfos'])->name('search-estimates-from-req');
 
 
 Route::get('/estimate_send',[baseApp::class,'estimateSend'])->name('estimate_send');
@@ -59,3 +60,15 @@ Route::get('/searsh-request', [BaseApp::class, 'searchRequest'])->name('searsh-r
 Route::get('/delete-selected-requests', [BaseApp::class, 'deleteSelectedRequest'])->name('delete-selected-requests');
 
 Route::get('/update-request-view', [BaseApp::class, 'updateRequestView'])->name('update-request-view');
+Route::post('/update-request-proceess', [BaseApp::class, 'updateRequestProc'])->name('update-request-proceess');
+
+Route::get('/request-infos-view/{id}', [BaseApp::class, 'requestInfosView'])->name('request-infos-view');
+
+
+Route::post('/add-user-review', [BaseApp::class, 'addUserReview'])->name('add-user-review');
+Route::get('/profile-infos',[baseApp::class,'profileInfos'])->name('profile-infos');
+Route::get('/update-profile-infos',[baseApp::class,'updateprofileInfos'])->name('update-profile-infos');
+Route::post('/update-profile-infos-process',[baseApp::class,'updateprofileInfosProcess'])->name('update-profile-infos-process');
+Route::get('/main-search',[baseApp::class,'searchMain'])->name('main-search');
+Route::post('/main-search-proc',[baseApp::class,'searchMainProc'])->name('main-search-proc');
+Route::post('/offre-infos',[baseApp::class,'offreInfos'])->name('offre-infos');

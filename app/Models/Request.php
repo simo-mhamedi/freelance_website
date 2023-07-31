@@ -24,6 +24,14 @@ class Request extends Model
         'user_id'
     ];
 
+    public function Sub_categorie()
+    {
+        return $this->hasMany(Request_sub_categorie::class,"request_id");
+    }
+    public function RSub_categorie()
+    {
+        return $this->hasMany(Request_sub_categorie::class,"subCategory_id");
+    }
     public function requests(): HasMany
 {
     return $this->hasMany(Request::class, 'user_id');
@@ -33,6 +41,11 @@ public function estimates()
     return $this->hasMany(Estimate::class, 'request_id');
 }
 
+
+public function user()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
 public function getEstimateCountAttribute()
 {
     return $this->estimates()->count();

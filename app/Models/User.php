@@ -14,6 +14,11 @@ class User extends Authenticatable
 {
     use CrudTrait;
     use HasApiTokens, HasFactory, Notifiable;
+
+    public function userratings()
+    {
+        return $this->hasMany(user_Rate::class, 'user_id');
+    }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -48,14 +53,7 @@ class User extends Authenticatable
         'has_Membership',
         'membership_id',
     ];
-    public function setImageAttribute($value)
-    {
-        $attribute_name = "image";
-        $disk = "public";
-        $destination_path = 'files/images';
-        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path, $fileName = null);
-        // return $this->attributes[{$attribute_name}]; // uncomment if this is a translatable field
-    }
+    
     /**
      * The attributes that should be hidden for serialization.
      *

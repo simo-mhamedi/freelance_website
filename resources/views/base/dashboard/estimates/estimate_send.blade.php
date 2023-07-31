@@ -1,53 +1,7 @@
 @extends('base.index')
-<style>
-    .left {
-        width: 39%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-evenly;
-    }
 
-    .right {
-        width: 30%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .actions {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center
-    }
-
-    .paginate {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-    }
-
-    .paginate a {
-        text-decoration: none !important;
-        border: 1px solid green !important;
-        color: green !important;
-        margin: 5px;
-        border-radius: 10px
-    }
-
-    .title {
-        text-align: center !important;
-        text-transform: uppercase;
-        font-size: 40px !important;
-        color: #108a00 !important;
-        margin-bottom: 40px !important;
-
-    }
-</style>
 @section('content')
-    <div class="title">devis envoyés</div>
+    <div class="estimate-title">devis envoyés</div>
     <div class="actions">
         <!-- Example single danger button -->
         <div class="left">
@@ -73,7 +27,7 @@ background: #F2F5F2;"
             </form>
         </div>
 
-        <form class="right" method="GET" action="{{ route('search-estimates') }}" id="keyForm">
+        <form class="right" method="GET" action="{{ route('search-send-estimates') }}" id="keyForm">
             <input type="text" name="key" placeholder="chercher mot clé"
                 style="border-radius: 14px;
     background: #F2F5F2;margin-right:10px" class="form-control">
@@ -101,7 +55,7 @@ background: #108A00;"
             </thead>
 
             <tbody id="estimates">
-                @foreach ($paginatedEstimates as $estimate_recu)
+                @foreach ($estimate_recus as $estimate_recu)
                     <tr>
                         <td>
                             @if ($estimate_recu !== null)
@@ -111,7 +65,7 @@ background: #108A00;"
                         </td>
                 <td>
                     @if ($estimate_recu !== null)
-                    {{ $estimate_recu->user->companyName  }}
+                    {{ $estimate_recu->freelancer->companyName  }}
                     <!-- Other table cells or data for each estimate -->
             @endif
      </td>
@@ -162,7 +116,7 @@ background: #108A00;"
 
     </div>
     <div class="paginate">
-        {{ $paginatedEstimates->links() }}
+        {{ $estimate_recus->links() }}
     </div>
 @endsection
 <script>

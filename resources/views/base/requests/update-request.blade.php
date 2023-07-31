@@ -1,277 +1,4 @@
 @extends('base.index')
-<style>
-    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
-    ::selection {
-        color: #fff;
-        background: #17a2b8;
-    }
-
-    .wrapper {
-        margin-top: 20px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-        background: #fff;
-        border-radius: 10px;
-        padding: 20px 25px 40px;
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
-    }
-
-    header h2 {
-        font-size: 24px;
-        font-weight: 600;
-    }
-
-    header p {
-        margin-top: 5px;
-        font-size: 16px;
-    }
-
-    .price-input {
-        width: 100%;
-        display: flex;
-        margin: 30px 0 35px;
-    }
-
-    .price-input .field {
-        display: flex;
-        width: 100%;
-        height: 45px;
-        align-items: center;
-    }
-
-    .field input {
-        width: 100%;
-        height: 100%;
-        outline: none;
-        font-size: 19px;
-        margin-left: 12px;
-        border-radius: 5px;
-        text-align: center;
-        border: 1px solid #999;
-        -moz-appearance: textfield;
-    }
-
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-    }
-
-    .price-input .separator {
-        width: 130px;
-        display: flex;
-        font-size: 19px;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .slider {
-        height: 5px;
-        position: relative;
-        background: #ddd;
-        border-radius: 5px;
-    }
-
-    .slider .progress {
-        height: 100%;
-        left: 25%;
-        right: 25%;
-        position: absolute;
-        border-radius: 5px;
-        background: rgba(0, 164, 83, 1);
-
-    }
-
-    .range-input {
-        position: relative;
-    }
-
-    .range-input input {
-        position: absolute;
-        width: 100%;
-        height: 5px;
-        top: -5px;
-        background: none;
-        pointer-events: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-        height: 17px;
-        width: 17px;
-        border-radius: 50%;
-        background: rgba(0, 164, 83, 1);
-        pointer-events: auto;
-        -webkit-appearance: none;
-        box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
-    }
-
-    input[type="range"]::-moz-range-thumb {
-        height: 17px;
-        width: 17px;
-        border: none;
-        border-radius: 50%;
-        background: rgba(0, 164, 83, 1);
-        pointer-events: auto;
-        -moz-appearance: none;
-        box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
-    }
-
-    /* Support */
-    .support-box {
-        top: 2rem;
-        position: relative;
-        bottom: 0;
-        text-align: center;
-        display: block;
-    }
-
-    .b-btn {
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .b-btn.paypal i {
-        color: blue;
-    }
-
-    .b-btn:hover {
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .b-btn i {
-        font-size: 20px;
-        color: yellow;
-        margin-top: 2rem;
-    }
-
-    .container {
-        width: 1180px;
-        margin-top: 3em;
-    }
-
-    #accordion {
-        width: 100%;
-    }
-
-    #accordion .panel {
-        border-radius: 5px;
-        border: 0;
-        margin-top: 0px;
-    }
-
-    #accordion a {
-        display: block;
-        padding: 10px 15px;
-        border-radius: 10px;
-        text-decoration: none;
-        background-color: #00A453;
-        font-style: normal;
-        font-weight: 600;
-        font-size: 22px;
-        line-height: 22px;
-        /* identical to box height, or 84% */
-        text-transform: uppercase;
-
-        color: #FEF9F9;
-
-        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    }
-
-    #accordion .panel-heading a.collapsed:hover,
-    #accordion .panel-heading a.collapsed:focus {
-        color: white;
-        transition: all 0.2s ease-in;
-    }
-
-    #accordion .panel-heading a.collapsed:hover::before,
-    #accordion .panel-heading a.collapsed:focus::before {
-        color: white;
-    }
-
-    #accordion .panel-heading {
-        padding: 0;
-        border-radius: 0px;
-        text-align: center;
-    }
-
-    #accordion .panel-heading a:not(.collapsed) {
-        color: white;
-        transition: all 0.2s ease-in;
-        border-radius: 5px;
-    }
-
-    /* Add Indicator fontawesome icon to the left */
-    #accordion .panel-heading .accordion-toggle::before {
-        font-family: 'FontAwesome';
-        float: left;
-        color: white;
-        font-weight: lighter;
-        transform: rotate(0deg);
-        transition: all 0.2s ease-in;
-    }
-
-    #accordion .panel-heading .accordion-toggle.collapsed::before {
-        color: #444;
-        transform: rotate(-135deg);
-        transition: all 0.2s ease-in;
-    }
-
-    .sub {
-        background: #4C78AF !important;
-        border-radius: 12px !important;
-        font-style: normal;
-        font-weight: 600;
-        font-size: 15px !important;
-        line-height: 22px;
-        /* identical to box height, or 109% */
-
-        align-items: center;
-        text-transform: uppercase;
-
-        color: #FFFFFF;
-    }
-
-    .sub:hover {
-        background-color: #FFFFFF;
-        color: black
-    }
-
-    .category-selected {
-        margin: 20px;
-        width: 22%;
-        background: #E2E3E4 !important;
-        border-radius: 12px !important;
-        font-style: normal;
-        font-weight: 600;
-        font-size: 10px !important;
-        line-height: 22px;
-        /* identical to box height, or 145% */
-        align-items: center;
-        text-transform: uppercase;
-        padding: 4px !important;
-        color: #FFFFFF;
-        position: relative;
-    }
-
-    .close {
-        color: rgba(0, 0, 0, 0.4);
-        position: absolute;
-        right: 9px;
-        top: 5px;
-    }
-
-    #second-list {
-        padding: 0px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-</style>
 @section('content')
     <div class="backgroud-green">
         <p>update demande</p>
@@ -405,14 +132,19 @@ top: 250px;
                 <div class="form-group">
 
                     <ul style="padding:0px;" class="myList" id="second-list">
-                        <center>
-
-                        </center>
+                            @foreach ($userCategorys as $subCagorie)
+                                <li class="btn category-selected" id="sub-selected" value="{{ $subCagorie->Sub_categorie->id }}"
+                                    style=" margin: 10px;" data-category="{{ $subCagorie->Sub_categorie->id }}">
+                                    {{ $subCagorie->Sub_categorie->subCategoryName }}
+                                    <i class="fa fa-close close"></i>
+                                </li>
+                            @endforeach
                     </ul>
                     <input type="hidden" id="myCategories" name="myCategories">
                 </div>
             </div>
         </div>
+        <input type="hidden" class="id" name="id" value="{{$request_recu->id}}">
         <button style="width: 50%" title="Sign In" type="submit" class="sign-in_btn next-btn">
             <span> Update demande</span>
         </button>
@@ -508,6 +240,7 @@ top: 250px;
             var date_deadline = JSON.stringify(document.querySelector(".date_deadline").value);
             var input_min = JSON.stringify(document.querySelector(".input-min").value);
             var input_max = JSON.stringify(document.querySelector(".input-max").value);
+            var id = JSON.stringify(document.querySelector(".id").value);
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -515,9 +248,10 @@ top: 250px;
             });
 
             $.ajax({
-                url: '/save-new-request',
+                url: '/update-request-proceess',
                 type: 'POST',
                 data: {
+                    id:id,
                     list: jsonList,
                     title: title,
                     description: description,
@@ -527,7 +261,7 @@ top: 250px;
                 },
                 success: function(response) {
                     // Handle the response from the server
-                    window.location.href = '{{ route('dashboard') }}';
+                    window.location.href = '{{ route('request') }}';
                 },
                 error: function(xhr) {
                     // // Handle any errors that occur during the request

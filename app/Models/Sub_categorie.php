@@ -14,6 +14,13 @@ class Sub_categorie extends Model
         'subCategoryName',
         'category_id'
     ];
+
+    public function Request_sub_categorie()
+    {
+        return $this->hasMany(Request_sub_categorie::class);
+    }
+
+    
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES

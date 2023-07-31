@@ -73,15 +73,15 @@ class UserCrudController extends CrudController
         CRUD::field('name')->validationRules('required');
         CRUD::field('email')->validationRules('required');
         CRUD::field('password')->validationRules('required');
-        CRUD::addField([
-            // Upload
-            'name' => 'image',
-            'label' => 'Image',
-            'type' => 'upload',
-            'upload' => true,
-            'disk' => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
-            // optional:
-        ]);
+        // CRUD::addField([
+        //     // Upload
+        //     'name' => 'image',
+        //     'label' => 'Image',
+        //     'type' => 'upload',
+        //     'upload' => true,
+        //     'disk' => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
+        //     // optional:
+        // ]);
         CRUD::field('name')->validationRules('required');
         CRUD::field('companyName')->validationRules('required');
         CRUD::field('companyRepresentative')->validationRules('required');
@@ -102,7 +102,6 @@ class UserCrudController extends CrudController
             'rules' => 'required',
         ]);
         CRUD::field('has_Membership');
-
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
@@ -118,6 +117,7 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
+
         $currentId = $this->crud->getCurrentEntryId();
         $users = User::pluck('email', 'id')->toArray();
         $membership = user_membership::find($currentId);
@@ -126,15 +126,15 @@ class UserCrudController extends CrudController
         CRUD::field('email');
         CRUD::field('password');
         // CRUD::field('id');
-        CRUD::addField([
-            // Upload
-            'name' => 'image',
-            'label' => 'Image',
-            'type' => 'upload',
-            'upload' => true,
-            'disk' => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
-            // optional:
-        ]);
+        // CRUD::addField([
+        //     // Upload
+        //     'name' => 'image',
+        //     'label' => 'Image',
+        //     'type' => 'upload',
+        //     'upload' => true,
+        //     'disk' => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
+        //     // optional:
+        // ]);
         CRUD::field('companyName');
         CRUD::field('companyRepresentative');
         CRUD::field('rcCompany');
@@ -153,8 +153,7 @@ class UserCrudController extends CrudController
                 'options' => $users,
                 'default' => $membership->membership_id,
             ]);
-        }
-        else{
+        } else {
             CRUD::addField([
                 'name' => 'membership_id',
                 'label' => 'membership',
@@ -163,9 +162,9 @@ class UserCrudController extends CrudController
                 'rules' => 'required',
             ]);
         }
-
         CRUD::field('has_Membership');
     }
+
     protected function getAllMemberships()
     {
         $memberships = membership::pluck('name', 'id')->toArray();

@@ -14,4 +14,9 @@ class User_categorie extends Model
         'user_id',
         'sub_category_id',
     ];
+    public function Sub_categorie()
+    {
+        return $this->belongsTo(Sub_categorie::class,'sub_category_id');
+    }
+
 }

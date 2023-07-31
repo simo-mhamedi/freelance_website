@@ -1,0 +1,128 @@
+    .dash-title {
+        margin-left: 40px;
+        color: #00A453;
+        font-size: 50px;
+        text-transform: uppercase;
+    }
+
+    .estimate-infos {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: 20px;
+    }
+    .table{
+        margin: 20px
+    }
+    .rest {
+        width: 324px;
+        height: 189px;
+        flex-shrink: 0;
+        border-radius: 14px 14px 0px 14px;
+        background: #F2F5F2;
+        color: #000;
+        font-size: 60px;
+        text-transform: uppercase;
+        text-align: center
+    }
+
+    .rest .content {
+        color: #000;
+        font-size: 30px;
+        text-transform: uppercase;
+    }
+
+    .propose {
+        width: 324px;
+        height: 189px;
+        flex-shrink: 0;
+        border-radius: 14px;
+        background: #00A453;
+        color: #FFF;
+        font-size: 60px;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .propose .content {
+        color: #FFF;
+        font-size: 30px;
+        line-height: 21.76px;
+        text-transform: uppercase;
+    }
+
+    .week-status {
+        padding: 20px;
+        width: 822px;
+        height: 232px;
+        flex-shrink: 0;
+        border-radius: 14px;
+        background: #F2F5F2;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .week-title {
+        color: #000;
+        font-size: 30px;
+        margin: 10px;
+        text-transform: uppercase;
+    }
+
+    .status {
+        display: flex;
+        align-content: center;
+        justify-content: space-evenly
+    }
+
+    .statu .value {
+        color: #108A00;
+        font-size: 50px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .statu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .statu .title {
+        color: #000;
+        font-size: 20px;
+        text-transform: uppercase;
+    }
+
+    .chart img {
+        margin: 10px;
+        width: 100px;
+    }
+
+    .statu-with-chart {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+    }
+
+    .infos {
+        display: flex;
+        flex-direction: column;
+        align-content: center
+    }
+
+    .next-section .title {
+        color: #000;
+        font-size: 30px;
+        line-height: 21.76px;
+        text-transform: uppercase;
+    }
+    .next-section{
+        margin: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 70%;
+    }
+    

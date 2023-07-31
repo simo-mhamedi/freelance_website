@@ -1,101 +1,5 @@
 @extends('base.index')
-<style>
-    .left {
-        width: 39%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-evenly;
-    }
 
-    .right {
-        margin: 40px;
-        width: 50%;
-        margin-left: auto;
-        margin-right: auto;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-
-    }
-
-    .actions {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center
-    }
-
-    .paginate {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-    }
-
-    .paginate a {
-        text-decoration: none !important;
-        border: 1px solid green !important;
-        color: green !important;
-        margin: 5px;
-        border-radius: 10px
-    }
-
-    .title {
-        text-align: center !important;
-        text-transform: uppercase;
-        font-size: 40px !important;
-        color: #108a00 !important;
-        margin-bottom: 40px !important;
-
-    }
-
-    .desc {
-        font-size: 30px;
-        font-weight: bold;
-        text-transform: uppercase
-    }
-
-    .label-search {
-        width: 70%;
-        font-size: 15px !important;
-        color: #108a00;
-        font-weight: bold;
-    }
-
-    .external-actions {
-        margin: 10px;
-        float: right;
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .btn-delete {
-        background: white !important;
-        color: black !important;
-        border-radius: 10px;
-        border-color: black !important;
-        padding: 5px !important;
-    }
-
-    .deposer {
-        background: #108a00 !important;
-        color: white !important;
-        border-radius: 10px;
-    }
-
-    .fa-trash {
-        color: red;
-        cursor: pointer
-    }
-
-    .fa-pencil,
-    .fa-eye {
-        color: #4C78AF;
-        cursor: pointer
-    }
-</style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 @if (session('message'))
@@ -121,7 +25,7 @@
 
 
 @section('content')
-    <div class="title">MES DEMANDES</div>
+    <div class="request-title">MES DEMANDES</div>
     <div class="desc">Gérer/Modifier mes DEMANDES</div>
 
 
@@ -165,7 +69,7 @@ background: #108A00;"
                     <th scope="col">MODIFIER</th>
                     <th scope="col">SUPP</th>
                     <th scope="col">voir</th>
-                    <th scope="col"><input type="checkbox" class="all"></th>
+                    <th scope="col"><input type="checkbox" style="height: auto !important" class="all"></th>
                 </tr>
             </thead>
 
@@ -180,7 +84,7 @@ background: #108A00;"
                             <form style="margin: 0" method="GET" action="{{route('update-request-view')}}"  >
                                 @csrf
                                 <input type="hidden" value="{{$request_recu}}" name="request_recu">
-                                <button style="border: none"><i class="fa fa-pencil"></i></button></td>
+                                <button style="border: none;height: auto !important;padding: 0 !important;background-color:transparent !important"><i class="fa fa-pencil"></i></button></td>
                             </form>
                         <td>
 
@@ -214,10 +118,10 @@ background: #108A00;"
                             </div>
 
                         </td>
-                        <td><i class="fa fa-eye"></i>
+                        <td><a href="{{route('request-infos-view', ['id' => $request_recu->id])}}"><i class="fa fa-eye"></a></i>
 
                         </td>
-                        <td><input type="checkbox" value="{{ $request_recu->id }}" class="single-delete"></td>
+                        <td><input style="height: auto !important" type="checkbox" value="{{ $request_recu->id }}" class="single-delete"></td>
                     </tr>
                 @endforeach
             </tbody>
