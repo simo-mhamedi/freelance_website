@@ -2,13 +2,14 @@
 
 
 <style>
-    .avatar-sections{
+    .avatar-sections {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 20px;
     }
+
     .av-title {
         color: #108A00;
         font-size: 45px;
@@ -28,13 +29,15 @@
         /* 72.533% */
         text-transform: uppercase;
     }
-    .name-infos{
+
+    .name-infos {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 10px;
     }
+
     .rsp-name {
         color: #000;
         font-size: 20px;
@@ -45,20 +48,22 @@
         text-transform: uppercase;
     }
 
-    .av-actions{
+    .av-actions {
         display: flex;
         justify-content: space-between;
         align-content: center;
         flex-direction: row;
         gap: 10px;
     }
-    .btn{
+
+    .btn {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         border-radius: 10px;
     }
-    .av-update-btn .btn-success{
+
+    .av-update-btn .btn-success {
         background: white !important;
         color: #108A00 !important;
         border-color: #108A00 !important;
@@ -66,6 +71,7 @@
         border-radius: 10px;
 
     }
+
     .avatar {
         border: #108A00 solid 1px;
         width: 105px;
@@ -78,52 +84,58 @@
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
-        background-image: url({{ asset('storage/'.$user->image)}});
+        background-image: url({{ asset('storage/' . $user->image) }});
 
     }
-    .item{
+
+    .item {
         margin-top: 20px;
         display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 200px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 200px;
 
     }
-    a{
+
+    a {
         color: #000 !important;
-    text-decoration: none !important;
+        text-decoration: none !important;
     }
-    .action-info{
+
+    .action-info {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         gap: 10px;
     }
-    .flesh{
+
+    .flesh {
         background: #F2F5F2;
         border-radius: 100%;
 
-width: 48px;
-height: 48px;
-display: flex;
-align-items: center;
-justify-content: center
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center
     }
-    .icon-action{
-width: 60px;
-height: 51px;
-flex-shrink: 0;
-background: #F2F5F2;
-color: #108A00;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 20px;
-border-radius: 10px;
+
+    .icon-action {
+        width: 60px;
+        height: 51px;
+        flex-shrink: 0;
+        background: #F2F5F2;
+        color: #108A00;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        border-radius: 10px;
     }
-    .div-line{
+
+    .div-line {
         width: 40% !important;
         background: green;
         margin-top: 20px;
@@ -142,14 +154,14 @@ top: 110px;
             <div class="av-title">
                 profil
             </div>
-            <img src="{{ asset('storage/'.Auth::user()->image)}}" class="avatar">
+            <img src="{{ asset('storage/users-avatar/' . $user->avatar) }}" class="avatar">
 
             <div class="name-infos">
                 <div class="company-name">
-                    {{$user->companyName}}
+                    {{ $user->companyName }}
                 </div>
                 <div class="rsp-name">
-                    {{$user->companyRepresentative}}
+                    {{ $user->companyRepresentative }}
                 </div>
             </div>
             <div class="av-actions">
@@ -166,8 +178,8 @@ top: 110px;
                 </div>
             </div>
             <div class="av-update-btn">
-                <a style="text-decoration:none !important" href="{{ route('update-profile-infos') }}"  >
-                <button class="btn btn-success ">EDIT PROFILE</button>
+                <a style="text-decoration:none !important" href="{{ route('update-profile-infos') }}">
+                    <button class="btn btn-success ">EDIT PROFILE</button>
                 </a>
             </div>
         </div>
@@ -176,47 +188,47 @@ top: 110px;
 
         <div class="list-actions">
             <a href="{{ route('dashboard') }}">
-            <div class="item">
-                <div class="action-info">
-                    <div class="icon-action"><i class="fa fa-tachometer"></i>
+                <div class="item">
+                    <div class="action-info">
+                        <div class="icon-action"><i class="fa fa-tachometer"></i>
+                        </div>
+                        <div class="name-action">
+                            TABLEAUX DE BORD
+                        </div>
                     </div>
-                    <div class="name-action">
-                        TABLEAUX DE BORD
+                    <div class="flesh"><i class="fa fa-chevron-right"></i>
                     </div>
-                  </div>
-                <div class="flesh"><i class="fa fa-chevron-right"></i>
                 </div>
-            </div>
             </a>
             <a href="{{ route('request') }}">
-            <div class="item">
-                <div class="action-info">
-                    <div class="icon-action"><i class="fa fa-file"></i>
+                <div class="item">
+                    <div class="action-info">
+                        <div class="icon-action"><i class="fa fa-file"></i>
 
+                        </div>
+                        <div class="name-action">
+                            Mes offres
+                        </div>
                     </div>
-                    <div class="name-action">
-                        Mes offres
+                    <div class="flesh"><i class="fa fa-chevron-right"></i>
                     </div>
-                  </div>
-                <div class="flesh"><i class="fa fa-chevron-right"></i>
                 </div>
-            </div>
-        </a>
-        <a href="{{ route('estimate') }}">
+            </a>
+            <a href="{{ route('estimate') }}">
 
-            <div class="item">
-                <div class="action-info">
-                    <div class="icon-action"><i class="fa fa-check-square"></i>
+                <div class="item">
+                    <div class="action-info">
+                        <div class="icon-action"><i class="fa fa-check-square"></i>
 
+                        </div>
+                        <div class="name-action">
+                            Mes DEVIS
+                        </div>
                     </div>
-                    <div class="name-action">
-                        Mes DEVIS
+                    <div class="flesh"><i class="fa fa-chevron-right"></i>
                     </div>
-                  </div>
-                <div class="flesh"><i class="fa fa-chevron-right"></i>
                 </div>
-            </div>
-        </a>
+            </a>
         </div>
         <div class="div-line"></div>
         <div class="list-actions">
@@ -227,24 +239,25 @@ top: 110px;
                     <div class="name-action">
                         Mes information
                     </div>
-                  </div>
+                </div>
                 <div class="flesh"><i class="fa fa-chevron-right"></i>
                 </div>
             </div>
-            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <div class="item">
-                <div class="action-info">
-                    <div class="icon-action"><i style="color: #BC1818" class="fa fa-sign-out"></i>
+            <a href="{{ route('logout') }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <div class="item">
+                    <div class="action-info">
+                        <div class="icon-action"><i style="color: #BC1818" class="fa fa-sign-out"></i>
+
+                        </div>
+                        <div class="name-action">
+                            log out
+                        </div>
 
                     </div>
-                    <div class="name-action">
-                        log out
+                    <div class="flesh"><i class="fa fa-chevron-right"></i>
                     </div>
-
-                  </div>
-                <div class="flesh"><i class="fa fa-chevron-right"></i>
                 </div>
-            </div>
             </a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
