@@ -26,7 +26,7 @@
     }
 </style>
 <div class="d-flex flex-column flex-shrink-0 p-3 text-white " style="width: 280px;      border-radius: 10px;  height: 800px;background:#00A453">
-    <img src="{{ asset('storage/'.Auth::user()->image)}}" class="avatar">
+    <img src="{{ asset('storage/users-avatar/'.Auth::user()->avatar)}}" class="avatar">
     <div class="name"><a  href="{{ route('profile-infos') }}" style="cursor: pointer;color:#000;text-decoration:none">{{ Auth::user()->companyName }}<a>
     </div>
     <a style="text-decoration:none !important" href="{{ route('update-profile-infos') }}"  >

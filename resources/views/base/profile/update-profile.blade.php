@@ -177,7 +177,7 @@
 
                 </div>
                 <img class="avatar" id="uploadedImage" alt="Uploaded Image" accept="image/png, image/jpeg"
-                    src="{{ asset('storage/' . $user->image) }}">
+                    src="{{ asset('storage/users-avatar/' . $user->avatar) }}">
                 <input placeholder="societe Name" value="{{ $user->companyName }}" title="Inpit title" name="societeName"
                     type="text" class="input_field companyName" id="societeName">
                 <input placeholder="RC" value="{{ $user->rcCompany }}" title="Inpit title" name="societeName" type="text"
