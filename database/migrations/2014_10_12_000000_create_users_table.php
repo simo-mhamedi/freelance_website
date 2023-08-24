@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string("country")->nullable();
             $table->string('role')->default('user');
             $table->string("tele")->nullable();
+            $table->string("areaCode")->nullable();
             $table->boolean("has_Membership")->default(false);
             $table->string("desc_Activity")->nullable();
             $table->unsignedBigInteger('membership_id')->nullable();

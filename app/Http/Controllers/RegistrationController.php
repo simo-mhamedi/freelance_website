@@ -20,7 +20,7 @@ class RegistrationController extends Controller
     public function toCompanyInfos(Request $request)
     {
         $data = session()->get('firstPageData');
-        if ($data == null) {
+        if ($data == null || $data["email"]!=$request->email) {
             $data = $request->only(['email', 'password']);
             $request->session()->put('firstPageData', $data);
         }
@@ -33,8 +33,9 @@ class RegistrationController extends Controller
     }
     public function toUserCategoryInfos(Request $request)
     {
+
         $data = $request->session()->get('firstPageData');
-        $data += $request->only(['societeName', 'companyRepresentative', 'rsSociete', 'city', 'country', 'tel']);
+        $data += $request->only(['societeName', 'companyRepresentative', 'rsSociete', 'city', 'country', 'areaCode','tel']);
         $request->session()->put('firstPageData', $data);
         return redirect('/user-category-infos');
     }
@@ -62,6 +63,7 @@ class RegistrationController extends Controller
             $user->country = $data['country'];
             $user->rcCompany = $data['rsSociete'];
             $user->tele = $data['tel'];
+            $user->areaCode = $data["areaCode"];
             $user->desc_Activity = $request['desc'];
             $user->save();
             foreach (json_decode($request->list) as $id) {

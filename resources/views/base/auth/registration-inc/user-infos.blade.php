@@ -39,7 +39,7 @@
                 </path>
             </svg>
             <input placeholder="MOT DE PASSE" value="{{ isset($data['password']) ? $data['password'] : '' }}"
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="Inpit title" name="password" type="password"
+                name="password" type="password"
                 class="input_field" id="password">
         </div>
         <br>

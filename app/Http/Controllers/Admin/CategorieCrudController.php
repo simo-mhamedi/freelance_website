@@ -61,7 +61,7 @@ class CategorieCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::field('categoryName');
+        CRUD::field('categoryName')->label('Nom de la catégorie');
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
@@ -76,7 +76,7 @@ class CategorieCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        CRUD::field('categoryName');
+        CRUD::field('categoryName')->label('Nom de la catégorie');
 
     }
 }

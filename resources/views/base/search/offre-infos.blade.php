@@ -444,6 +444,7 @@
         /* 145.067% */
         text-transform: uppercase;
     }
+
     .statu-req {
         border-radius: 20px;
         background: #00A453;
@@ -457,12 +458,50 @@
         align-items: center;
         justify-content: center;
     }
-    .statu-info{
+
+    .statu-info {
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: 20px;
         justify-content: space-between
+    }
+
+    .av-update-btn .btn-success {
+        background: #0d6efd !important;
+        color: white !important;
+        border-color: #0d6efd !important;
+        font-weight: bold;
+        border-radius: 10px;
+
+    }
+
+    .file-input__input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .file-input__label {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        font-size: 14px;
+        padding: 10px 12px;
+        background-color: #4245a8;
+        box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    .file-input__label svg {
+        height: 16px;
+        margin-right: 4px;
     }
 </style>
 @section('content')
@@ -484,10 +523,47 @@
                     {{ $request->description }}
                 </div>
                 <div class="action-offre">
-                    <button class="btn-primary">envoyer message
-                    </button>
-                    <button class="btn-success">envoyez devis
-                    </button>
+                    <a href="/messaging/{{ $request->user->id }}" class="btn btn-primary">envoyer message
+                    </a>
+                    <a class="btn btn-success" data-toggle="modal" data-target="#exampleModal">envoyez devis
+                    </a>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">veuillez importer votre DEVIS
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="clientId" class="clientId" value="{{ $request->user->id }}">
+                                    <input type="hidden" name="reqId" class="reqId" value="{{ $request->id }}">
+
+                                    <div class="file-input">
+                                        <input hidden type="file"  id="file-input"
+                                            class="file-input__input file" />
+                                        <label class="file-input__label" for="file-input">
+                                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="upload"
+                                                class="svg-inline--fa fa-upload fa-w-16" role="img"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <path fill="currentColor"
+                                                    d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z">
+                                                </path>
+                                            </svg>
+                                            <span>Upload file</span></label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary next-btn">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+                        aria-labelledby="deleteModalLabel" aria-hidden="true">
+
+                    </div>
                 </div>
                 <div class="company-desc">
 
@@ -520,11 +596,11 @@
             <div class="rating">
                 <div style="display: flex;align-items:center;">
                     @if ($roundedAverageRating > 0)
-                    @for ($i = 0; $i < $roundedAverageRating; $i++)
-                    <span style="color: orange" class="fa fa-star checked"></span>
-                @endfor
-                @else
-                @endif
+                        @for ($i = 0; $i < $roundedAverageRating; $i++)
+                            <span style="color: orange" class="fa fa-star checked"></span>
+                        @endfor
+                    @else
+                    @endif
 
                 </div>
             </div>
@@ -538,13 +614,13 @@
                 </div>
             </div>
             <div class="dates">
-                <div class="exp">publié le {{ $request->date_request}}
+                <div class="exp">publié le {{ $request->date_request }}
                 </div>
-                <div class="crea">expire le : {{ $request->date_deadline}}
+                <div class="crea">expire le : {{ $request->date_deadline }}
                 </div>
             </div>
             <div class="devis-infos">
-                Vue: 12 | devis: {{ count($request->estimates) }}
+                Vue: {{ $request->viewsNumber }} | devis: {{ count($request->estimates) }}
             </div>
         </div>
 
@@ -553,3 +629,37 @@
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script>
+    addEventListener("DOMContentLoaded", (event) => {
+        document.querySelector('.next-btn').addEventListener('click', function(event) {
+            console.log("eee");
+            var clientId = document.querySelector(".clientId").value;
+            var reqId = document.querySelector(".reqId").value;
+            var fileInput = document.querySelector(".file");
+
+            var formData = new FormData();
+            formData.append('clientId', clientId);
+            formData.append('reqId', reqId);
+            formData.append('file', fileInput.files[0]);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '/add-devis',
+                type: 'POST',
+                data: formData,
+                processData: false, // Important! To prevent jQuery from processing the FormData
+                contentType: false, // Important! To prevent jQuery from setting the Content-Type header
+                success: function(response) {
+                    // Handle the response from the server
+                },
+                error: function(error) {
+                    // Handle the error (if any)
+                }
+            });
+        });
+    });
+    </script>

@@ -21,6 +21,7 @@ class Request extends Model
         'date_request',
         'date_deadline',
         'status',
+        'viewsNumber',
         'user_id'
     ];
 

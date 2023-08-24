@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use JetBrains\PhpStorm\Internal\ReturnTypeContract;
 
 class UserController extends Controller
@@ -73,8 +74,10 @@ class UserController extends Controller
         $user->country = $request->country;
         $user->city = $request->city;
         $user->tele = $request->tele;
+        $user->areaCode = $request->areaCode;
         $user->desc_Activity = $request->desc;
         $user->rcCompany = $request->rc;
+        $user->companyName = $request->companyName;
         $user->save();
         UserCategorie::where('user_id', $user->id)->delete();
         foreach (json_decode($request->list) as $id) {
@@ -84,7 +87,10 @@ class UserController extends Controller
             $userCategorie->save();
         }
     }
-
+    private function getSubCategorieById($id)
+    {
+        return SubCategorie::find($id);
+    }
     public function searchMain()
     {
         $categories = Categorie::all();
@@ -108,13 +114,14 @@ class UserController extends Controller
         $maxPrice = $request->maxPrice;
         $country = $request->country;
         $city = $request->city;
+        Session::put('country', $country);
+        Session::put('city', $city);
         $searchKey = $request->searchKey;
         $requests = ModelsRequest::with(['Sub_categorie', 'Sub_categorie.Sub_categorie'])
             ->with(['user.userratings', 'estimates'])
             ->whereBetween('price_min', [$minPrice, $maxPrice])
             ->orWhereBetween('price_max', [$minPrice, $maxPrice])
             ->get();
-        $totale = $requests->count();
         if ($checkedValues[0] != '') {
             $filteredRequests = [];
             $total = 0;
@@ -140,7 +147,7 @@ class UserController extends Controller
         }
         // Filter by user's attributes (country, city, searchKey)
         if (!empty($country) || !empty($city) || !empty($searchKey)) {
-            $requests = $requests->filter(function ($request) use ($country, $city, $searchKey) {
+            $requests =  $requests->filter(function ($request) use ($country, $city, $searchKey) {
                 $user = User::where('id', $request->user_id);
 
                 if (!empty($country)) {
@@ -157,7 +164,9 @@ class UserController extends Controller
 
                 return $user->exists();
             });
+            $totale = $requests->count();
         }
+
         $categories = Categorie::all();
         $subCagories = SubCategorie::all();
         return view('base.search.main-search', compact('categories', 'subCagories', 'requests', 'totale'));
@@ -166,7 +175,11 @@ class UserController extends Controller
     public function offreInfos(Request $req)
     {
         $request = json_decode($req['req']);
+        $requestUpdate = ModelsRequest::where("id",$request->id)->get()->first();
+        $requestUpdate->viewsNumber=$requestUpdate->viewsNumber+1;
+        $requestUpdate->save();
         $ratings=$request->user->userratings;
+        $request->viewsNumber=$requestUpdate->viewsNumber;
         // Calculate the total sum of ratings
         $totalRatings = count($ratings);
         $sumRatings = 0;

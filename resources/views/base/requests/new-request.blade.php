@@ -1,5 +1,142 @@
 @extends('base.index')
+<style>
+    .span{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+    .range-slider {
+        width: 100%;
+        margin: auto;
+        text-align: center;
+        position: relative;
+        height: 6em;
+    }
 
+    .range-slider svg,
+    .range-slider input[type=range] {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
+
+    input[type=number] {
+        border: 1px solid #ddd;
+        text-align: center;
+        font-size: 1.6em;
+        -moz-appearance: textfield;
+    }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+
+    input[type=number]:invalid,
+    input[type=number]:out-of-range {
+        border: 2px solid #ff6347;
+    }
+
+    input[type=range] {
+        -webkit-appearance: none;
+        width: 100%;
+    }
+
+    input[type=range]:focus {
+        outline: none;
+    }
+
+    input[type=range]:focus::-webkit-slider-runnable-track {
+        background: green;
+    }
+
+    input[type=range]:focus::-ms-fill-lower {
+        background: green;
+    }
+
+    input[type=range]:focus::-ms-fill-upper {
+        background: green;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        animate: 0.2s;
+        background: green;
+        border-radius: 1px;
+        box-shadow: none;
+        border: 0;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        z-index: 2;
+        position: relative;
+        box-shadow: 0px 0px 0px #000;
+        border: 1px solid green;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #a1d0ff;
+        cursor: pointer;
+        -webkit-appearance: none;
+        margin-top: -7px;
+    }
+
+    input[type=range]::-moz-range-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        animate: 0.2s;
+        background: green;
+        border-radius: 1px;
+        box-shadow: none;
+        border: 0;
+    }
+
+    input[type=range]::-moz-range-thumb {
+        z-index: 2;
+        position: relative;
+        box-shadow: 0px 0px 0px #000;
+        border: 1px solid #green;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #a1d0ff;
+        cursor: pointer;
+    }
+
+    input[type=range]::-ms-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        animate: 0.2s;
+        background: transparent;
+        border-color: transparent;
+        color: transparent;
+    }
+
+    input[type=range]::-ms-fill-lower,
+    input[type=range]::-ms-fill-upper {
+        background: green;
+        border-radius: 1px;
+        box-shadow: none;
+        border: 0;
+    }
+
+    input[type=range]::-ms-thumb {
+        z-index: 2;
+        position: relative;
+        box-shadow: 0px 0px 0px #000;
+        border: 1px solid green;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #a1d0ff;
+        cursor: pointer;
+    }
+</style>
 @section('content')
     <div class="backgroud-green">
         <p>deposer une nouvelle demande</p>
@@ -11,8 +148,8 @@ top: 250px;
 ">
         <div class="input_container">
             <label class="input_label" for="email_field">titre demande</label>
-            <input required name="title"style="padding:5px !important" placeholder="EX : DEVIS ALLIMINIUM pour 100 tonnes" title="Inpit title" name="input-name"
-                type="text" class="input_field inp-title" id="email_field">
+            <input required name="title"style="padding:5px !important" placeholder="EX : DEVIS ALLIMINIUM pour 100 tonnes"
+                title="Inpit title" name="input-name" type="text" class="input_field inp-title" id="email_field">
         </div>
         <div class="input_container">
             <div class="form-group">
@@ -32,34 +169,17 @@ top: 250px;
         <div class="input_container">
             <div class="form-group">
                 <label class="input_label" for="email_field">DESCRIPTIF demande</label>
-                <input required type="date" style="padding: 6px !important ;border-reduis:5px" class="date_deadline" name="date_deadline">
+                <input required type="date" style="padding: 6px !important ;border-reduis:5px" class="date_deadline"
+                    name="date_deadline">
             </div>
         </div>
-        <div class="input_container">
-            <div class="wrapper">
-                <header>
-                    <h2>Price Range</h2>
-                    <p>Use slider or enter min and max price</p>
-                </header>
-                <div class="price-input">
-                    <div class="field">
-                        <span>Min</span>
-                        <input type="number" class="input-min" name="price_min" value="2500">
-                    </div>
-                    <div class="separator">-</div>
-                    <div class="field">
-                        <span>Max</span>
-                        <input type="number" class="input-max" name="price_max" value="7500">
-                    </div>
-                </div>
-                <div class="slider">
-                    <div class="progress"></div>
-                </div>
-                <div class="range-input">
-                    <input type="range" class="range-min" min="0" max="10000" value="2500" step="100">
-                    <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
-                </div>
-            </div>
+        <div class="range-slider">
+            <span class="span">
+                <input type="number" class="input-min" value="25000" min="0" max="120000" />
+                <input type="number" value="50000" class="input-max" min="0" max="120000" />
+            </span>
+            <input value="25000" min="0" max="120000" step="500" type="range" />
+            <input value="50000" min="0" max="120000" step="500" type="range" />
         </div>
         <div class="container">
             <div id="accordion" class="panel-group">
@@ -110,6 +230,47 @@ top: 250px;
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
     addEventListener("DOMContentLoaded", (event) => {
+        (function() {
+            var parent = document.querySelector(".range-slider");
+            if (!parent) return;
+
+            var rangeS = parent.querySelectorAll("input[type=range]"),
+                numberS = parent.querySelectorAll("input[type=number]");
+
+            rangeS.forEach(function(el) {
+                el.oninput = function() {
+                    var slide1 = parseFloat(rangeS[0].value),
+                        slide2 = parseFloat(rangeS[1].value);
+
+                    if (slide1 > slide2) {
+                        [slide1, slide2] = [slide2, slide1];
+                        // var tmp = slide2;
+                        // slide2 = slide1;
+                        // slide1 = tmp;
+                    }
+
+                    numberS[0].value = slide1;
+                    numberS[1].value = slide2;
+                };
+            });
+
+            numberS.forEach(function(el) {
+                el.oninput = function() {
+                    var number1 = parseFloat(numberS[0].value),
+                        number2 = parseFloat(numberS[1].value);
+
+                    if (number1 > number2) {
+                        var tmp = number1;
+                        numberS[0].value = number2;
+                        numberS[1].value = tmp;
+                    }
+
+                    rangeS[0].value = number1;
+                    rangeS[1].value = number2;
+                };
+            });
+        })();
+
         $("form").on("change", ".file-upload-field", function() {
             $(this).parent(".file-upload-wrapper").attr("data-text", $(this).val().replace(/.*(\/|\\)/,
                 ''));

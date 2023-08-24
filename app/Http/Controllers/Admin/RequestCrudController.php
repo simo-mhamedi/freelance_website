@@ -68,18 +68,35 @@ class RequestCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
+        CRUD::field('requestNumber')
+            ->label('Numéro de demande')
+            ->validationRules('required|numeric|min:5');
 
-        CRUD::field('requestNumber')->validationRules('required|numeric|min:5');
-        CRUD::field('title')->validationRules('required');
-        CRUD::field('description')->validationRules('required');
-        CRUD::field('price_min')->validationRules('required');
-        CRUD::field('price_max')->validationRules('required');
-        CRUD::field('date_request')->validationRules('required');
-        CRUD::field('date_deadline')->validationRules('required');
-        CRUD::field('status')->validationRules('required');
+        CRUD::field('title')
+            ->label('Titre')
+            ->validationRules('required');
+        CRUD::field('description')
+            ->label('Description')
+            ->validationRules('required');
+        CRUD::field('price_min')
+            ->label('Prix minimum')
+            ->validationRules('required');
+        CRUD::field('price_max')
+            ->label('Prix maximum')
+            ->validationRules('required');
+        CRUD::field('date_request')
+            ->label('Date de la demande')
+            ->validationRules('required');
+        CRUD::field('date_deadline')
+            ->label('Date limite')
+            ->validationRules('required');
+        CRUD::field('status')
+            ->label('Statut')
+            ->validationRules('required');
+
         CRUD::addField([
             'name' => 'user_id',
-            'label' => 'user',
+            'label' => 'Utilisateur',
             'type' => 'enum',
             'options' => $this->getAllUsers(),
             'rules' => 'required',
@@ -91,7 +108,6 @@ class RequestCrudController extends CrudController
          * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
     }
-
 
     protected function getAllUsers()
     {
@@ -109,21 +125,23 @@ class RequestCrudController extends CrudController
     {
         $currentId = $this->crud->getCurrentEntryId();
         $users = User::pluck('email', 'id')->toArray();
-        $resuest = Request::find($currentId);
-        CRUD::field('requestNumber');
-        CRUD::field('title');
-        CRUD::field('description');
-        CRUD::field('price_min');
-        CRUD::field('price_max');
-        CRUD::field('date_request');
-        CRUD::field('date_deadline');
-        CRUD::field('status');
+        $request     = Request::find($currentId);
+        CRUD::field('requestNumber')->label('Numéro de demande');
+        CRUD::field('title')->label('Titre');
+        CRUD::field('description')->label('Description');
+        CRUD::field('price_min')->label('Prix minimum');
+        CRUD::field('price_max')->label('Prix maximum');
+        CRUD::field('date_request')->label('Date de la demande');
+        CRUD::field('date_deadline')->label('Date limite');
+        CRUD::field('status')->label('Statut');
+
         CRUD::addField([
             'name' => 'user_id',
-            'label' => 'user',
+            'label' => 'Utilisateur',
             'type' => 'enum',
             'options' => $users,
-            'default' => $resuest->user_id,
+            'default' => $request->user_id,
         ]);
+
     }
 }
