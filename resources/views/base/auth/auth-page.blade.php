@@ -5,8 +5,10 @@
         border-radius: 14px !important;
     }
 </style>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 @section('content')
-    <form  action="{{ route('loginProc') }}" method="POST" class="form_container">
+    <form action="{{ route('loginProc') }}" method="POST" class="form_container">
         @csrf
         <div class="title_container">
             <p class="title">Connectez vous</p>
@@ -43,7 +45,7 @@
                 id="password_field">
         </div>
         <div class="form-check" style="width:100%">
-            <input class="form-check-input" name="saveOnSession" type="checkbox" value="" id="flexCheckChecked" >
+            <input class="form-check-input" name="saveOnSession" type="checkbox" value="" id="flexCheckChecked">
             <label class="form-check-label" for="flexCheckChecked">
                 Gardez-moi connecté
             </label>
@@ -57,9 +59,8 @@
             <span>vous avez pas de compte ?</span>
             <hr class="line">
         </div>
-        <a title="Sign In"
-        href="{{ route('user-infos') }}"
-        style="
+        <a title="Sign In" href="{{ route('user-infos') }}"
+            style="
     background: #FFFFFF !important;
     color: #108A00;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -73,7 +74,28 @@
     justify-content: center;
 "
             class="sign-in_btn">
-            <span>Inscrivez vous  </span>
-    </a>
+            <span>Inscrivez vous </span>
+        </a>
     </form>
+    @if ($errors->has('error'))
+    <script>
+        Toastify({
+            text: "Invalid credentials",
+            className: "errore",
+            style: {
+                background: "linear-gradient(to right, #df1b1b, #d62121)"
+            }
+        }).showToast();
+    </script>
+@endif
 @endsection
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<!-- Instead of -->
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+</script> -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

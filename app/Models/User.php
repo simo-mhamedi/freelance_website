@@ -46,6 +46,7 @@ class User extends Authenticatable
         'companyRepresentative',
         'rcCompany',
         'city',
+        'areaCode',
         'country',
         'role',
         'tele',
@@ -53,7 +54,7 @@ class User extends Authenticatable
         'has_Membership',
         'membership_id',
     ];
-    
+
     /**
      * The attributes that should be hidden for serialization.
      *

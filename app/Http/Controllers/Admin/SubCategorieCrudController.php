@@ -60,14 +60,16 @@ class SubCategorieCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::field('subCategoryName');
+        CRUD::field('subCategoryName')->label('Nom de la sous-catégorie');
+
         CRUD::addField([
             'name' => 'category_id',
-            'label' => 'sub category',
+            'label' => 'Sous-catégorie',
             'type' => 'enum',
             'options' => $this->getAllSCategorys(),
             'rules' => 'required',
         ]);
+
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
@@ -87,16 +89,19 @@ class SubCategorieCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        CRUD::field('subCategoryName');
+        CRUD::field('subCategoryName')->label('Nom de la sous-catégorie');
+
         $currentId = $this->crud->getCurrentEntryId();
         $category = SubCategorie::find($currentId);
+
         CRUD::addField([
             'name' => 'category_id',
-            'label' => 'category',
+            'label' => 'Catégorie',
             'type' => 'enum',
             'options' => $this->getAllSCategorys(),
             'rules' => 'required',
             'default' => $category->category_id,
         ]);
+
     }
 }

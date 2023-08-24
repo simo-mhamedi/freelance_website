@@ -120,82 +120,89 @@
         display: flex;
         gap: 10px;
     }
+
     #container {
-  display: flex;
-  width: 300px;
-  margin: 0 auto;
-}
-#star {
-  font-size: 50px;
-  flex: 1;
-  text-align: center;
-  line-height: 50px;
-  margin: 10px auto;
-  cursor: pointer;
-  border-radius: 100%;
-  transition: 1s;
-}
+        display: flex;
+        width: 300px;
+        margin: 0 auto;
+    }
 
-.inactive {
-  color: lightgrey;
-}
+    #star {
+        font-size: 50px;
+        flex: 1;
+        text-align: center;
+        line-height: 50px;
+        margin: 10px auto;
+        cursor: pointer;
+        border-radius: 100%;
+        transition: 1s;
+    }
 
-@keyframes myAnim {
-  0% {
-    animation-timing-function: ease-out;
-    transform: scale(1);
-    transform-origin: center center;
-  }
+    .inactive {
+        color: lightgrey;
+    }
 
-  10% {
-    animation-timing-function: ease-in;
-    transform: scale(0.91);
-  }
+    @keyframes myAnim {
+        0% {
+            animation-timing-function: ease-out;
+            transform: scale(1);
+            transform-origin: center center;
+        }
 
-  17% {
-    animation-timing-function: ease-out;
-    transform: scale(0.98);
-  }
+        10% {
+            animation-timing-function: ease-in;
+            transform: scale(0.91);
+        }
 
-  33% {
-    animation-timing-function: ease-in;
-    transform: scale(0.87);
-  }
+        17% {
+            animation-timing-function: ease-out;
+            transform: scale(0.98);
+        }
 
-  45% {
-    animation-timing-function: ease-out;
-    transform: scale(1);
-  }
-}
+        33% {
+            animation-timing-function: ease-in;
+            transform: scale(0.87);
+        }
 
-.animated {
-  animation: myAnim 2s ease 0s infinite normal forwards;
-  color: gold;
-}
+        45% {
+            animation-timing-function: ease-out;
+            transform: scale(1);
+        }
+    }
 
-.active {
-  color: gold;
-}
-.raing-title{
-    text-transform: uppercase;
-    text-align: center;
-    color: #000
-}
-.actions-rating{
-    MARGIN-LEFT: AUTO;
-    MARGIN-RIGHT: auto;
-    DISPLAY: FLEX;
-    FLEX-DIRECTION: row;
-    ALIGN-ITEMS: center;
-    JUSTIFY-CONTENT: space-between;
-    WIDTH: 40%;
-    MARGIN-BOTTOM: 16PX;
-}
-.plus-tard,.confirm{
-    border-radius: 10px;
-    padding: 5px;
-}
-.avatar {
+    .animated {
+        animation: myAnim 2s ease 0s infinite normal forwards;
+        color: gold;
+    }
+
+    .active {
+        color: gold;
+    }
+
+    .raing-title {
+        text-transform: uppercase;
+        text-align: center;
+        color: #000
+    }
+
+    .actions-rating {
+        MARGIN-LEFT: AUTO;
+        MARGIN-RIGHT: auto;
+        DISPLAY: FLEX;
+        FLEX-DIRECTION: row;
+        ALIGN-ITEMS: center;
+        JUSTIFY-CONTENT: space-between;
+        WIDTH: 40%;
+        MARGIN-BOTTOM: 16PX;
+    }
+
+    .plus-tard,
+    .confirm {
+        border-radius: 10px;
+        padding: 5px;
+    }
+
+    .avatar {
         width: 105px;
         margin-left: auto;
         margin-right: auto;
@@ -207,6 +214,10 @@
         background-position: center;
         background-repeat: no-repeat;
     }
+.modal-content{
+    color: #000
+}
+
 </style>
 @section('content')
     <div class="request-title">demande numero {{ $request->requestNumber }}</div>
@@ -288,7 +299,7 @@
 
         <form class="right" method="GET" action="{{ route('search-estimates-from-req') }}" id="keyForm">
             <label for="" class="label-search">RECHERCHE ANNONCE</label>
-            <input type="hidden" value="{{$request->id}}" name="id">
+            <input type="hidden" value="{{ $request->id }}" name="id">
             <input value="{{ isset($data) ? $data : '' }}" type="text" name="key" placeholder="chercher mot clé"
                 style="border-radius: 14px;
     background: #F2F5F2;margin-right:10px" class="form-control">
@@ -326,10 +337,11 @@ background: #108A00;"
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div style="    height: 80% !important;" class="modal-content">
                                         <div class="modal-header">
-                                            <button type="button" class="close"class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" >
-                                              <span aria-hidden="true">&times;</span>
+                                            <button type="button" class="close"class="btn btn-primary" data-toggle="modal"
+                                                data-target="#exampleModalCenter">
+                                                <span aria-hidden="true">&times;</span>
                                             </button>
-                                          </div>
+                                        </div>
                                         <div class="modal-body">
                                             <!-- Or embed a video -->
                                             <iframe style="width: 100%;height:100%"
@@ -341,112 +353,139 @@ background: #108A00;"
                             </div>
 
 
-                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                  <div class="modal-content">
+                                    <div class="modal-content">
 
-                                    <div class="modal-body">
-                                        <h5 style="margin-bottom: -8px !important;" class="raing-title">donner une note pour ce devis
-                                        </h5>
-                                        <div id="container">
-                                            <div id="star" class="inactive" data-index=0>★</div>
-                                            <div id="star" class="inactive" data-index=1>★</div>
-                                            <div id="star" class="inactive" data-index=2>★</div>
-                                            <div id="star" class="inactive" data-index=3>★</div>
-                                            <div id="star" class="inactive" data-index=4>★</div>
-                                          </div>
-                                          <input class="idEst" type="hidden" value="{{$estimate_recu->id}}">
-                                    </div>
-                                    <div class="actions-rating">
-                                        <button class="btn-primary plus-tard" data-dismiss="modal" aria-label="Close" >PLUS TARD</button>
-                                        <button class="btn-success confirm" >CONFIRMER</button>
-                                    </div>
+                                        <div class="modal-body">
+                                            <h5 style="margin-bottom: -8px !important;" class="raing-title">donner une
+                                                note pour ce devis
+                                            </h5>
+                                            <div id="container">
+                                                <div id="star" class="inactive" data-index=0>★</div>
+                                                <div id="star" class="inactive" data-index=1>★</div>
+                                                <div id="star" class="inactive" data-index=2>★</div>
+                                                <div id="star" class="inactive" data-index=3>★</div>
+                                                <div id="star" class="inactive" data-index=4>★</div>
+                                            </div>
+                                            <input class="idEst" type="hidden" value="{{ $estimate_recu->id }}">
+                                        </div>
+                                        <div class="actions-rating">
+                                            <button class="btn-primary plus-tard" data-dismiss="modal"
+                                                aria-label="Close">PLUS TARD</button>
+                                            <button class="btn-success confirm">CONFIRMER</button>
+                                        </div>
 
-                                  </div>
+                                    </div>
                                 </div>
-                              </div>
-                        </div>
+                            </div>
+    </div>
 
     </div>
     </td>
-    <td style="color:#007FED;cursor:pointer"><a data-toggle="modal"
-        data-target="#exampleModalLongContact">Contacter</a>
+    <td style="color:#007FED;cursor:pointer"><a data-toggle="modal" data-target="#exampleModalLongContact">Contacter</a>
 
-    <div class="modal fade" id="exampleModalLongContact" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div style="    height: 50% !important;" class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                <div class="modal-body" style="@auth
-                    justify-content: flex-end;
-                @endauth">
-                    <span class="avatar"
-                    style="background-image: url({{ asset('storage/'.$estimate_recu->client->image)}});
+        <div class="modal fade" id="exampleModalLongContact" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+                <div style="    height: 50% !important;" class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="
+justify-content: flex-end;">
+                        <img
+                        src="{{ asset('storage/users-avatar/' . $estimate_recu->client->avatar) }}"
+                        class="avatar"
+                        style="
                         position: absolute;
                         left:20px;
-                        top: 10px;
-                    ">
-                    </span>
-                    <div >
+                        top: 10px;"/>
+                        <div>
 
-                        <div class="user-contact-infos"
-                        style="
+                            <div class="user-contact-infos"
+                                style="
                         position: absolute;
     top: 49px
 ;
     left: 141px;
-                        "
-                        >
-                            <div class="name-contact">
-                                {{$estimate_recu->client->companyName}}
-                            </div>
-                            <div style="display: flex;align-items:center;">
-                                @if ($estimate_recu->client->userratings->count() > 0)
-                                @for ($i = 0; $i < $estimate_recu->client->userratings->avg('review'); $i++)
-                                <span style="color: orange" class="fa fa-star checked"></span>
-                            @endfor
-                            @else
-                            @endif
+                        ">
+                                <div class="name-contact">
+                                    {{ $estimate_recu->client->companyName }}
+                                </div>
+                                <div style="display: flex;align-items:center;">
+                                    @if ($estimate_recu->client->userratings->count() > 0)
+                                        @for ($i = 0; $i < $estimate_recu->client->userratings->avg('review'); $i++)
+                                            <span style="color: orange" class="fa fa-star checked"></span>
+                                        @endfor
+                                    @else
+                                    @endif
 
+                                </div>
                             </div>
+
                         </div>
 
-                    </div>
 
-
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="7" placeholder="desicriptif société">{{$estimate_recu->client->desc_Activity}}
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="desicriptif société">{{ $estimate_recu->client->desc_Activity }}
                     </textarea>
 
-                </div>
-                <div class="av-actions"
-                style="    display: flex;
+                    </div>
+                    <div class="av-actions"
+                        style="    display: flex;
                     flex-direction: row;
                     align-items: center;
                     justify-content: center;
                     gap: 10px;
-                    margin: 10px;"
-                >
-                    <div class="email">
-                        <button class="btn btn-danger"><i class="fa fa-envelope request-icon"></i></button>
-                    </div>
-                    <div class="sms">
-                        <button class="btn btn-primary"><i class="fa fa-comment request-icon"></i></button>
+                    margin: 10px;">
+                        <div class="email">
+                            <a class="Abtn btn btn-danger" data-toggle="modal" data-target="#exampleModalCenterEmail"><i class="fa fa-envelope request-icon"></i></a>
+                            <div class="modal fade" id="exampleModalCenterEmail" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="sendEmailModalLabel">Send Email</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form style="width: 100%" action="{{ route('send_email') }}" method="POST">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <input type="hidden" class="form-control" value="{{$estimate_recu->client->email}}" id="recipient" name="recipient">
+                                                </div>
+                                                    <label for="subject">Subject</label>
+                                                    <input type="text" class="form-control" id="subject" name="subject" required>
+                                                    <label for="message">Message</label>
+                                                    <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Send</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="sms">
+                            <a href="/messaging/{{$estimate_recu->client->id}}" class="Abtn btn btn-primary"><i class="fa fa-comment request-icon"></i></a>
 
-                    </div>
-                    <div class="phoneNumber">
-                        <button class="btn btn-success"><i class=" fa fa-phone request-icon"></i></button>
-
+                        </div>
+                        <div class="phoneNumber">
+                            <a href="https://api.whatsapp.com/send?phone={{$estimate_recu->client->tele }}" target="_blank"
+                                class="Abtn btn btn-success"><i class=" fa fa-phone request-icon"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</td>
+        </div>
+    </td>
     <td style="display: flex;align-items:center;">
         @for ($i = 0; $i < $estimate_recu->rating; $i++)
             <span style="color: orange" class="fa fa-star checked"></span>
@@ -464,48 +503,60 @@ background: #108A00;"
     </div>
 @endsection
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script>
     addEventListener("DOMContentLoaded", (event) => {
 
-document.querySelectorAll('#star').forEach(star => {
-  star.addEventListener('mouseover', animateStart);
-  star.addEventListener('mouseout', animateEnd);
-  star.addEventListener('click', set)
-})
+        $(".plus-tard").on("click", function() {
+            location.reload();
+        });
 
-function animateStart(e) {
- const index = e.target.getAttribute('data-index')
-  for(let i = 0; i <= index; i++){ e.target.parentNode.children[i].classList.add('animated')
-  }
 
-}
-function animateEnd(e) {
-  const index = e.target.getAttribute('data-index')
-  for(let i = 0; i <= index; i++){ e.target.parentNode.children[i].classList.remove('animated')
-  }
-}
-function set(e) {
-   const index = e.target.getAttribute('data-index');
-  for(let i = 0; i <= 4; i++){
-     e.target.parentNode.children[i].classList.remove('active')
-  }
-  for(let i = 0; i <= index; i++){ e.target.parentNode.children[i].classList.add('active')
-  }
-}
+        document.querySelectorAll('#star').forEach(star => {
+            star.addEventListener('mouseover', animateStart);
+            star.addEventListener('mouseout', animateEnd);
+            star.addEventListener('click', set)
+        })
 
-document.querySelector('.confirm').addEventListener('click', function(event) {
+        function animateStart(e) {
+            const index = e.target.getAttribute('data-index')
+            for (let i = 0; i <= index; i++) {
+                e.target.parentNode.children[i].classList.add('animated')
+            }
 
-    const stars = document.querySelectorAll('#star');
-  let activeStarsCount = 0;
-  id=document.querySelector(".idEst").value;
-  stars.forEach(star => {
-    if (star.classList.contains('active')) {
-      activeStarsCount++;
-    }
-  });
+        }
 
-    $.ajaxSetup({
+        function animateEnd(e) {
+            const index = e.target.getAttribute('data-index')
+            for (let i = 0; i <= index; i++) {
+                e.target.parentNode.children[i].classList.remove('animated')
+            }
+        }
+
+        function set(e) {
+            const index = e.target.getAttribute('data-index');
+            for (let i = 0; i <= 4; i++) {
+                e.target.parentNode.children[i].classList.remove('active')
+            }
+            for (let i = 0; i <= index; i++) {
+                e.target.parentNode.children[i].classList.add('active')
+            }
+        }
+
+        document.querySelector('.confirm').addEventListener('click', function(event) {
+
+            const stars = document.querySelectorAll('#star');
+            let activeStarsCount = 0;
+            id = document.querySelector(".idEst").value;
+            stars.forEach(star => {
+                if (star.classList.contains('active')) {
+                    activeStarsCount++;
+                }
+            });
+
+            $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
@@ -515,8 +566,8 @@ document.querySelector('.confirm').addEventListener('click', function(event) {
                 url: '/add-user-review',
                 type: 'POST',
                 data: {
-                    stars:activeStarsCount,
-                    id:id
+                    stars: activeStarsCount,
+                    id: id
                 },
                 success: function(response) {
                     // Handle the response from the server
@@ -533,7 +584,7 @@ document.querySelector('.confirm').addEventListener('click', function(event) {
                     // }).showToast();
                 }
             });
-});
+        });
 
 
 

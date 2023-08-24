@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('price_min');
             $table->string("price_max");
             $table->date("date_request");
-            $table->string("date_deadline");
+            $table->date("date_deadline");
             $table->string("status");
+            $table->integer("viewsNumber");
             $table->unsignedBigInteger('user_id')->notNull();
             $table->timestamps();
             $table->foreign('user_id')

@@ -122,4 +122,21 @@ class EstimateController extends Controller
               ->simplePaginate(10);
           return view('base.dashboard.estimates.estimate_send', compact('requests', 'estimate_recus'));
       }
+      public function addEstimate(Request $request)
+      {
+        $estimate=new Estimate();
+        $estimate->request_id=$request->reqId;
+        $estimate->client_id=$request->clientId;
+        $estimate->freelancer_id=Auth::user()->id;
+        $estimate->estimate_date=date('Y-m-d');
+
+        if ($request->file != 'undefined') {
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file = $request->file('file');
+            $file->storeAs('users-avatar', $fileName, 'public');
+            $estimate->file = $fileName;
+        }
+        $estimate->save();
+      }
 }

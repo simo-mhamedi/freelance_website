@@ -282,8 +282,7 @@ function selectOption() {
 
     selected_option.innerHTML = '';
     selected_option.append(icon, phone_code);
-
-    input_box.value = phone_code.innerText+" ";
+    document.querySelector('.areaCode').value=phone_code.innerText;
 
     select_box.classList.remove('active');
     selected_option.classList.remove('active');

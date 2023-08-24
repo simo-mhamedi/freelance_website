@@ -43,17 +43,22 @@ class UserCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('name');
-        CRUD::column('email');
-        CRUD::column('password');
-        CRUD::field('name');
-        CRUD::field('email');
-        CRUD::field('password');
-        CRUD::field('image');
-        CRUD::field('name');
-        CRUD::field('companyName');
-        CRUD::field('has_Membership');
-        CRUD::field('role');
+        CRUD::column('name')->label('Nom');
+        CRUD::column('email')->label('E-mail');
+        CRUD::column('password')->label('Mot de passe');
+
+        CRUD::field('name')->label('Nom');
+        CRUD::field('email')->label('E-mail');
+        CRUD::field('password')->label('Mot de passe');
+        CRUD::field('image')->label('Image');
+        CRUD::field('name')->label('Nom');
+        CRUD::field('companyName')->label('Nom de l\'entreprise');
+        CRUD::field('has_Membership')->label('A-t-il une adhésion ?');
+        CRUD::field('role')
+            ->type('enum')
+            ->options(['user' => 'Utilisateur', 'admin' => 'Administrateur'])
+            ->label('Rôle');
+
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
@@ -70,38 +75,54 @@ class UserCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(UserRequest::class);
-        CRUD::field('name')->validationRules('required');
-        CRUD::field('email')->validationRules('required');
-        CRUD::field('password')->validationRules('required');
-        // CRUD::addField([
-        //     // Upload
-        //     'name' => 'image',
-        //     'label' => 'Image',
-        //     'type' => 'upload',
-        //     'upload' => true,
-        //     'disk' => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
-        //     // optional:
-        // ]);
-        CRUD::field('name')->validationRules('required');
-        CRUD::field('companyName')->validationRules('required');
-        CRUD::field('companyRepresentative')->validationRules('required');
-        CRUD::field('rcCompany')->validationRules('required');
-        CRUD::field('city')->validationRules('required');
-        CRUD::field('country')->validationRules('required');
-        CRUD::field('tele')->validationRules('required');
-        CRUD::field('desc_Activity')->validationRules('required');
+
+        CRUD::field('name')
+            ->label('Nom')
+            ->validationRules('required');
+        CRUD::field('email')
+            ->label('E-mail')
+            ->validationRules('required');
+        CRUD::field('password')
+            ->label('Mot de passe')
+            ->validationRules('required');
+        CRUD::field('companyName')
+            ->label('Nom de l\'entreprise')
+            ->validationRules('required');
+        CRUD::field('companyRepresentative')
+            ->label('Représentant de l\'entreprise')
+            ->validationRules('required');
+        CRUD::field('rcCompany')
+            ->label('Numéro RC de l\'entreprise')
+            ->validationRules('required');
+        CRUD::field('city')
+            ->label('Ville')
+            ->validationRules('required');
+        CRUD::field('country')
+            ->label('Pays')
+            ->validationRules('required');
+        CRUD::field('tele')
+            ->label('Téléphone')
+            ->validationRules('required');
+        CRUD::field('desc_Activity')
+            ->label('Description de l\'activité')
+            ->validationRules('required');
+
         CRUD::field('role')
             ->type('enum')
-            ->options(['user' => 'User', 'admin' => 'Admin'])
+            ->options(['user' => 'user', 'admin' => 'admin'])
+            ->label('Rôle')
             ->validationRules('required');
+
         CRUD::addField([
             'name' => 'membership_id',
-            'label' => 'membership',
+            'label' => 'Adhésion',
             'type' => 'enum',
             'options' => $this->getAllMemberships(),
             'rules' => 'required',
         ]);
-        CRUD::field('has_Membership');
+
+        CRUD::field('has_Membership')->label('A-t-il une adhésion ?');
+
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
@@ -117,34 +138,45 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-
         $currentId = $this->crud->getCurrentEntryId();
         $users = User::pluck('email', 'id')->toArray();
         $membership = user_membership::find($currentId);
-        CRUD::setValidation(UserRequest::class);
-        CRUD::field('name');
-        CRUD::field('email');
-        CRUD::field('password');
-        // CRUD::field('id');
-        // CRUD::addField([
-        //     // Upload
-        //     'name' => 'image',
-        //     'label' => 'Image',
-        //     'type' => 'upload',
-        //     'upload' => true,
-        //     'disk' => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
-        //     // optional:
-        // ]);
-        CRUD::field('companyName');
-        CRUD::field('companyRepresentative');
-        CRUD::field('rcCompany');
-        CRUD::field('city');
-        CRUD::field('country');
-        CRUD::field('tele');
-        CRUD::field('desc_Activity');
-        CRUD::field('role')
-            ->type('enum')
-            ->options(['user' => 'User', 'admin' => 'Admin']);
+        CRUD::field('name')
+        ->label('Nom')
+        ->validationRules('required');
+    CRUD::field('email')
+        ->label('E-mail')
+        ->validationRules('required');
+    CRUD::field('password')
+        ->label('Mot de passe')
+        ->validationRules('required');
+    CRUD::field('companyName')
+        ->label('Nom de l\'entreprise')
+        ->validationRules('required');
+    CRUD::field('companyRepresentative')
+        ->label('Représentant de l\'entreprise')
+        ->validationRules('required');
+    CRUD::field('rcCompany')
+        ->label('Numéro RC de l\'entreprise')
+        ->validationRules('required');
+    CRUD::field('city')
+        ->label('Ville')
+        ->validationRules('required');
+    CRUD::field('country')
+        ->label('Pays')
+        ->validationRules('required');
+    CRUD::field('tele')
+        ->label('Téléphone')
+        ->validationRules('required');
+    CRUD::field('desc_Activity')
+        ->label('Description de l\'activité')
+        ->validationRules('required');
+
+    CRUD::field('role')
+        ->type('enum')
+        ->options(['user' => 'user', 'admin' => 'admin'])
+        ->label('Rôle')
+        ->validationRules('required');
         if ($membership) {
             CRUD::addField([
                 'name' => 'membership_id',

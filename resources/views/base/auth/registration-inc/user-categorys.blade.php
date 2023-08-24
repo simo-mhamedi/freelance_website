@@ -304,18 +304,25 @@
                     desc: desc
                 },
                 success: function(response) {
-                    // Handle the response from the server
-                    window.location.href = '{{ route('home') }}';
-                },
-                error: function(xhr) {
-                    // Handle any errors that occur during the request
-                    Toastify({
-                        text: xhr.responseText,
+                    if(response==="this email is already exist")
+                    {
+                        console.log(response);
+                        Toastify({
+                        text:"ce mail existe déjà" ,
                         className: "errore",
                         style: {
                             background: "linear-gradient(to right, #df1b1b, #d62121)",
                         }
-                    }).showToast();
+                        }).showToast();
+                    }
+                    else{
+                      window.location.href = '{{ route('home') }}';
+                    }
+                    // Handle the response from the server
+                },
+                error: function(xhr) {
+                    // Handle any errors that occur during the request
+
                 }
             });
         });

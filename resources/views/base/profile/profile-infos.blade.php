@@ -122,6 +122,10 @@
         justify-content: center
     }
 
+    .Abtn {
+        color: white !important;
+    }
+
     .icon-action {
         width: 60px;
         height: 51px;
@@ -166,14 +170,45 @@ top: 110px;
             </div>
             <div class="av-actions">
                 <div class="email">
-                    <button class="btn btn-danger"><i class="fa fa-envelope request-icon"></i></button>
+                    <a class="Abtn btn btn-danger" data-toggle="modal" data-target="#exampleModalCenterEmail"><i class="fa fa-envelope request-icon"></i></a>
+                    <div class="modal fade" id="exampleModalCenterEmail" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="sendEmailModalLabel">Send Email</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form style="width: 100%" action="{{ route('send_email') }}" method="POST">
+                                        @csrf
+                                        <div class="form-group">
+                                            <input type="hidden" class="form-control" value="{{$user->email}}" id="recipient" name="recipient">
+                                        </div>
+                                            <label for="subject">Subject</label>
+                                            <input type="text" class="form-control" id="subject" name="subject" required>
+                                            <label for="message">Message</label>
+                                            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Send</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+        
+
+                </div>
                 </div>
                 <div class="sms">
-                    <button class="btn btn-primary"><i class="fa fa-comment request-icon"></i></button>
+                    <a href="/messaging/{{$user->id}}" class="Abtn btn btn-primary"><i class="fa fa-comment request-icon"></i></a>
 
                 </div>
                 <div class="phoneNumber">
-                    <button class="btn btn-success"><i class=" fa fa-phone request-icon"></i></button>
+                    <a href="https://api.whatsapp.com/send?phone={{ $user->tele }}" target="_blank"
+                        class="Abtn btn btn-success"><i class=" fa fa-phone request-icon"></i></a>
 
                 </div>
             </div>

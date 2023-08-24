@@ -110,7 +110,7 @@
                     <label for="">represantant société
                     </label>
                     <input value="{{ $user->name }}" placeholder="NOM" title="Inpit title" id="name"
-                        type="text" class="input_field name" id="societeName">
+                        type="text" class="input_field edit-name" id="societeName">
                 </div>
                 <br>
                 <div class="input_container">
@@ -149,6 +149,7 @@
 
 
                     </label>
+                    <input type="hidden" name="areaCode" value="+44" class="areaCode">
                     <div class="select-box">
                         <div class="selected-option">
                             <div>
@@ -191,8 +192,7 @@
                         <label for="my-input">PRésentation société
                         </label>
                         <textarea name="" placeholder="Description de la société (max 150 mots)..." class="form-control desc"
-                            cols="25" rows="8">{{ $user->desc_Activity }}
-                            </textarea>
+                            cols="25" rows="8">{{ $user->desc_Activity }}</textarea>
                     </div>
                 </div>
                 <div class="container" style="max-width: 100% !important">
@@ -378,6 +378,7 @@
             console.log();
             var city = document.querySelector("#city").value;
             var tele = document.querySelector(".tele").value;
+            var areaCode = document.querySelector(".areaCode").value;
             var desc = document.querySelector(".desc").value;
             var rc = document.querySelector(".rc").value;
             var companyName = document.querySelector(".companyName").value;
@@ -390,6 +391,7 @@
             formData.append('country', country);
             formData.append('city', city);
             formData.append('tele', tele);
+            formData.append('areaCode', areaCode);
             formData.append('desc', desc);
             formData.append('rc', rc);
             formData.append('companyName', companyName);
@@ -406,7 +408,8 @@
                 processData: false, // Important! To prevent jQuery from processing the FormData
                 contentType: false, // Important! To prevent jQuery from setting the Content-Type header
                 success: function(response) {
-                    // Handle the response from the server
+                   window.location.href = '{{ route('update-profile-infos') }}';
+
                 },
                 error: function(error) {
                     // Handle the error (if any)

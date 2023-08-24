@@ -1,7 +1,8 @@
 <?php
 
-namespace Chatify\Http\Controllers;
+namespace App\Http\Controllers\vendor\Chatify;
 
+use App\Events\MessageEvent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -148,7 +149,8 @@ class MessagesController extends Controller
                 ]);
             }
         }
-
+        $message = "New message";
+        event(new MessageEvent($message));
         // send the response
         return Response::json([
             'status' => '200',

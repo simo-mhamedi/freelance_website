@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SampleEmail;
 use App\Models\Categorie;
 use App\Models\Estimate;
 use App\Models\Request as ModelsRequest;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use JetBrains\PhpStorm\Internal\ReturnTypeContract;
 
 class baseApp extends Controller
@@ -27,6 +29,14 @@ class baseApp extends Controller
     public function index()
     {
         return view('home.home');
+    }
+    public function checkunseenMessage()
+    {
+        $unseenMessage = DB::table('ch_messages')
+            ->where('to_id', '=', Auth::user()->id)
+            ->where('seen', 0)
+            ->count();
+        return response()->json(['unseenMessage' => $unseenMessage]);
     }
     // dashboard actions
     public function dashboard()
@@ -51,5 +61,23 @@ class baseApp extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
         return view('base.dashboard.dashboard', compact('user_historique', 'consum_estimate', 'estimate_send', 'estimate_recus', 'allEstimates', 'lastsEstimates'));
+    }
+    public function sendEmail(Request $request)
+    {
+        $validatedData = $request->validate([
+            'recipient' => 'required|email',
+            'subject' => 'required',
+            'message' => 'required',
+        ]);
+
+        $recipientEmail = $request->input('recipient');
+        $subject = $request->input('subject');
+        $message = $request->input('message');
+        // Send the email using the Mailable class
+        $mail = new SampleEmail($subject, $message);
+        Mail::to($recipientEmail)->send($mail);
+        return redirect()
+            ->back()
+            ->with('success', 'Email sent successfully!');
     }
 }

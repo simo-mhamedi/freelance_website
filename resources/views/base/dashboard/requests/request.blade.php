@@ -66,6 +66,7 @@ background: #108A00;"
                     <th scope="col">titre DEMANDE</th>
                     <th scope="col">Date d’aCTIvation</th>
                     <th scope="col">DEVIS</th>
+                    <th scope="col">VUE</th>
                     <th scope="col">MODIFIER</th>
                     <th scope="col">SUPP</th>
                     <th scope="col">voir</th>
@@ -80,6 +81,7 @@ background: #108A00;"
                         <td>{{ $request_recu->title }}</td>
                         <td>{{ $request_recu->date_request }}</td>
                         <td>{{ $request_recu->estimates_count }}</td>
+                        <td>{{ $request_recu->viewsNumber }}</td>
                         <td>
                             <form style="margin: 0" method="GET" action="{{route('update-request-view')}}"  >
                                 @csrf

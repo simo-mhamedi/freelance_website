@@ -76,3 +76,7 @@ Route::post('/update-profile-infos-process',[UserController::class,'updateprofil
 Route::get('/main-search',[UserController::class,'searchMain'])->name('main-search');
 Route::post('/main-search-proc',[UserController::class,'searchMainProc'])->name('main-search-proc');
 Route::post('/offre-infos',[UserController::class,'offreInfos'])->name('offre-infos');
+Route::post('/add-devis',[EstimateController::class,'addEstimate'])->name('add-devis');
+Route::get('/checkunseenMessage',[baseApp::class,'checkunseenMessage'])->name('checkunseenMessage');
+Route::get('/getunseenMessage',[baseApp::class,'checkunseenMessage'])->name('getunseenMessage');
+Route::post('/send_email',[baseApp::class,'sendEmail'])->name('send_email');

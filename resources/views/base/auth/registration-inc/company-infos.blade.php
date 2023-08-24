@@ -47,6 +47,7 @@
         </div>
         <br>
         <div class="input_container">
+            <input type="hidden" name="areaCode" value="+44" class="areaCode">
             <div class="select-box">
                 <div class="selected-option">
                     <div>

@@ -70,45 +70,43 @@ class EstimateCrudController extends CrudController
             return Request::pluck('title', 'id')->toArray();
         };
 
-  
+
         CRUD::addField([
-    'name' => 'request_id',
-    'label' => 'Request',
-    'type' => 'enum',
-    'options' => $options(),
-    'allows_null' => true,
-    'rules' => ['required'],
-]);
+            'name' => 'request_id',
+            'label' => 'Demande',
+            'type' => 'enum',
+            'options' => $options(),
+            'allows_null' => true,
+            'rules' => ['required'],
+        ]);
 
         CRUD::addField([
             'name' => 'freelancer_id',
-            'label' => 'freelancer',
+            'label' => 'Freelancer',
             'type' => 'enum',
             'options' => $this->getAllUsers(),
             'rules' => 'required',
         ]);
+
         CRUD::addField([
             'name' => 'client_id',
-            'label' => 'client',
+            'label' => 'Client',
             'type' => 'enum',
             'options' => $this->getAllUsers(),
             'rules' => 'required',
         ]);
-        CRUD::field('estimate_date')->validationRules('required');
-        CRUD::field('rating')->validationRules('required');
-        CRUD::addField([   // Upload
-            'name'      => 'file',
-            'label'     => 'File',
-            'type'      => 'upload',
-            'upload'    => true,
-            'disk'    => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
-            // optional:
+
+        CRUD::field('estimate_date')->label('Date d\'estimation')->validationRules('required');
+        CRUD::field('rating')->label('Évaluation')->validationRules('required');
+
+        CRUD::addField([
+            'name' => 'file',
+            'label' => 'Fichier',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public',
         ]);
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
+
     }
     protected function getAllUsers()
     {
@@ -132,30 +130,39 @@ class EstimateCrudController extends CrudController
         $users = User::pluck('email', 'id')->toArray();
         $estimate = Estimate::find($currentId);
         $requests =$this->getAllRequests();
-        CRUD::field('reference');
-        CRUD::field('request_id');
+        CRUD::field('reference')->label('Référence');
+        CRUD::field('request_id')->label('ID de demande');
         CRUD::addField([
             'name' => 'request_id',
-            'label' => 'user',
+            'label' => 'Demande',
             'type' => 'enum',
             'options' => $requests,
             'default' => $estimate->request_id,
         ]);
         CRUD::addField([
-            'name' => 'user_id',
-            'label' => 'user',
+            'name' => 'freelancer_id',
+            'label' => 'Freelancer',
             'type' => 'enum',
-            'options' => $users,
-            'default' => $estimate->user_id,
+            'options' => $this->getAllUsers(),
+            'rules' => 'required',
         ]);
-        CRUD::field('estimate_date');
-        CRUD::field('rating');
-        CRUD::addField([   // Upload
-            'name'      => 'file',
-            'label'     => 'File',
-            'type'      => 'upload',
-            'upload'    => true,
-            'disk'    => 'public', // if you store files in the /public folder, please omit this; if you store them in /storage or S3, please specify it;
-            // optional:
-        ]);    }
+
+        CRUD::addField([
+            'name' => 'client_id',
+            'label' => 'Client',
+            'type' => 'enum',
+            'options' => $this->getAllUsers(),
+            'rules' => 'required',
+        ]);
+        CRUD::field('estimate_date')->label('Date d\'estimation');
+        CRUD::field('rating')->label('Évaluation');
+
+        CRUD::addField([
+            'name' => 'file',
+            'label' => 'Fichier',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public',
+        ]);
+    }
 }

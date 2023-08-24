@@ -62,15 +62,15 @@
 
     .rubber-ipt {
         width: 200px;
-        height: 2px;
+        height: 8px;
         background-color: #ddd;
         position: relative;
     }
 
     .rubber-ipt-range {
         width: 200px;
-        height: 2px;
-        background-color: var(--main-dark);
+        height: 8px;
+        background-color: #00A453;
         position: relative;
     }
 
@@ -86,12 +86,12 @@
     }
 
     .rubber-ipt-min {
-        transform: translate(-9px, -9px);
+        transform: translate(-9px, -11px);
         left: 0;
     }
 
     .rubber-ipt-max {
-        transform: translate(191px, -9px);
+        transform: translate(191px, -11px);
         left: 0;
     }
 
@@ -388,12 +388,42 @@
         justify-content: center;
     }
 
+    .form-check {
+        display: flex !important;
+        gap: 14px !important;
+    }
+
+    .cat-name {
+        color: #001E00;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 21.76px;
+        /* 108.8% */
+        text-transform: uppercase;
+    }
+
+    input[type="checkbox"] {
+        border-radius: 2px !important;
+    }
+
+    input[type="checkbox"]:enabled:checked {
+        background-color: #002B4E !important;
+        color: white;
+    }
+
     .input-as-text {
-        border: none;
-        background-color: transparent;
-        font-size: 16px;
-        padding: 0;
-        outline: none;
+        width: 35% !important;
+        border-radius: 14px;
+        background: #00A453;
+        color: #FFF;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 21.76px;
+        /* 120.889% */
+        text-transform: uppercase;
+        text-align: center
     }
 </style>
 @section('content')
@@ -462,7 +492,7 @@ background: #108A00;"
 
                                         </defs>
                                     </svg>&ensp;
-                                    <span>{{ $categorie->categoryName }}</span>
+                                    <span class="cat-name">{{ $categorie->categoryName }}</span>
 
                                 </button>
                             </h2>
@@ -500,8 +530,8 @@ background: #108A00;"
                 ">CLEAR</a>
                 </div>
                 <div class="country-inputs">
-                    <input type="text" class="form-control country" name="country" placeholder="country">
-                    <input type="text" class="form-control city" name="city" placeholder="city">
+                    <input type="text" class="form-control country" value="{{ isset($data['country']) ? $data['country'] : '' }}" name="country" placeholder="country">
+                    <input type="text" class="form-control city" value="{{ isset($data['city']) ? $data['city'] : '' }}" name="city" placeholder="city">
                 </div>
                 <div class="clear-cat-section">
                     <div class="category-title">
@@ -527,8 +557,8 @@ background: #108A00;"
                                     <div class="rubber-ipt-max"></div>
 
                                     <div class="w-100 flex jcsb mt-s">
-                                        <input class="rubber-value-min input-as-text" name="minPrice" value="10">
-                                        <input class="rubber-value-max input-as-text" name="maxPrice" value="100">
+                                        <input class="rubber-value-min input-as-text" name="minPrice" value="2500">
+                                        <input class="rubber-value-max input-as-text" name="maxPrice" value="5000">
                                     </div>
                                 </div>
                             </div>
@@ -582,7 +612,7 @@ background: #108A00;"
                             {{ $request->description }}
                         </div>
                         <div class="devis-content">
-                            Vue: 12 | devis: {{ $request->estimates->count() }}
+                            Vue: {{ $request->viewsNumber }} | devis: {{ $request->estimates->count() }}
                         </div>
                     </div>
                     <div class="categorys-info">
@@ -620,7 +650,7 @@ background: #108A00;"
             resultCard.addEventListener('click', function() {
                 // Get the custom data attribute 'data-request' value
                 const requestDataString = resultCard.getAttribute('data-request');
-                document.getElementById('htr').value=requestDataString;
+                document.getElementById('htr').value = requestDataString;
 
 
                 // Perform your logic using the 'requestId'
@@ -647,12 +677,15 @@ background: #108A00;"
         document.querySelector('.clear').addEventListener('click', function(event) {
             document.querySelectorAll(".check").forEach(element => {
                 element.checked = false;
+                localStorage.removeItem(element.id);
+
             });
         })
 
         document.querySelector('.clear-loc').addEventListener('click', function(event) {
             document.querySelector(".country").value = "";
             document.querySelector(".city").value = "";
+
         })
 
 
@@ -678,8 +711,8 @@ background: #108A00;"
                 // Reset the minPrice and maxPrice values
                 const minPrice = rubberIpts[i].querySelector(".rubber-value-min");
                 const maxPrice = rubberIpts[i].querySelector(".rubber-value-max");
-                minPrice.innerHTML = "10";
-                maxPrice.innerHTML = "1000";
+                minPrice.value = "10";
+                maxPrice.value = "1000";
             }
         })
 

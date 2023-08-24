@@ -67,18 +67,20 @@ class UserCategorieCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'user_id',
-            'label' => 'user',
+            'label' => 'Utilisateur',
             'type' => 'enum',
             'options' => $this->getAllUsers(),
             'rules' => 'required',
         ]);
+
         CRUD::addField([
             'name' => 'sub_category_id',
-            'label' => 'sub categorys',
+            'label' => 'Sous-catégories',
             'type' => 'enum',
             'options' => $this->getAllRequests(),
             'rules' => 'required',
         ]);
+
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
@@ -108,19 +110,21 @@ class UserCategorieCrudController extends CrudController
         $userCategory = User_categorie::find($currentId);
         CRUD::addField([
             'name' => 'user_id',
-            'label' => 'user',
+            'label' => 'Utilisateur',
             'type' => 'enum',
             'options' => $this->getAllUsers(),
             'rules' => 'required',
             'default' => $userCategory->user_id,
         ]);
+
         CRUD::addField([
             'name' => 'sub_category_id',
-            'label' => 'sub categorys',
+            'label' => 'Sous-catégories',
             'type' => 'enum',
             'options' => $this->getAllRequests(),
             'rules' => 'required',
             'default' => $userCategory->sub_category_id,
         ]);
+
     }
 }

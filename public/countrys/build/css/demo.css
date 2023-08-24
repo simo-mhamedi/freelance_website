@@ -52,16 +52,15 @@ input, select {
 
 button {
 	color: #FFF;
-	background-color: #428BCA;
-	border: 1px solid #357EBD; }
-	button:hover {
-		background-color: #3276B1;
-		border-color: #285E8E;
-		cursor: pointer; }
+	background-color: transparent;
+	border: none;
+	color:black;
+    font-weight: bold;
+    font-size: 14px !important;
+    }
 
 #result {
 	margin-bottom: 100px; }
 
 
 
-  

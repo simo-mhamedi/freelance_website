@@ -70,20 +70,23 @@ class UserMembershipCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'membership_id',
-            'label' => 'membership',
+            'label' => 'Adhésion',
             'type' => 'enum',
             'options' => $this->getAllMemberships(),
             'rules' => 'required',
         ]);
+
         CRUD::addField([
             'name' => 'user_id',
-            'label' => 'user',
+            'label' => 'Utilisateur',
             'type' => 'enum',
             'options' => $this->getAllUsers(),
             'rules' => 'required',
         ]);
-        CRUD::field('estimates_restNumber');
-        CRUD::field('estimates_number');
+
+        CRUD::field('estimates_restNumber')->label('Nombre d\'estimations restantes');
+        CRUD::field('estimates_number')->label('Nombre d\'estimations');
+
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
