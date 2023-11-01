@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\articles;
 use App\Models\Categorie;
 use App\Models\Estimate;
 use App\Models\Request as ModelsRequest;
 use App\Models\Request_sub_categorie;
+use App\Models\security_processes;
 use App\Models\SubCategorie;
 use App\Models\User;
 use App\Models\UserCategorie;
@@ -22,6 +24,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use JetBrains\PhpStorm\Internal\ReturnTypeContract;
+use Carbon\Carbon;
+use Smalot\PdfParser\Parser;
+use thiagoalessio\TesseractOCR\TesseractOCR;
 
 class UserController extends Controller
 {
@@ -61,13 +66,23 @@ class UserController extends Controller
     public function updateprofileInfosProcess(Request $request)
     {
         $user = User::find(auth()->id());
-
         if ($request->photo != 'undefined') {
             $photo = $request->file('photo');
             $fileName = time() . '_' . $photo->getClientOriginalName();
             $photo = $request->file('photo');
             $photo->storeAs('users-avatar', $fileName, 'public');
             $user->avatar = $fileName;
+        }
+        if ($request->fileCompany != 'undefined') {
+            $fileCompany = $request->file('fileCompany');
+            $check=$this->extractTextimg($fileCompany);
+            if($check)
+            {
+                $user->isVerified=true;
+            }
+            else{
+                $user->isVerified=false;
+            }
         }
         $user->name = $request->name;
         $user->email = $request->mail;
@@ -87,6 +102,21 @@ class UserController extends Controller
             $userCategorie->save();
         }
     }
+    public function extractTextimg($imageFile)
+    {
+        $words = security_processes::all();
+        $text = (new TesseractOCR($imageFile))->run();
+        $text = strtolower($text);
+        $foundWord = false;
+        foreach ($words as $word) {
+            $word = strtolower($word->rcCompany);
+            if (strpos($text, $word) !== false) {
+                $foundWord = true;
+                break;
+            }
+        }
+        return  $foundWord;
+    }
     private function getSubCategorieById($id)
     {
         return SubCategorie::find($id);
@@ -100,7 +130,12 @@ class UserController extends Controller
             ->take(7)
             ->get();
         $totale = $requests->count();
-
+        $requests->transform(function ($request) {
+            $creationDate = Carbon::parse($request->created_at);
+            $request->hoursDifference = now()->diffInHours($creationDate);
+            $request->minutesDifference = now()->diffInMinutes($creationDate);
+            return $request;
+        });
         return view('base.search.main-search', compact('categories', 'subCagories', 'requests', 'totale'));
     }
 
@@ -147,7 +182,7 @@ class UserController extends Controller
         }
         // Filter by user's attributes (country, city, searchKey)
         if (!empty($country) || !empty($city) || !empty($searchKey)) {
-            $requests =  $requests->filter(function ($request) use ($country, $city, $searchKey) {
+            $requests = $requests->filter(function ($request) use ($country, $city, $searchKey) {
                 $user = User::where('id', $request->user_id);
 
                 if (!empty($country)) {
@@ -175,11 +210,13 @@ class UserController extends Controller
     public function offreInfos(Request $req)
     {
         $request = json_decode($req['req']);
-        $requestUpdate = ModelsRequest::where("id",$request->id)->get()->first();
-        $requestUpdate->viewsNumber=$requestUpdate->viewsNumber+1;
+        $requestUpdate = ModelsRequest::where('id', $request->id)
+            ->get()
+            ->first();
+        $requestUpdate->viewsNumber = $requestUpdate->viewsNumber + 1;
         $requestUpdate->save();
-        $ratings=$request->user->userratings;
-        $request->viewsNumber=$requestUpdate->viewsNumber;
+        $ratings = $request->user->userratings;
+        $request->viewsNumber = $requestUpdate->viewsNumber;
         // Calculate the total sum of ratings
         $totalRatings = count($ratings);
         $sumRatings = 0;
@@ -194,6 +231,8 @@ class UserController extends Controller
 
         $estimatesCount = is_array($request->estimates) ? count($request->estimates) : 0;
         $subCategories = $request->sub_categorie;
-        return view('base.search.offre-infos', compact('request', 'estimatesCount', 'subCategories',"roundedAverageRating","estimates"));
+        $article = articles::where('request_id', $requestUpdate->id)->get();
+
+        return view('base.search.offre-infos', compact('request', 'estimatesCount', 'subCategories', 'roundedAverageRating', 'estimates','article'));
     }
 }

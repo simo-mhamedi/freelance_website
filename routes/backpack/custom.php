@@ -25,4 +25,5 @@ Route::group([
     Route::get('charts/weekly-users', 'Charts\WeeklyUsersChartController@response')->name('charts.weekly-users.index');
     Route::crud('membership', 'MembershipCrudController');
     Route::crud('user-membership', 'UserMembershipCrudController');
+    Route::crud('security-processes', 'SecurityProcessesCrudController');
 });

@@ -24,6 +24,8 @@ return new class extends Migration
             $table->integer("viewsNumber");
             $table->unsignedBigInteger('user_id')->notNull();
             $table->timestamps();
+            $table->boolean('national')->default(false);
+            $table->boolean('isInterNational')->default(false);
             $table->foreign('user_id')
             ->references('id')->on('users')->onDelete('cascade');
         });

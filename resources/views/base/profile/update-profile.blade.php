@@ -168,7 +168,16 @@
                     </div>
                 </div>
                 <br>
+                <div class="company-infos">
+                    <div class="av-update-btn">
+                        <label for="readUrl" class="btn btn-success custom-file-button">
+                            upload company file to verified your account
+                        </label>
+                        <input class="hidden-input fileCompany " type="file" id="readUrl" (change)="onFileSelected($event)">
+                    </div>
+                </div>
             </div>
+
             <div class="company-infos">
                 <div class="av-update-btn">
                     <label for="readUrl" class="btn btn-success custom-file-button">
@@ -383,6 +392,7 @@
             var rc = document.querySelector(".rc").value;
             var companyName = document.querySelector(".companyName").value;
             var photoInput = document.querySelector(".photo");
+            var fileCompany = document.querySelector(".fileCompany");
 
             var formData = new FormData();
             formData.append('name', name);
@@ -396,6 +406,7 @@
             formData.append('rc', rc);
             formData.append('companyName', companyName);
             formData.append('photo', photoInput.files[0]);
+            formData.append('fileCompany', fileCompany.files[0]);
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

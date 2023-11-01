@@ -50,9 +50,12 @@ class User extends Authenticatable
         'country',
         'role',
         'tele',
+        'email2',
+        'email3',
         'desc_Activity',
         'has_Membership',
         'membership_id',
+        'isVerified',
     ];
 
     /**

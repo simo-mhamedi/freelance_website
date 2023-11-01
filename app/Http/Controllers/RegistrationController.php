@@ -10,6 +10,7 @@ use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use thiagoalessio\TesseractOCR\TesseractOCR;
 
 class RegistrationController extends Controller
 {
@@ -33,9 +34,8 @@ class RegistrationController extends Controller
     }
     public function toUserCategoryInfos(Request $request)
     {
-
         $data = $request->session()->get('firstPageData');
-        $data += $request->only(['societeName', 'companyRepresentative', 'rsSociete', 'city', 'country', 'areaCode','tel']);
+        $data += $request->only(['societeName', 'companyRepresentative', 'rsSociete', 'city', 'country','email1','email2', 'areaCode','tel']);
         $request->session()->put('firstPageData', $data);
         return redirect('/user-category-infos');
     }
@@ -56,6 +56,8 @@ class RegistrationController extends Controller
             }
             $user = new User();
             $user->email = $data['email'];
+            $user->email2 = $data['email1'];
+            $user->email3 = $data['email2'];
             $user->password = bcrypt($data['password']);
             $user->companyName = $data['societeName'];
             $user->companyRepresentative = $data['companyRepresentative'];
@@ -132,4 +134,6 @@ class RegistrationController extends Controller
                 ->withErrors(['error' => 'Invalid credentials']);
         }
     }
+
+
 }

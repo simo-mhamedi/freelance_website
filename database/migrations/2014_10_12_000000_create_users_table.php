@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('email')->nullable();
+            $table->string('email2')->nullable();
+            $table->string('email3')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('name')->nullable();
@@ -27,6 +29,7 @@ return new class extends Migration
             $table->string("tele")->nullable();
             $table->string("areaCode")->nullable();
             $table->boolean("has_Membership")->default(false);
+            $table->boolean("isVerified")->default(false);
             $table->string("desc_Activity")->nullable();
             $table->unsignedBigInteger('membership_id')->nullable();
             $table->foreign('membership_id')

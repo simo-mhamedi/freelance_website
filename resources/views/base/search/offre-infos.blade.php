@@ -1,665 +1,558 @@
 @extends('base.index')
+
+<head>
+    <!-- Include necessary CSS and JavaScript libraries (e.g., Bootstrap and jQuery) -->
+
+    <script>
+
+        // Function to add a new row to the table
+        function addRow() {
+            var article = document.getElementById("articleInput").value;
+            var description = document.getElementById("descriptionInput").value;
+            var quantity = document.getElementById("quantityInput").value;
+            var secteurDac = document.getElementById("secteurDacInput").value;
+            var lieuDeLivraison = document.getElementById("lieuDeLivraisonInput").value;
+
+            // Create a new row and populate it with the input values
+            var table = document.getElementById("dataTable");
+            var newRow = table.insertRow(-1);
+
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+            var cell6 = newRow.insertCell(5);
+
+            cell1.innerHTML = article;
+            cell2.innerHTML = description;
+            cell3.innerHTML = quantity;
+            cell4.innerHTML = secteurDac;
+            cell5.innerHTML = lieuDeLivraison;
+
+            // Add "Delete" and "Edit" buttons to the new row
+            cell6.innerHTML = '<button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>' +
+                             '<button class="btn btn-primary" onclick="editRow(this)">Edit</button>';
+
+            // Clear the input fields
+            document.getElementById("articleInput").value = '';
+            document.getElementById("descriptionInput").value = '';
+            document.getElementById("quantityInput").value = '';
+            document.getElementById("secteurDacInput").value = '';
+            document.getElementById("lieuDeLivraisonInput").value = '';
+
+        }
+
+        // Function to delete a row
+        function deleteRow(row) {
+            var i = row.parentNode.parentNode.rowIndex;
+            document.getElementById("dataTable").deleteRow(i);
+        }
+
+        // Function to populate the modal for updating a row
+        function editRow(row) {
+            $('#editModal').modal('show');
+            var i = row.parentNode.parentNode.rowIndex;
+            var table = document.getElementById("dataTable");
+            var cells = table.rows[i].cells;
+            var article = cells[0].innerHTML;
+            var description = cells[1].innerHTML;
+            var quantity = cells[2].innerHTML;
+            var secteurDac = cells[3].innerHTML;
+            var lieuDeLivraison = cells[4].innerHTML;
+
+            // Populate the modal fields with the row data
+            document.getElementById("editArticleInput").value = article;
+            document.getElementById("editDescriptionInput").value = description;
+            document.getElementById("editQuantityInput").value = quantity;
+            document.getElementById("editSecteurDacInput").value = secteurDac;
+            document.getElementById("editLieuDeLivraisonInput").value = lieuDeLivraison;
+            document.getElementById("editRowIdx").value = i;
+
+            // Show the modal for editing
+        }
+
+        // Function to save the updated row
+        function saveRow() {
+            // Get input values from the edit modal
+            var article = document.getElementById("editArticleInput").value;
+            var description = document.getElementById("editDescriptionInput").value;
+            var quantity = document.getElementById("editQuantityInput").value;
+            var secteurDac = document.getElementById("editSecteurDacInput").value;
+            var lieuDeLivraison = document.getElementById("editLieuDeLivraisonInput").value;
+
+            // Update the row with the new values
+            var i = $('#editRowIdx').val();
+            var table = document.getElementById("dataTable");
+            var cells = table.rows[i].cells;
+            cells[0].innerHTML = article;
+            cells[1].innerHTML = description;
+            cells[2].innerHTML = quantity;
+            cells[3].innerHTML = secteurDac;
+            cells[4].innerHTML = lieuDeLivraison;
+
+            // Hide the edit modal
+            $('#editModal').modal('hide');
+        }
+    </script>
+</head>
 <style>
-    .filter {
-        width: 337px;
-        border-radius: 18px;
-        border: 1px solid rgba(0, 0, 0, 0.60);
-        padding: 20px;
-        margin: 20px
-    }
-
-    .filter-title {
-        color: #000;
-        font-size: 26px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 83.692% */
-        text-transform: uppercase;
-        text-align: center
-    }
-
-    .category-title {
-        color: #000;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 108.8% */
-        text-transform: uppercase;
-    }
-
-    .clear-cat-section {
-        margin-top: 20px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between
-    }
-
-    .accordion-button:hover {
-        background: white !important;
-    }
-
-    .accordion-item {
-        margin-bottom: 10px !important;
-    }
-
-    .country-inputs {
+    .span {
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 5px
-    }
-
-    .city,
-    .country {
-        border-radius: 8px !important;
-        background-color: #F2F5F2 !important;
-    }
-
-    /*  ###  Rubberband range input   */
-
-    .rubber-ipt {
-        width: 200px;
-        height: 2px;
-        background-color: #ddd;
-        position: relative;
-    }
-
-    .rubber-ipt-range {
-        width: 200px;
-        height: 2px;
-        background-color: var(--main-dark);
-        position: relative;
-    }
-
-    .rubber-ipt-min,
-    .rubber-ipt-max {
-        height: 16px;
-        width: 16px;
-        border-radius: 50%;
-        position: absolute;
-
-        background-color: #fff;
-        border: 1px solid var(--main-dark);
-    }
-
-    .rubber-ipt-min {
-        transform: translate(-9px, -9px);
-        left: 0;
-    }
-
-    .rubber-ipt-max {
-        transform: translate(191px, -9px);
-        left: 0;
-    }
-
-    .rubber-value-min {
-        top: 10px;
-        transform: translateX(-10px);
-    }
-
-    .rubber-value-max {
-        top: 10px;
-        right: 0;
-        transform: translateX(10px);
-    }
-
-    /* #########  Styling */
-
-
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    p {
-        margin: 0;
-        padding: 0;
-    }
-
-    a,
-    a:hover {
-        text-decoration: none;
-        color: #000;
-    }
-
-    :root {
-        --main-lighter: #f0fffb;
-        --main-light: #a9f3f9;
-        --main-sublight: #bffaff;
-        --main: #00e1da;
-        --main-dark: #00b7b4;
-        --main-darker: #003f3c;
-    }
-
-    body {
-        font-family: Verdana, Geneva, sans-serif;
-    }
-
-    h5 {
-        font-size: 24px;
-        color: var(--main-dark);
-        font-weight: 400;
-    }
-
-    .flex {
-        display: flex;
-    }
-
-    .f-wrap {
-        flex-wrap: wrap;
-    }
-
-    .jcsb {
         justify-content: space-between;
+        gap: 20px;
     }
 
-    .jcsa {
-        justify-content: space-around;
+    .range-slider {
+        width: 100%;
+        margin: auto;
+        text-align: center;
+        position: relative;
+        height: 6em;
     }
 
-    .jcc {
-        justify-content: center;
+    .range-slider svg,
+    .range-slider input[type=range] {
+        position: absolute;
+        left: 0;
+        bottom: 0;
     }
 
-    .aifs {
-        align-items: flex-start;
+    input[type=number] {
+        border: 1px solid #ddd;
+        text-align: center;
+        font-size: 1.6em;
+        -moz-appearance: textfield;
     }
 
-    .aic {
-        align-items: center;
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
     }
 
-    .w-100 {
+    input[type=number]:invalid,
+    input[type=number]:out-of-range {
+        border: 2px solid #ff6347;
+    }
+
+    input[type=range] {
+        -webkit-appearance: none;
         width: 100%;
     }
 
-    .m-m {
-        margin: 20px;
-    }
-
-    .mb-m {
-        margin-bottom: 20px;
-    }
-
-    .mt-s {
-        margin-top: 10px;
-    }
-
-    .main-card {
-        max-width: 25%;
-        min-width: 300px;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .main-card-head {
-        background-color: var(--main-darker);
-        padding: 15px 30px;
-        border-radius: 10px 10px 0 0;
-    }
-
-    .cardhead-light {
-        background-color: var(--main-lighter);
-        border: 1px solid var(--main-dark);
-    }
-
-    .main-card-ctt {
-        padding: 20px 30px 30px;
-        background-color: #fff;
-    }
-
-    .result-card {
-        margin: 40px;
-        width: 981px;
-        height: 369px;
-        flex-shrink: 0;
-        border-radius: 18px;
-        border: 1px solid rgba(0, 0, 0, 0.60);
-        padding: 40px;
-    }
-
-    .main-section {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: flex-start;
-        gap: 30px;
-    }
-
-    .search-cards {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .req-title {
-        color: #71A5D2;
-        font-size: 26px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 83.692% */
-        text-transform: uppercase;
-    }
-
-    .time-post {
-        color: #BC5118;
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 145.067% */
-        text-transform: uppercase;
-    }
-
-    .card-titles {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .req-infos {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 50px;
-        padding-left: 20px;
-        margin: 20px;
-    }
-
-    .infos-sts {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-    }
-
-    .loc {
-        color: rgba(0, 0, 0, 0.60);
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 145.067% */
-        text-transform: uppercase;
-    }
-
-    .date {
-        color: rgba(0, 0, 0, 0.60);
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 145.067% */
-        text-transform: uppercase;
-    }
-
-    .statu-req {
-        border-radius: 20px;
-        background: #00A453;
-        width: 115px;
-        height: 45px;
-        flex-shrink: 0;
-        color: white;
-        text-align: center;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .name-company {
-        color: rgba(0, 0, 0, 0.60);
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 145.067% */
-        text-transform: uppercase;
-    }
-
-    .company-desc {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .desc-content {
-        color: #000;
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 145.067% */
-        text-transform: uppercase;
-    }
-
-    .devis-content {
-        color: rgba(0, 0, 0, 0.60);
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 145.067% */
-        text-transform: uppercase;
-    }
-
-    .categorys-info {
-        margin: 20px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .list-categorys {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-    }
-
-    .category {
-        width: 131px;
-        height: 45px;
-        flex-shrink: 0;
-        border-radius: 14px;
-        background: #F2F5F2;
-        color: rgba(0, 0, 0, 0.60);
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 145.067% */
-        text-transform: uppercase;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .input-as-text {
-        border: none;
-        background-color: transparent;
-        font-size: 16px;
-        padding: 0;
+    input[type=range]:focus {
         outline: none;
     }
 
-    .action-offre {
+    input[type=range]:focus::-webkit-slider-runnable-track {
+        background: green;
+    }
+
+    input[type=range]:focus::-ms-fill-lower {
+        background: green;
+    }
+
+    input[type=range]:focus::-ms-fill-upper {
+        background: green;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        animate: 0.2s;
+        background: green;
+        border-radius: 1px;
+        box-shadow: none;
+        border: 0;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        z-index: 2;
+        position: relative;
+        box-shadow: 0px 0px 0px #000;
+        border: 1px solid green;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #a1d0ff;
+        cursor: pointer;
+        -webkit-appearance: none;
+        margin-top: -7px;
+    }
+
+    input[type=range]::-moz-range-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        animate: 0.2s;
+        background: green;
+        border-radius: 1px;
+        box-shadow: none;
+        border: 0;
+    }
+
+    input[type=range]::-moz-range-thumb {
+        z-index: 2;
+        position: relative;
+        box-shadow: 0px 0px 0px #000;
+        border: 1px solid #green;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #a1d0ff;
+        cursor: pointer;
+    }
+
+    input[type=range]::-ms-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        animate: 0.2s;
+        background: transparent;
+        border-color: transparent;
+        color: transparent;
+    }
+
+    input[type=range]::-ms-fill-lower,
+    input[type=range]::-ms-fill-upper {
+        background: green;
+        border-radius: 1px;
+        box-shadow: none;
+        border: 0;
+    }
+
+    input[type=range]::-ms-thumb {
+        z-index: 2;
+        position: relative;
+        box-shadow: 0px 0px 0px #000;
+        border: 1px solid green;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #a1d0ff;
+        cursor: pointer;
+    }
+    th{
+        background-color: green !important;
+        color: white;
+    }
+
+    .range-slider {
+        display: none;
+        /* Initially hide the range slider */
+    }
+    .modal-dialog
+    .form-group{
+        width: 100%;
+    }
+    .loca-infos{
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: left !important;
+        gap: 20px !important;
+    }
+    .location{
+        align-self: normal;
+    }
+    .header{
         display: flex;
         flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        margin-bottom: 20px;
+        align-content: center;
+        justify-content: space-between;
+        gap: 100px;
     }
-
-    .action-offre button {
-        border-radius: 14px !important;
+    .header span{
+        font-weight: bold
     }
-
-    .left-side {
+    .header div{
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        gap: 20px;
-        padding: 20px;
-        margin-top: 40px;
-        width: 330px;
-        height: 613px;
-        flex-shrink: 0;
-        border-radius: 18px;
-        border: 1px solid rgba(0, 0, 0, 0.60);
-    }
-
-    .left-side-title {
-        color: #000;
-        font-size: 26px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 83.692% */
-        text-transform: uppercase;
-    }
-
-    .user-infos {
-        color: #000;
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 21.76px;
-        /* 145.067% */
-        text-transform: uppercase;
-    }
-
-    .statu-req {
-        border-radius: 20px;
-        background: #00A453;
-        width: 80px;
-        height: 45px;
-        flex-shrink: 0;
-        color: white;
-        text-align: center;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
         justify-content: center;
-    }
-
-    .statu-info {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 20px;
-        justify-content: space-between
-    }
-
-    .av-update-btn .btn-success {
-        background: #0d6efd !important;
-        color: white !important;
-        border-color: #0d6efd !important;
-        font-weight: bold;
-        border-radius: 10px;
-
-    }
-
-    .file-input__input {
-        width: 0.1px;
-        height: 0.1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: -1;
-    }
-
-    .file-input__label {
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: 600;
-        color: #fff;
-        font-size: 14px;
-        padding: 10px 12px;
-        background-color: #4245a8;
-        box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-    }
-
-    .file-input__label svg {
-        height: 16px;
-        margin-right: 4px;
+        gap: 5px;
+        font-weight: 100;
     }
 </style>
 @section('content')
-    <div class="backgroud-green" style="height: 280px !important;">
-        <p></p>
+    <div class="backgroud-green">
+        <p>deposer une nouvelle demande</p>
     </div>
-    <div class="main-section">
-        <div class="search-cards">
-            <div class="result-card">
-                <span class="req-title" style="color: black;">details de projet
-                </span>
-                <div class="card-titles">
-
-                    <span class="req-title"
-                        style="margin-top: 40px;margin-left:60px;margin-bottom:20px;">{{ $request->title }}
-                    </span>
-                </div>
-                <div class="descr" style="text-align: center;margin:10px;">
-                    {{ $request->description }}
-                </div>
-                <div class="action-offre">
-                    <a href="/messaging/{{ $request->user->id }}" class="btn btn-primary">envoyer message
-                    </a>
-                    <a class="btn btn-success" data-toggle="modal" data-target="#exampleModal">envoyez devis
-                    </a>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">veuillez importer votre DEVIS
-                                    </h5>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="hidden" name="clientId" class="clientId" value="{{ $request->user->id }}">
-                                    <input type="hidden" name="reqId" class="reqId" value="{{ $request->id }}">
-
-                                    <div class="file-input">
-                                        <input hidden type="file"  id="file-input"
-                                            class="file-input__input file" />
-                                        <label class="file-input__label" for="file-input">
-                                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="upload"
-                                                class="svg-inline--fa fa-upload fa-w-16" role="img"
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                <path fill="currentColor"
-                                                    d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z">
-                                                </path>
-                                            </svg>
-                                            <span>Upload file</span></label>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary next-btn">Save changes</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
-                        aria-labelledby="deleteModalLabel" aria-hidden="true">
-
-                    </div>
-                </div>
-                <div class="company-desc">
-
-                    <div class="desc-content">
-                        secteur demandé
-                    </div>
-                </div>
-                <div class="categorys-info">
-                    <div class="list-categorys">
-                        @foreach ($subCategories as $caregory)
-                            <div class="category">
-                                {{ $caregory->sub_categorie->subCategoryName }}
-                            </div>
-                        @endforeach
-
-                    </div>
-
-                </div>
-
-            </div>
+    <div class="form_container" style="
+position:absolute !important;
+top: 250px;
+    left: 30%;
+">
+        <div class="header">
+           <div class="date">
+            <span>DeadLine</span>
+            <span>{{ $request->date_deadline }}</span>
+           </div>
+           <div class="titre">
+            <span>Titre devis</span>
+            <span>{{ $request->title }}</span>
+           </div>
+           <div class="cpName">
+            <span>Nom socite</span>
+            <span>{{ $request->user->companyName }}</span>
         </div>
-        <div class="left-side">
-            <div class="left-side-title">
-                info société
             </div>
-            <div class="user-infos">
-                <div class="rep">{{ $request->user->companyRepresentative }}</div>
-                <div class="comp">({{ $request->user->companyName }})</div>
-            </div>
-            <div class="rating">
-                <div style="display: flex;align-items:center;">
-                    @if ($roundedAverageRating > 0)
-                        @for ($i = 0; $i < $roundedAverageRating; $i++)
-                            <span style="color: orange" class="fa fa-star checked"></span>
-                        @endfor
-                    @else
-                    @endif
+            <table class="table" id="dataTable">
+                <thead>
+                  <tr>
+                    <th scope="col">Artciale</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Secteur Dac</th>
+                    <th scope="col">Lieu de livraison</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($article as $item): ?>
+                    <tr>
+                      <td><?= $item->name ?></td>
+                      <td><?= $item->description ?></td>
+                      <td><?= $item->quantity ?></td>
+                      <td><?= $item->secteur ?></td>
+                      <td><?= $item->lieu ?></td>
+                    </tr>
+                  <?php endforeach; ?>
 
-                </div>
-            </div>
-            <div class="location">
-                {{ $request->user->country }}
-            </div>
-            <div class="statu-info">
-                <div class="label">Statut</div>
-                <div class="stat-value">
-                    <div class="statu-req">{{ $request->status }}</div>
-                </div>
-            </div>
-            <div class="dates">
-                <div class="exp">publié le {{ $request->date_request }}
-                </div>
-                <div class="crea">expire le : {{ $request->date_deadline }}
-                </div>
-            </div>
-            <div class="devis-infos">
-                Vue: {{ $request->viewsNumber }} | devis: {{ count($request->estimates) }}
-            </div>
-        </div>
+                </tbody>
+              </table>
+              <button style="width: 50%" title="Sign In" type="submit" class="sign-in_btn next-btn">
+                <span> Envoyer devis</span>
+            </button>
+          </div>
 
+      </div>
+            {{-- <div class="input_container">
+            <div class="form-group">
+                <label class="input_label" for="email_field">DESCRIPTIF DEMANDE</label>
+
+                <textarea required id="desc"
+                    style="background: #F2F5F2;
+                border-radius: 14px;
+                height: 309px;
+                "
+                    name="description" class="form-control description"
+                    placeholder="EX : nous cherchons un devis pour notre société pour 100 tonnes d’alliminium...(150 mots)
+                    "
+                    id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        </div> --}}
 
     </div>
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
 <script>
     addEventListener("DOMContentLoaded", (event) => {
-        document.querySelector('.next-btn').addEventListener('click', function(event) {
-            console.log("eee");
-            var clientId = document.querySelector(".clientId").value;
-            var reqId = document.querySelector(".reqId").value;
-            var fileInput = document.querySelector(".file");
+        // Function to add a new row to the table
 
-            var formData = new FormData();
-            formData.append('clientId', clientId);
-            formData.append('reqId', reqId);
-            formData.append('file', fileInput.files[0]);
+        document.querySelector("#show_range").onchange = () => {
+                var rangeSlider = document.querySelector('.range-slider');
+                var checkbox = document.querySelector('#show_range');
+
+                if (checkbox.checked) {
+                    rangeSlider.style.display = 'block'; // Show the range slider
+                } else {
+                    rangeSlider.style.display = 'none'; // Hide the range slider
+                }
+            }
+            (function() {
+                var parent = document.querySelector(".range-slider");
+                if (!parent) return;
+
+                var rangeS = parent.querySelectorAll("input[type=range]"),
+                    numberS = parent.querySelectorAll("input[type=number]");
+
+                rangeS.forEach(function(el) {
+                    el.oninput = function() {
+                        var slide1 = parseFloat(rangeS[0].value),
+                            slide2 = parseFloat(rangeS[1].value);
+
+                        if (slide1 > slide2) {
+                            [slide1, slide2] = [slide2, slide1];
+                            // var tmp = slide2;
+                            // slide2 = slide1;
+                            // slide1 = tmp;
+                        }
+
+                        numberS[0].value = slide1;
+                        numberS[1].value = slide2;
+                    };
+                });
+
+                numberS.forEach(function(el) {
+                    el.oninput = function() {
+                        var number1 = parseFloat(numberS[0].value),
+                            number2 = parseFloat(numberS[1].value);
+
+                        if (number1 > number2) {
+                            var tmp = number1;
+                            numberS[0].value = number2;
+                            numberS[1].value = tmp;
+                        }
+
+                        rangeS[0].value = number1;
+                        rangeS[1].value = number2;
+                    };
+                });
+            })();
+
+        $("form").on("change", ".file-upload-field", function() {
+            $(this).parent(".file-upload-wrapper").attr("data-text", $(this).val().replace(/.*(\/|\\)/,
+                ''));
+        });
+
+        const rangeInput = document.querySelectorAll(".range-input input"),
+            priceInput = document.querySelectorAll(".price-input input"),
+            range = document.querySelector(".slider .progress");
+        let priceGap = 1000;
+
+        priceInput.forEach((input) => {
+            input.addEventListener("input", (e) => {
+                let minPrice = parseInt(priceInput[0].value),
+                    maxPrice = parseInt(priceInput[1].value);
+
+                if (maxPrice - minPrice >= priceGap && maxPrice <= rangeInput[1].max) {
+                    if (e.target.className === "input-min") {
+                        rangeInput[0].value = minPrice;
+                        range.style.left = (minPrice / rangeInput[0].max) * 100 + "%";
+                    } else {
+                        rangeInput[1].value = maxPrice;
+                        range.style.right = 100 - (maxPrice / rangeInput[1].max) * 100 + "%";
+                    }
+                }
+            });
+        });
+
+        rangeInput.forEach((input) => {
+            input.addEventListener("input", (e) => {
+                let minVal = parseInt(rangeInput[0].value),
+                    maxVal = parseInt(rangeInput[1].value);
+
+                if (maxVal - minVal < priceGap) {
+                    if (e.target.className === "range-min") {
+                        rangeInput[0].value = maxVal - priceGap;
+                    } else {
+                        rangeInput[1].value = minVal + priceGap;
+                    }
+                } else {
+                    priceInput[0].value = minVal;
+                    priceInput[1].value = maxVal;
+                    range.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+                    range.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+                }
+            });
+        });
+        var count = 0;
+        var firstLists = document.querySelectorAll('#first-list');
+        Array.from(firstLists).forEach(function(firstList) {
+            firstList.addEventListener('click', function(event) {
+                var category = event.target;
+                if (category.id === "sub") {
+                    var categorySelector = '[data-category="' + category.dataset.category +
+                        '"]';
+                    var duplicateCategory = document.getElementById('second-list')
+                        .querySelector(categorySelector);
+
+                    if (!duplicateCategory && count < 5) {
+                        count++;
+                        // Clone the category and add it to the second list
+                        var clonedCategory = category.cloneNode(true);
+                        clonedCategory.className = "btn category-selected";
+                        var close = document.createElement('i');
+                        close.className = "fa fa-close close";
+                        clonedCategory.appendChild(close);
+                        console.log(clonedCategory);
+                        clonedCategory.id = 'sub-selected';
+                        document.getElementById('second-list').appendChild(clonedCategory);
+
+                    }
+                }
+            });
+        });
+        document.querySelector('.next-btn').addEventListener('click', function(event) {
+            var table = document.getElementById('dataTable');
+            // Get all the rows in the table body
+            var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            // Initialize an array to store the data
+            var data = [];
+            // Iterate through the rows and cells to collect the data
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName('td');
+                var rowData = [];
+
+                for (var j = 0; j < cells.length; j++) {
+                    rowData.push(cells[j].textContent.trim());
+                }
+
+                data.push(rowData);
+            }
+            var listItems = Array.from(document.querySelector('.myList').getElementsByTagName('li'));
+            var list = listItems.map(function(item) {
+                return item.value;
+            });
+
+            var jsonList = JSON.stringify(list);
+            var title = JSON.stringify(document.querySelector(".inp-title").value);
+            var date_deadline = JSON.stringify(document.querySelector(".date_deadline").value);
+            var interNational = JSON.stringify(document.querySelector("#international").checked);
+            var national = JSON.stringify(document.querySelector("#national").checked);
+            var input_min = null;
+            var input_max = null;
+            if (document.querySelector("#show_range").checked) {
+                input_min = JSON.stringify(document.querySelector(".input-min").value);
+                input_max = JSON.stringify(document
+                    .querySelector(".input-max").value);
+            }
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
             $.ajax({
-                url: '/add-devis',
+                url: '/save-new-request',
                 type: 'POST',
-                data: formData,
-                processData: false, // Important! To prevent jQuery from processing the FormData
-                contentType: false, // Important! To prevent jQuery from setting the Content-Type header
+                data: {
+                    interNational:interNational,
+                    national:national,
+                    articls:data,
+                    list: jsonList,
+                    title: title,
+                    date_deadline: date_deadline,
+                    input_min: input_min,
+                    input_max: input_max
+                },
                 success: function(response) {
                     // Handle the response from the server
+                    window.location.href = '{{ route('dashboard') }}';
                 },
-                error: function(error) {
-                    // Handle the error (if any)
+                error: function(xhr) {
+                    // // Handle any errors that occur during the request
+                    // Toastify({
+                    //     text: xhr.responseText,
+                    //     className: "errore",
+                    //     style: {
+                    //         background: "linear-gradient(to right, #df1b1b, #d62121)",
+                    //     }
+                    // }).showToast();
                 }
             });
         });
+
+        // Event listener for clicking on categories in the second list
+        document.getElementById('second-list').addEventListener('click', function(event) {
+            var category = event.target;
+            if (category.className == "fa fa-close close") {
+                category.parentElement.parentNode.removeChild(category.parentElement);
+            }
+            // Remove the category from the second list
+        });
     });
-    </script>
+</script>

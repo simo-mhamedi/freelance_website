@@ -16,7 +16,9 @@
         "mrclay/minify": "^3.0",
         "munafio/chatify": "^1.6",
         "nesbot/carbon": "^2.68",
-        "pusher/pusher-php-server": "^7.2"
+        "pusher/pusher-php-server": "^7.2",
+        "smalot/pdfparser": "^2.7",
+        "thiagoalessio/tesseract_ocr": "^2.12"
     },
     "require-dev": {
         "backpack/generators": "^3.3",

@@ -289,7 +289,7 @@
                 </div>
             </div>
             <div class="infos">
-                vue : 88 | devis : {{ $request->estimates_count }}
+                vue : {{ $request->viewsNumber }} | devis : {{ $request->estimates_count }}
             </div>
         </div>
     </div>

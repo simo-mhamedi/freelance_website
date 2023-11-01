@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\article;
+use App\Models\articles;
 use App\Models\Categorie;
 use App\Models\Estimate;
 use App\Models\Request as ModelsRequest;
@@ -78,9 +80,10 @@ class RequestController extends Controller
            $userCategorys = Request_sub_categorie::with('Sub_categorie')
                ->where('request_id', $request_recu->id)
                ->get();
+            $article = articles::where('request_id', $request_recu->id)->get();
            $categories = Categorie::all();
            $subCagories = SubCategorie::all();
-           return view('base.requests.update-request', compact('userCategorys', 'request_recu', 'categories', 'subCagories'));
+           return view('base.requests.update-request', compact('userCategorys', 'request_recu', 'categories', 'subCagories','article'));
        }
 
        public function deleteRequest($id)
@@ -100,8 +103,10 @@ class RequestController extends Controller
        }
        public function saveNewRequest(Request $request)
        {
+           $data = $request->articls; // Assuming $request->articls is the array you provided
            $title = trim($request->title, "\"");
-           $description = trim($request->description, "\"");
+           $interNational = trim($request->interNational, "\"");
+           $national = trim($request->national, "\"");
            $date_deadline = trim($request->date_deadline, "\"");
            $input_min = (int) trim($request->input_min, "\"");
            $input_max = (int) trim($request->input_max, "\"");
@@ -109,7 +114,8 @@ class RequestController extends Controller
            $newRequest = new ModelsRequest();
            $newRequest->requestNumber = rand(1000, 2000);
            $newRequest->title = $title;
-           $newRequest->description = $description;
+           $newRequest->national = $national;
+           $newRequest->isInterNational = $interNational;
            $newRequest->price_min = $input_min;
            $newRequest->price_max = $input_max;
            $newRequest->date_request = date('Y/m/d');
@@ -118,12 +124,20 @@ class RequestController extends Controller
            $user = Auth::user();
            $newRequest->user_id = $user->id;
            $newRequest->save();
-           foreach (json_decode($request->list) as $id) {
-               $requestCategorie = new Request_sub_categorie();
-               $requestCategorie->request_id = $newRequest->id;
-               $requestCategorie->subCategory_id = $this->getSubCategorieById($id)->id;
-               $requestCategorie->save();
-           }
+           foreach ($data as $item) {
+            // Check if any of the fields is null; if all are null, skip this item
+            if (!is_null($item[0]) || !is_null($item[1]) || !is_null($item[2]) || !is_null($item[3]) || !is_null($item[4]) || !is_null($item[5])) {
+                $article = new articles();
+                $article->name = $item[0];
+                $article->description = $item[1];
+                $article->quantity = $item[2];
+                $article->secteur = $item[3];
+                $article->lieu = $item[4];
+                $article->request_id = $newRequest->id;
+                // Save the article to the database
+                $article->save();
+            }
+        }
            return response()->json(['message' => 'Data received and processed successfully']);
        }
 
@@ -133,6 +147,9 @@ class RequestController extends Controller
        }
        public function updateRequestProc(Request $request)
        {
+           $data = $request->articls; // Assuming $request->articls is the array you provided
+           $interNational = json_decode($request->interNational);
+           $national = json_decode($request->national);
            $id = json_decode($request->id);
            $title = json_decode($request->title);
            $description = json_decode($request->description);
@@ -147,14 +164,36 @@ class RequestController extends Controller
            $updatedRequest->price_min = $input_min;
            $updatedRequest->price_max = $input_max;
            $updatedRequest->date_deadline = $date_deadline;
+           $updatedRequest->national = $national;
+           $updatedRequest->isInterNational = $interNational;
            $updatedRequest->save();
-           Request_sub_categorie::where('request_id', $id)->delete();
-           foreach (json_decode($request->list) as $cateid) {
-               $requestCategorie = new Request_sub_categorie();
-               $requestCategorie->request_id = $id;
-               $requestCategorie->subCategory_id = $this->getSubCategorieById($cateid)->id;
-               $requestCategorie->save();
-           }
+        //    Request_sub_categorie::where('request_id', $id)->delete();
+        //    foreach (json_decode($request->list) as $cateid) {
+        //        $requestCategorie = new Request_sub_categorie();
+        //        $requestCategorie->request_id = $id;
+        //        $requestCategorie->subCategory_id = $this->getSubCategorieById($cateid)->id;
+        //        $requestCategorie->save();
+        //    }
+        articles::where('request_id', $id)->delete();
+
+        foreach ($data as $item) {
+            // Check if any of the fields is null; if all are null, skip this item
+            if (!is_null($item[0]) || !is_null($item[1])
+            || !is_null($item[2]) || !is_null($item[3])
+            || !is_null($item[4]) || !is_null($item[5])) {
+                $article = new articles();
+                $article->name = $item[0];
+                $article->description = $item[1];
+                $article->quantity = $item[2];
+                $article->secteur = $item[3];
+                $article->lieu = $item[4];
+                $article->request_id = $updatedRequest->id;
+                // Save the article to the database
+                $article->save();
+            }
+        }
+
+
        }
 
        public function requestInfosView($id)
@@ -165,7 +204,7 @@ class RequestController extends Controller
                ->get()
                ->first();
            $estimate_recus = Estimate::with(['client.userratings'])
-               ->where('client_id', $user->id)
+               ->where('request_id', $request->id)
                ->simplePaginate(10);
            return view('base.dashboard.requests.requestInfos', compact('request', 'estimate_recus'));
        }

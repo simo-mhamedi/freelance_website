@@ -530,8 +530,10 @@ background: #108A00;"
                 ">CLEAR</a>
                 </div>
                 <div class="country-inputs">
-                    <input type="text" class="form-control country" value="{{ isset($data['country']) ? $data['country'] : '' }}" name="country" placeholder="country">
-                    <input type="text" class="form-control city" value="{{ isset($data['city']) ? $data['city'] : '' }}" name="city" placeholder="city">
+                    <input type="text" class="form-control country"
+                        value="{{ isset($data['country']) ? $data['country'] : '' }}" name="country" placeholder="country">
+                    <input type="text" class="form-control city" value="{{ isset($data['city']) ? $data['city'] : '' }}"
+                        name="city" placeholder="city">
                 </div>
                 <div class="clear-cat-section">
                     <div class="category-title">
@@ -578,22 +580,11 @@ background: #108A00;"
                     <div class="card-titles">
                         <span class="req-title">{{ $request->title }}
                         </span>
-                        <span class="time-post">poset in @php
-                            $createdAt = strtotime($request->date_request);
-                            $currentDateTime = time();
-
-                            // Calculate the difference in minutes
-                            $differenceInSeconds = $currentDateTime - $createdAt;
-                            $rangeInMinutes = floor($differenceInSeconds / 60);
-                            if ($rangeInMinutes > 60) {
-                                $rangeInHours = intval($rangeInMinutes / 60);
-                            }
-                        @endphp
-                            @if ($rangeInMinutes < 60)
-                                {{ $rangeInMinutes }}mn
-                            @endif
-                            @if ($rangeInHours)
-                                {{ $rangeInHours }}H
+                        <span class="time-post">
+                            @if ($request->minutesDifference<60)
+                            {{$request->minutesDifference}}Mn
+                            @else
+                            {{$request->hoursDifference}}H
                             @endif
                         </span>
                     </div>

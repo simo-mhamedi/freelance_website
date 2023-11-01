@@ -1,11 +1,109 @@
 @extends('base.index')
+
+<head>
+    <!-- Include necessary CSS and JavaScript libraries (e.g., Bootstrap and jQuery) -->
+
+    <script>
+
+        // Function to add a new row to the table
+        function addRow() {
+            var article = document.getElementById("articleInput").value;
+            var description = document.getElementById("descriptionInput").value;
+            var quantity = document.getElementById("quantityInput").value;
+            var secteurDac = document.getElementById("secteurDacInput").value;
+            var lieuDeLivraison = document.getElementById("lieuDeLivraisonInput").value;
+
+            // Create a new row and populate it with the input values
+            var table = document.getElementById("dataTable");
+            var newRow = table.insertRow(-1);
+
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+            var cell6 = newRow.insertCell(5);
+
+            cell1.innerHTML = article;
+            cell2.innerHTML = description;
+            cell3.innerHTML = quantity;
+            cell4.innerHTML = secteurDac;
+            cell5.innerHTML = lieuDeLivraison;
+
+            // Add "Delete" and "Edit" buttons to the new row
+            cell6.innerHTML = '<button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>' +
+                             '<button class="btn btn-primary" onclick="editRow(this)">Edit</button>';
+
+            // Clear the input fields
+            document.getElementById("articleInput").value = '';
+            document.getElementById("descriptionInput").value = '';
+            document.getElementById("quantityInput").value = '';
+            document.getElementById("secteurDacInput").value = '';
+            document.getElementById("lieuDeLivraisonInput").value = '';
+
+        }
+
+        // Function to delete a row
+        function deleteRow(row) {
+            var i = row.parentNode.parentNode.rowIndex;
+            document.getElementById("dataTable").deleteRow(i);
+        }
+
+        // Function to populate the modal for updating a row
+        function editRow(row) {
+            $('#editModal').modal('show');
+            var i = row.parentNode.parentNode.rowIndex;
+            var table = document.getElementById("dataTable");
+            var cells = table.rows[i].cells;
+            var article = cells[0].innerHTML;
+            var description = cells[1].innerHTML;
+            var quantity = cells[2].innerHTML;
+            var secteurDac = cells[3].innerHTML;
+            var lieuDeLivraison = cells[4].innerHTML;
+
+            // Populate the modal fields with the row data
+            document.getElementById("editArticleInput").value = article;
+            document.getElementById("editDescriptionInput").value = description;
+            document.getElementById("editQuantityInput").value = quantity;
+            document.getElementById("editSecteurDacInput").value = secteurDac;
+            document.getElementById("editLieuDeLivraisonInput").value = lieuDeLivraison;
+            document.getElementById("editRowIdx").value = i;
+
+            // Show the modal for editing
+        }
+
+        // Function to save the updated row
+        function saveRow() {
+            // Get input values from the edit modal
+            var article = document.getElementById("editArticleInput").value;
+            var description = document.getElementById("editDescriptionInput").value;
+            var quantity = document.getElementById("editQuantityInput").value;
+            var secteurDac = document.getElementById("editSecteurDacInput").value;
+            var lieuDeLivraison = document.getElementById("editLieuDeLivraisonInput").value;
+
+            // Update the row with the new values
+            var i = $('#editRowIdx').val();
+            var table = document.getElementById("dataTable");
+            var cells = table.rows[i].cells;
+            cells[0].innerHTML = article;
+            cells[1].innerHTML = description;
+            cells[2].innerHTML = quantity;
+            cells[3].innerHTML = secteurDac;
+            cells[4].innerHTML = lieuDeLivraison;
+
+            // Hide the edit modal
+            $('#editModal').modal('hide');
+        }
+    </script>
+</head>
 <style>
-    .span{
+    .span {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 20px;
     }
+
     .range-slider {
         width: 100%;
         margin: auto;
@@ -136,6 +234,28 @@
         background: #a1d0ff;
         cursor: pointer;
     }
+    th{
+        background-color: green !important;
+        color: white;
+    }
+
+    .range-slider {
+        display: none;
+        /* Initially hide the range slider */
+    }
+    .modal-dialog
+    .form-group{
+        width: 100%;
+    }
+    .loca-infos{
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: left !important;
+        gap: 20px !important;
+    }
+    .location{
+        align-self: normal;
+    }
 </style>
 @section('content')
     <div class="backgroud-green">
@@ -147,13 +267,119 @@ top: 250px;
     left: 30%;
 ">
         <div class="input_container">
-            <label class="input_label" for="email_field">titre demande</label>
+            <label class="input_label" for="email_field">TITRE DEMANDE</label>
             <input required name="title"style="padding:5px !important" placeholder="EX : DEVIS ALLIMINIUM pour 100 tonnes"
                 title="Inpit title" name="input-name" type="text" class="input_field inp-title" id="email_field">
-        </div>
-        <div class="input_container">
+            </div>
+            <table class="table" id="dataTable">
+                <thead>
+                  <tr>
+                    <th scope="col">Artciale</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Secteur Dac</th>
+                    <th scope="col">Lieu de livraison</th>
+                    <th scope="col">actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr id="editRowIdx">
+
+                  </tr>
+
+                </tbody>
+              </table>
+              <button
+
+              data-toggle="modal" data-target="#deleteModal"
+              style="align-self: end" class="btn btn-success">add artciale</button>
+
+              <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+              aria-labelledby="deleteModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="deleteModalLabel">Add article</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Artciale</label>
+                              <input type="text" class="form-control" id="articleInput" aria-describedby="emailHelp" placeholder="article">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Description</label>
+                                <textarea class="form-control" id="descriptionInput" rows="10"></textarea>
+                            </div>
+                              <div class="form-group">
+                                <label for="exampleInputEmail1">Quantity</label>
+                                <input type="number" class="form-control" id="quantityInput" aria-describedby="emailHelp" >
+                              </div>
+                              <div class="form-group">
+                                <label for="exampleInputEmail1">Secteur Dac</label>
+                                <input type="text" class="form-control" id="secteurDacInput" aria-describedby="emailHelp" placeholder="secteur Dac">
+                              </div>
+                              <div class="form-group">
+                                <label for="exampleInputEmail1">lieu De Livraison</label>
+                                <input type="text" class="form-control" id="lieuDeLivraisonInput" aria-describedby="emailHelp" placeholder="Lieu de livraison">
+                              </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button data-toggle="modal"   data-dismiss="modal" onclick="addRow()" data-target="#addModal" class="btn btn-success">Add Article</button>
+
+
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+          aria-labelledby="deleteModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="deleteModalLabel">update article</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Artciale</label>
+                          <input type="text" class="form-control" id="editArticleInput" aria-describedby="emailHelp" placeholder="article">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Description</label>
+                            <textarea class="form-control" id="editDescriptionInput" rows="10"></textarea>
+                        </div>
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Quantity</label>
+                            <input type="number" class="form-control" id="editQuantityInput" aria-describedby="emailHelp" >
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Secteur Dac</label>
+                            <input type="text" class="form-control" id="editSecteurDacInput" aria-describedby="emailHelp" placeholder="secteur Dac">
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">lieu De Livraison</label>
+                            <input type="text" class="form-control" id="editLieuDeLivraisonInput" aria-describedby="emailHelp" placeholder="Lieu de livraison">
+                          </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button data-toggle="modal"   data-dismiss="modal" onclick="saveRow()" data-target="#addModal" class="btn btn-success">update Article</button>
+
+
+
+                  </div>
+              </div>
+          </div>
+      </div>
+            {{-- <div class="input_container">
             <div class="form-group">
-                <label class="input_label" for="email_field">DESCRIPTIF demande</label>
+                <label class="input_label" for="email_field">DESCRIPTIF DEMANDE</label>
 
                 <textarea required id="desc"
                     style="background: #F2F5F2;
@@ -165,12 +391,34 @@ top: 250px;
                     "
                     id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
-        </div>
+        </div> --}}
         <div class="input_container">
             <div class="form-group">
-                <label class="input_label" for="email_field">DESCRIPTIF demande</label>
+                <label class="input_label" for="email_field">DEADLINE</label>
                 <input required type="date" style="padding: 6px !important ;border-reduis:5px" class="date_deadline"
                     name="date_deadline">
+            </div>
+        </div>
+        <div class="location">
+            <label style="text-align: left" class="input_label" for="email_field">PRIX</label>
+            <div class="input_container loca-infos">
+                <div class="form-group">
+                    <input type="checkbox" style="width: 12px;height:12px" id="national">
+                    National
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" style="width: 12px;height:12px" id="international">
+                    International
+                </div>
+            </div>
+        </div>
+
+        <div class="input_container">
+
+            <div class="form-group">
+                <label style="text-align: left" class="input_label" for="email_field">PRIX</label>
+                <input type="checkbox" style="width: 12px;height:12px" id="show_range">
+                (optional)
             </div>
         </div>
         <div class="range-slider">
@@ -230,46 +478,58 @@ top: 250px;
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
     addEventListener("DOMContentLoaded", (event) => {
-        (function() {
-            var parent = document.querySelector(".range-slider");
-            if (!parent) return;
+        // Function to add a new row to the table
 
-            var rangeS = parent.querySelectorAll("input[type=range]"),
-                numberS = parent.querySelectorAll("input[type=number]");
+        document.querySelector("#show_range").onchange = () => {
+                var rangeSlider = document.querySelector('.range-slider');
+                var checkbox = document.querySelector('#show_range');
 
-            rangeS.forEach(function(el) {
-                el.oninput = function() {
-                    var slide1 = parseFloat(rangeS[0].value),
-                        slide2 = parseFloat(rangeS[1].value);
+                if (checkbox.checked) {
+                    rangeSlider.style.display = 'block'; // Show the range slider
+                } else {
+                    rangeSlider.style.display = 'none'; // Hide the range slider
+                }
+            }
+            (function() {
+                var parent = document.querySelector(".range-slider");
+                if (!parent) return;
 
-                    if (slide1 > slide2) {
-                        [slide1, slide2] = [slide2, slide1];
-                        // var tmp = slide2;
-                        // slide2 = slide1;
-                        // slide1 = tmp;
-                    }
+                var rangeS = parent.querySelectorAll("input[type=range]"),
+                    numberS = parent.querySelectorAll("input[type=number]");
 
-                    numberS[0].value = slide1;
-                    numberS[1].value = slide2;
-                };
-            });
+                rangeS.forEach(function(el) {
+                    el.oninput = function() {
+                        var slide1 = parseFloat(rangeS[0].value),
+                            slide2 = parseFloat(rangeS[1].value);
 
-            numberS.forEach(function(el) {
-                el.oninput = function() {
-                    var number1 = parseFloat(numberS[0].value),
-                        number2 = parseFloat(numberS[1].value);
+                        if (slide1 > slide2) {
+                            [slide1, slide2] = [slide2, slide1];
+                            // var tmp = slide2;
+                            // slide2 = slide1;
+                            // slide1 = tmp;
+                        }
 
-                    if (number1 > number2) {
-                        var tmp = number1;
-                        numberS[0].value = number2;
-                        numberS[1].value = tmp;
-                    }
+                        numberS[0].value = slide1;
+                        numberS[1].value = slide2;
+                    };
+                });
 
-                    rangeS[0].value = number1;
-                    rangeS[1].value = number2;
-                };
-            });
-        })();
+                numberS.forEach(function(el) {
+                    el.oninput = function() {
+                        var number1 = parseFloat(numberS[0].value),
+                            number2 = parseFloat(numberS[1].value);
+
+                        if (number1 > number2) {
+                            var tmp = number1;
+                            numberS[0].value = number2;
+                            numberS[1].value = tmp;
+                        }
+
+                        rangeS[0].value = number1;
+                        rangeS[1].value = number2;
+                    };
+                });
+            })();
 
         $("form").on("change", ".file-upload-field", function() {
             $(this).parent(".file-upload-wrapper").attr("data-text", $(this).val().replace(/.*(\/|\\)/,
@@ -345,7 +605,22 @@ top: 250px;
             });
         });
         document.querySelector('.next-btn').addEventListener('click', function(event) {
-            console.log("ss");
+            var table = document.getElementById('dataTable');
+            // Get all the rows in the table body
+            var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            // Initialize an array to store the data
+            var data = [];
+            // Iterate through the rows and cells to collect the data
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName('td');
+                var rowData = [];
+
+                for (var j = 0; j < cells.length; j++) {
+                    rowData.push(cells[j].textContent.trim());
+                }
+
+                data.push(rowData);
+            }
             var listItems = Array.from(document.querySelector('.myList').getElementsByTagName('li'));
             var list = listItems.map(function(item) {
                 return item.value;
@@ -353,10 +628,17 @@ top: 250px;
 
             var jsonList = JSON.stringify(list);
             var title = JSON.stringify(document.querySelector(".inp-title").value);
-            var description = JSON.stringify(document.querySelector(".description").value);
             var date_deadline = JSON.stringify(document.querySelector(".date_deadline").value);
-            var input_min = JSON.stringify(document.querySelector(".input-min").value);
-            var input_max = JSON.stringify(document.querySelector(".input-max").value);
+            var interNational = JSON.stringify(document.querySelector("#international").checked);
+            var national = JSON.stringify(document.querySelector("#national").checked);
+            var input_min = null;
+            var input_max = null;
+            if (document.querySelector("#show_range").checked) {
+                input_min = JSON.stringify(document.querySelector(".input-min").value);
+                input_max = JSON.stringify(document
+                    .querySelector(".input-max").value);
+            }
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -367,9 +649,11 @@ top: 250px;
                 url: '/save-new-request',
                 type: 'POST',
                 data: {
+                    interNational:interNational,
+                    national:national,
+                    articls:data,
                     list: jsonList,
                     title: title,
-                    description: description,
                     date_deadline: date_deadline,
                     input_min: input_min,
                     input_max: input_max

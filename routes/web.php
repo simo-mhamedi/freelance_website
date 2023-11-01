@@ -49,7 +49,7 @@ Route::post('/save-new-request', [RequestController::class,'saveNewRequest'])->n
 
 Route::get('/select-date-estimates',[EstimateController::class,'selectDateEtimates'])->name('select-date-estimates');
 Route::get('/search-estimates',[EstimateController::class,'searchEtimates'])->name('search-estimates');
-Route::get('/search-estimates-from-req',[EstimateController::class,'searchEtimatesFromRequestInfos'])->name('search-estimates-from-req');
+Route::get('/search-estimates-from-req',[RequestController::class,'searchEtimatesFromRequestInfos'])->name('search-estimates-from-req');
 
 
 Route::get('/estimate_send',[EstimateController::class,'estimateSend'])->name('estimate_send');
