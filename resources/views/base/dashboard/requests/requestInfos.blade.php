@@ -260,6 +260,11 @@
                     <input type="hidden" value="{{ $request }}" name="request_recu">
                     <button class="btn btn-primary update">MODIFIER DEMANDES</button></td>
                 </form>
+                <form style="margin: 0" id="deleteForm" action="{{ route('compare') }}" method="get">
+                    @csrf
+                    <button class="btn-primary btn-danger" style="border-radius: 10px" id="deleteAll">comparer</button>
+                    <input type="hidden" id="checkboxValues" value="{{$request->id}}" name="id">
+                </form>
                 <a data-toggle="modal" data-target="#deleteModal" class="btn btn-primary delete">supprimer
                 </a>
                 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"

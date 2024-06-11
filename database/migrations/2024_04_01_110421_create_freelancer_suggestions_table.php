@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('freelancer_suggestions', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('description')->nullable();
-            $table->string('quantity');
-            $table->string('secteur');
             $table->decimal('prix')->default(0);
             $table->string('note')->nullable();
-            $table->string('lieu');
-            $table->unsignedBigInteger('request_id')->notNull();
-            $table->foreign('request_id')
-            ->references('id')->on('requests')->onDelete('cascade');
+            $table->unsignedBigInteger('article_id')->notNull();
+            $table->foreign('article_id')
+            ->references('id')->on('articles')->onDelete('cascade');
+            $table->unsignedBigInteger('freelancer_id')->notNull();
+            $table->foreign('freelancer_id')
+            ->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('article');
+        Schema::dropIfExists('freelancer_suggestions');
     }
 };

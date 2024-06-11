@@ -247,23 +247,33 @@
     .form-group{
         width: 100%;
     }
+    .form_container{
+        width: 80% !important;
+    }
     .loca-infos{
         display: flex !important;
         flex-direction: row !important;
         align-items: left !important;
         gap: 20px !important;
     }
+    .date{
+        font-weight: 100 !important;
+    }
     .location{
         align-self: normal;
     }
     .header{
+        text-transform: uppercase;
         display: flex;
         flex-direction: row;
         align-content: center;
         justify-content: space-between;
         gap: 100px;
     }
-    .header span{
+    .header .titre,.cpName{
+        font-weight: bold
+    }
+    .header .cpName{
         font-weight: bold
     }
     .header div{
@@ -274,6 +284,11 @@
         gap: 5px;
         font-weight: 100;
     }
+    .cadr{
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid black
+    }
 </style>
 @section('content')
     <div class="backgroud-green">
@@ -282,12 +297,12 @@
     <div class="form_container" style="
 position:absolute !important;
 top: 250px;
-    left: 30%;
+    left: 10%;
 ">
         <div class="header">
            <div class="date">
             <span>DeadLine</span>
-            <span>{{ $request->date_deadline }}</span>
+            <span class="cadr">{{ $request->date_deadline }}</span>
            </div>
            <div class="titre">
             <span>Titre devis</span>
@@ -298,32 +313,61 @@ top: 250px;
             <span>{{ $request->user->companyName }}</span>
         </div>
             </div>
-            <table class="table" id="dataTable">
-                <thead>
-                  <tr>
-                    <th scope="col">Artciale</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Secteur Dac</th>
-                    <th scope="col">Lieu de livraison</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($article as $item): ?>
-                    <tr>
-                      <td><?= $item->name ?></td>
-                      <td><?= $item->description ?></td>
-                      <td><?= $item->quantity ?></td>
-                      <td><?= $item->secteur ?></td>
-                      <td><?= $item->lieu ?></td>
-                    </tr>
-                  <?php endforeach; ?>
+            <form id="dataTableForm">
+                <table class="table" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th style="border-top-left-radius: 10px" scope="col">Article</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Secteur Dac</th>
+                            <th>Lieu de livraison</th>
+                            <th scope="col">Prix</th>
+                            <th style="border-top-right-radius: 10px" scope="col">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($article as $item): ?>
+                        <tr>
+                            <td><?= $item->name ?></td>
+                            <td><?= $item->description ?></td>
+                            <td><?= $item->quantity ?></td>
+                            <td><?= $item->secteur ?></td>
+                            <td name="lieu"><?= $item->lieu ?></td>
+                            <td><input name="article[<?= $item->id ?>][prix]" type="text"></td>
+                            <td><input name="article[<?= $item->id ?>][note]" type="text"></td>
+                            <input type="hidden" name="request_id" value="{{$item->request_id}}">
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                @guest
+                <a href="{{ route('login') }}" style="width: 50% ;    border-radius: 14px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+    text-decoration: none;    align-self: center;
+    margin-left: auto;
+    margin-right: auto;" title="Sign In" type="button" class="sign-in_btn next-btn" >
+                    <span>Envoyer devis</span>
+                </a>
+            @endguest
+            @auth
+            <li class="nav-item">
+                <button style="width: 50%;  display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+    text-decoration: none;    align-self: center;
+    margin-left: auto;
+    margin-right: auto"  title="Sign In" type="button" class="sign-in_btn next-btn" id="submitBtn">
+                    <span>Envoyer devis</span>
+                </button>
+            </li>
+        @endauth
+            </form>
 
-                </tbody>
-              </table>
-              <button style="width: 50%" title="Sign In" type="submit" class="sign-in_btn next-btn">
-                <span> Envoyer devis</span>
-            </button>
           </div>
 
       </div>
@@ -345,12 +389,58 @@ top: 250px;
 
     </div>
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
     addEventListener("DOMContentLoaded", (event) => {
         // Function to add a new row to the table
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+                $(document).ready(function() {
+            $('#submitBtn').click(function(e) {
+                e.preventDefault(); // Prevent default form submission
 
+                var formData = $('#dataTableForm').serializeArray(); // Serialize form data as a list
+                console.log(formData);
+                formData.forEach(obj => {
+                    if (obj.value === null || obj.value === '') {
+                        Swal.fire({
+                        title: "Avec succès!",
+                        text: "All fields are required.",
+                        icon: "error"
+                        });
+                          }
+                });
+                $.ajax({
+                    url: '/add-devis', // Change 'your-route' to your Laravel route
+                    type: 'POST', // Assuming you are sending data via POST method
+                    data: formData,
+                    success: function(response) {
+                        // Handle success response
+                        console.log(response);
+                        Swal.fire({
+                        title: "error!",
+                        text: "Votre devi a été ajouté.",
+                        icon: "success"
+                        });
+                        window.location.href = "/";
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        Swal.fire({
+                        title: "error!",
+                        text: "you are not allowd to create another one",
+                        icon: "error"
+                        });
+                    }
+                });
+            });
+        });
         document.querySelector("#show_range").onchange = () => {
                 var rangeSlider = document.querySelector('.range-slider');
                 var checkbox = document.querySelector('#show_range');
@@ -510,11 +600,7 @@ top: 250px;
                     .querySelector(".input-max").value);
             }
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+
 
             $.ajax({
                 url: '/save-new-request',

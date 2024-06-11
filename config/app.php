@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         \Chatify\ChatifyServiceProvider::class,
+        DougSisk\CountryState\CountryStateServiceProvider::class
     ])->toArray(),
 
     /*

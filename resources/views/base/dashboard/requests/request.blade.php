@@ -56,6 +56,7 @@ background: #108A00;"
             <button class="btn-primary btn-delete" id="deleteAll">supprimer</button>
             <input type="hidden" id="checkboxValues" name="deletedRequestes">
         </form>
+
     </div>
 
     <div class="table" style="margin-top: 20px">

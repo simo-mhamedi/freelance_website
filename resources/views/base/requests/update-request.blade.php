@@ -18,15 +18,13 @@
             var cell1 = newRow.insertCell(0);
             var cell2 = newRow.insertCell(1);
             var cell3 = newRow.insertCell(2);
-            var cell4 = newRow.insertCell(3);
-            var cell5 = newRow.insertCell(4);
+
             var cell6 = newRow.insertCell(5);
 
             cell1.innerHTML = article;
             cell2.innerHTML = description;
             cell3.innerHTML = quantity;
-            cell4.innerHTML = secteurDac;
-            cell5.innerHTML = lieuDeLivraison;
+
 
             // Add "Delete" and "Edit" buttons to the new row
             cell6.innerHTML = '<button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>' +
@@ -36,8 +34,6 @@
             document.getElementById("articleInput").value = '';
             document.getElementById("descriptionInput").value = '';
             document.getElementById("quantityInput").value = '';
-            document.getElementById("secteurDacInput").value = '';
-            document.getElementById("lieuDeLivraisonInput").value = '';
 
         }
 
@@ -56,15 +52,11 @@
             var article = cells[0].innerHTML;
             var description = cells[1].innerHTML;
             var quantity = cells[2].innerHTML;
-            var secteurDac = cells[3].innerHTML;
-            var lieuDeLivraison = cells[4].innerHTML;
 
             // Populate the modal fields with the row data
             document.getElementById("editArticleInput").value = article;
             document.getElementById("editDescriptionInput").value = description;
             document.getElementById("editQuantityInput").value = quantity;
-            document.getElementById("editSecteurDacInput").value = secteurDac;
-            document.getElementById("editLieuDeLivraisonInput").value = lieuDeLivraison;
             document.getElementById("editRowIdx").value = i;
 
             // Show the modal for editing
@@ -86,9 +78,6 @@
             cells[0].innerHTML = article;
             cells[1].innerHTML = description;
             cells[2].innerHTML = quantity;
-            cells[3].innerHTML = secteurDac;
-            cells[4].innerHTML = lieuDeLivraison;
-
             // Hide the edit modal
             $('#editModal').modal('hide');
         }
@@ -117,6 +106,12 @@
     .location{
         align-self: normal;
     }
+    .categotys{
+        display: flex !important;
+        flex-direction: column !important;
+        align-content: center !important;
+        justify-content: flex-start !important
+}
 </style>
 @extends('base.index')
 @section('content')
@@ -124,15 +119,67 @@
         <p>update demande</p>
     </div>
     <div class="form_container" style="
-position:absolute !important;
-top: 250px;
-    left: 30%;
-">
+                                        position:absolute !important;
+                                        top: 250px;
+                                            left: 30%;
+                                        ">
+                                          <div class="container categotys">
+                                            <label class="input_label" for="email_field">Pouvez-vous s'il vous plaît sélectionner les catégories qui font référence à cette demande</label>
+
+                                            <div id="accordion" class="panel-group">
+                                                <div class="panel">
+                                                    @foreach ($categories as $categorie)
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a href="#{{ $categorie->id }}" class="accordion-toggle" data-toggle="collapse"
+                                                                    data-parent="#accordion">{{ $categorie->categoryName }}</a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="{{ $categorie->id }}" class="panel-collapse collapse in">
+                                                            <div class="panel-body">
+                                                                <ul style="padding:0px;" id="first-list">
+                                                                    <center>
+                                                                        @foreach ($subCagories as $subCagorie)
+                                                                            @if ($subCagorie->category_id == $categorie->id)
+                                                                                <li class="btn btn-primary sub" id="sub" value="{{ $subCagorie->id }}"
+                                                                                    style=" margin: 10px;" data-category="{{ $subCagorie->id }}">
+                                                                                    {{ $subCagorie->subCategoryName }}</li>
+                                                                            @endif
+                                                                        @endforeach
+                                                                        <!-- Add more categories as needed -->
+                                                                    </center>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+
+                                                </div>
+
+                <div class="form-group">
+
+                    <ul style="padding:0px;" class="myList" id="second-list">
+                            @foreach ($userCategorys as $subCagorie)
+                                <li class="btn category-selected" id="sub-selected" value="{{ $subCagorie->Sub_categorie->id }}"
+                                    style=" margin: 10px;" data-category="{{ $subCagorie->Sub_categorie->id }}">
+                                    {{ $subCagorie->Sub_categorie->subCategoryName }}
+                                    <i class="fa fa-close close"></i>
+                                </li>
+                            @endforeach
+                    </ul>
+                    <input type="hidden" id="myCategories" name="myCategories">
+                </div>
         <div class="input_container">
             <label class="input_label" for="email_field">titre demande</label>
             <input value="{{$request_recu->title}}" name="title"style="padding:5px !important" placeholder="EX : DEVIS ALLIMINIUM pour 100 tonnes" title="Inpit title" name="input-name"
                 type="text" class="input_field inp-title" id="email_field">
             </div>
+            <div class="input_container">
+                <label class="input_label" for="email_field">Lieu</label>
+
+                <input required name="title"style="padding:5px !important" placeholder="Lieu"
+                    title="Inpit title" value="{{$request_recu->lieu}}" name="input-name" type="text" class="input_field inp-lieu" id="email_field">
+                </div>
+
             <div class="input_container">
                 <table class="table" id="dataTable">
                     <thead>
@@ -140,8 +187,6 @@ top: 250px;
                         <th scope="col">Artciale</th>
                         <th scope="col">Description</th>
                         <th scope="col">Quantity</th>
-                        <th scope="col">Secteur Dac</th>
-                        <th scope="col">Lieu de livraison</th>
                         <th scope="col">actions</th>
                     </tr>
                     </thead>
@@ -154,8 +199,6 @@ top: 250px;
                         <td><?= $item->name ?></td>
                         <td><?= $item->description ?></td>
                         <td><?= $item->quantity ?></td>
-                        <td><?= $item->secteur ?></td>
-                        <td><?= $item->lieu ?></td>
                         <td>
                             <button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>
                             <button class="btn btn-primary" onclick="editRow(this)">Edit</button>
@@ -320,35 +363,7 @@ top: 250px;
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div id="accordion" class="panel-group">
-                <div class="panel">
-                    @foreach ($categories as $categorie)
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a href="#{{ $categorie->id }}" class="accordion-toggle" data-toggle="collapse"
-                                    data-parent="#accordion">{{ $categorie->categoryName }}</a>
-                            </h4>
-                        </div>
-                        <div id="{{ $categorie->id }}" class="panel-collapse collapse in">
-                            <div class="panel-body">
-                                <ul style="padding:0px;" id="first-list">
-                                    <center>
-                                        @foreach ($subCagories as $subCagorie)
-                                            @if ($subCagorie->category_id == $categorie->id)
-                                                <li class="btn btn-primary sub" id="sub" value="{{ $subCagorie->id }}"
-                                                    style=" margin: 10px;" data-category="{{ $subCagorie->id }}">
-                                                    {{ $subCagorie->subCategoryName }}</li>
-                                            @endif
-                                        @endforeach
-                                        <!-- Add more categories as needed -->
-                                    </center>
-                                </ul>
-                            </div>
-                        </div>
-                    @endforeach
 
-                </div>
                 {{-- <div class="panel">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -384,19 +399,6 @@ top: 250px;
                     </div>
                 </div> --}}
 
-                <div class="form-group">
-
-                    <ul style="padding:0px;" class="myList" id="second-list">
-                            @foreach ($userCategorys as $subCagorie)
-                                <li class="btn category-selected" id="sub-selected" value="{{ $subCagorie->Sub_categorie->id }}"
-                                    style=" margin: 10px;" data-category="{{ $subCagorie->Sub_categorie->id }}">
-                                    {{ $subCagorie->Sub_categorie->subCategoryName }}
-                                    <i class="fa fa-close close"></i>
-                                </li>
-                            @endforeach
-                    </ul>
-                    <input type="hidden" id="myCategories" name="myCategories">
-                </div>
             </div>
         </div>
         <input type="hidden" class="id" name="id" value="{{$request_recu->id}}">
@@ -506,6 +508,7 @@ top: 250px;
 
             var jsonList = JSON.stringify(list);
             var title = JSON.stringify(document.querySelector(".inp-title").value);
+            var lieu = JSON.stringify(document.querySelector(".inp-lieu").value);
             var interNational = JSON.stringify(document.querySelector("#international").checked);
             var national = JSON.stringify(document.querySelector("#national").checked);
             var date_deadline = JSON.stringify(document.querySelector(".date_deadline").value);
@@ -528,6 +531,7 @@ top: 250px;
                     articls:data,
                     list: jsonList,
                     title: title,
+                    lieu:lieu,
                     date_deadline: date_deadline,
                     input_min: input_min,
                     input_max: input_max

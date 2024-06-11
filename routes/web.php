@@ -50,6 +50,7 @@ Route::post('/save-new-request', [RequestController::class,'saveNewRequest'])->n
 Route::get('/select-date-estimates',[EstimateController::class,'selectDateEtimates'])->name('select-date-estimates');
 Route::get('/search-estimates',[EstimateController::class,'searchEtimates'])->name('search-estimates');
 Route::get('/search-estimates-from-req',[RequestController::class,'searchEtimatesFromRequestInfos'])->name('search-estimates-from-req');
+Route::get('/get-cities', [RequestController::class,'getCities'])->name('get-cities');;
 
 
 Route::get('/estimate_send',[EstimateController::class,'estimateSend'])->name('estimate_send');
@@ -74,9 +75,24 @@ Route::get('/profile-infos',[UserController::class,'profileInfos'])->name('profi
 Route::get('/update-profile-infos',[UserController::class,'updateprofileInfos'])->name('update-profile-infos');
 Route::post('/update-profile-infos-process',[UserController::class,'updateprofileInfosProcess'])->name('update-profile-infos-process');
 Route::get('/main-search',[UserController::class,'searchMain'])->name('main-search');
-Route::post('/main-search-proc',[UserController::class,'searchMainProc'])->name('main-search-proc');
+Route::post('/main-search-proc-filter',[UserController::class,'searchMainProc'])->name('main-search-proc-filter');
 Route::post('/offre-infos',[UserController::class,'offreInfos'])->name('offre-infos');
 Route::post('/add-devis',[EstimateController::class,'addEstimate'])->name('add-devis');
 Route::get('/checkunseenMessage',[baseApp::class,'checkunseenMessage'])->name('checkunseenMessage');
 Route::get('/getunseenMessage',[baseApp::class,'checkunseenMessage'])->name('getunseenMessage');
 Route::post('/send_email',[baseApp::class,'sendEmail'])->name('send_email');
+
+
+
+
+Route::get('/compare',[RequestController::class,'compare'])->name('compare');
+Route::get('/get_segg', [RequestController::class, 'getSegg'])->name('get-segg');
+
+Route::get('/get_companys_segg', [RequestController::class, 'getCompanysSegg'])->name('get_companys_segg');
+
+Route::post('/generer', [RequestController::class, 'generer'])->name('generer');
+Route::post('/genererwithCompany', [RequestController::class, 'genererwithCompany'])->name('genererwithCompany');
+
+
+//new release
+Route::post('/main-search-proc',[UserController::class,'searchByKey'])->name('main-search-proc');

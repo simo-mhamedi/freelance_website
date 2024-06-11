@@ -425,35 +425,50 @@
         text-transform: uppercase;
         text-align: center
     }
+
+    .font-searsh {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px
+    }
 </style>
 @section('content')
-    <form method="post" action="{{ route('main-search-proc') }}">
-        @csrf
-        <div class="backgroud-green" style="height: 280px !important;">
-            <p>decouvrer les PROJETS Déposés</p>
-        </div>
+    <div class="backgroud-green" style="height: 280px !important;">
+        <p>decouvrer les PROJETS Déposés</p>
+    </div>
 
-        <div class="search">
-            <div class="right" id="keyForm">
-                <label for="" class="label-search">Result {{ $totale }}</label>
-                <input value="{{ isset($data) ? $data : '' }}" type="text" name="searchKey" class="search-key"
-                    placeholder="chercher mot clé" style="border-radius: 14px;
-    background: #F2F5F2;margin-right:10px"
-                    class="form-control">
-                <button style="width: 105px;
+    <div class="search">
+        <div class="right" id="keyForm">
+            <form method="post" action="{{ route('main-search-proc') }}">
+                @csrf
+                <div class="font-searsh">
+                    <label for="" class="label-search">Result {{ $totale }}</label>
+                    <input value="{{ isset($data) ? $data : '' }}" type="text" name="searchKey" class="search-key"
+                        placeholder="chercher mot clé"
+                        style="border-radius: 14px;
+    background: #F2F5F2;margin-right:10px" class="form-control">
+                    <button
+                        style="width: 105px;
     height: 38px;
     flex-shrink: 0;border-radius: 14px;
 background: #108A00;"
-                    class="btn btn-success next-btn">search</button>
-                <label for="" style="margin-left: 40px" class="label-search">Sort by Latest</label>
-
-            </div>
+                        class="btn btn-success next-btn">search</button>
+                    <label for="" style="margin-left: 40px" class="label-search">Sort by Latest</label>
+                </div>
+            </form>
         </div>
+    </div>
+    <form method="post" action="{{ route('main-search-proc-filter') }}">
+        @csrf
 
         <div class="main-section">
             <div class="filter">
                 <div class="filter-title">
                     Filters
+                </div>
+                <div class="filtrer-btn">
+                    <button class="btn-success" style="border-radius:5px">Filter</button>
                 </div>
                 <div class="clear-cat-section">
                     <div class="category-title">
@@ -461,11 +476,11 @@ background: #108A00;"
                     </div>
                     <a class="btn btn-primary clear"
                         style="background: transparent;color:#007FED;border:none;
-                font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 21.76px; /* 108.8% */
-    text-transform: uppercase;
+                                font-size: 20px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 21.76px; /* 108.8% */
+                                text-transform: uppercase;
                 ">CLEAR</a>
                 </div>
                 <div class="accordion" id="accordionExample"
@@ -516,26 +531,49 @@ background: #108A00;"
                     @endforeach
                     <input type="hidden" name="checkedValues" id="checkedValues">
                 </div>
-                <div class="clear-cat-section">
-                    <div class="category-title">
-                        Project location
-                    </div>
-                    <a class="btn btn-primary clear-loc"
-                        style="background: transparent;color:#007FED;border:none;
-                font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 21.76px; /* 108.8% */
-    text-transform: uppercase;
-                ">CLEAR</a>
-                </div>
-                <div class="country-inputs">
-                    <input type="text" class="form-control country"
+
+                <div class="country-inputs" style="display: flex;flex-direction:column">
+                    {{-- <input type="text" class="form-control country"
                         value="{{ isset($data['country']) ? $data['country'] : '' }}" name="country" placeholder="country">
                     <input type="text" class="form-control city" value="{{ isset($data['city']) ? $data['city'] : '' }}"
-                        name="city" placeholder="city">
+                        name="city" placeholder="city"> --}}
+                    <div class="clear-cat-section">
+                        <div class="category-title">
+                            Project location
+                        </div>
+                        <a class="btn btn-primary clear-loc"
+                            style="background: transparent;color:#007FED;border:none;
+                        font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 21.76px; /* 108.8% */
+            text-transform: uppercase;
+                        ">CLEAR</a>
+                    </div>
+                    <div class="input_container">
+                        <label class="input_label" for="email_field">Country</label>
+                        <select name="country" class="form-control Country" id="country" name="country">
+                            <option value="">Select Country</option>
+                            @foreach ($countriesObjects as $country)
+                                <option value="{{ $country->code }}">{{ $country->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="input_container">
+                        <label class="input_label" for="email_field">City</label>
+
+                        <select name="city" class="form-control city" id="city" name="state"
+                            placeholder="select a city">
+                            <option value="">Select city</option>
+                            @foreach ($states as $state)
+                                <option value="{{ $state }}">{{ $state }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                 </div>
-                <div class="clear-cat-section">
+                {{-- <div class="clear-cat-section">
                     <div class="category-title">
                         budget
                     </div>
@@ -566,13 +604,34 @@ background: #108A00;"
                             </div>
                         </div>
                     </div>
-                </div>
+
+                </div> --}}
+
+                <a style="@auth
+display: flex;
+                        text-decoration: none;
+                        color: green;
+                        font-weight: 400;
+                        font-size: 14px;
+                        gap:5px;
+                        padding: 12px 16px; @endauth"
+                    class="user-menu-link" href="/dashboard">
+                    <div class="nav-back">
+                        <a href="{{ route('dashboard') }}"
+                            style="text-decoration: none !important;    color: green;
+                            "><i
+                                class="fa fa-arrow-left"></i> Back to dashboard</a>
+                    </div>
+
+                    <div></div>
+                </a>
             </div>
+
+
     </form>
 
-
-    <div class="search-cards">
-        @foreach ($requests as $request)
+    <div class="search-cards" style="margin-left: auto;margin-right: auto;width: 90%;cursor:pointer">
+        @foreach ($filteredRequests as $request)
             <form id="view-request-form" action="{{ route('offre-infos') }}" method="post">
                 @csrf
                 <div class="result-card" data-request="{{ $request }}">
@@ -581,10 +640,10 @@ background: #108A00;"
                         <span class="req-title">{{ $request->title }}
                         </span>
                         <span class="time-post">
-                            @if ($request->minutesDifference<60)
-                            {{$request->minutesDifference}}Mn
+                            @if ($request->minutesDifference < 60)
+                                {{ $request->minutesDifference }}Mn
                             @else
-                            {{$request->hoursDifference}}H
+                                {{ $request->hoursDifference }}H
                             @endif
                         </span>
                     </div>
@@ -626,8 +685,6 @@ background: #108A00;"
         @endforeach
     </div>
 
-
-
     </div>
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -635,6 +692,35 @@ background: #108A00;"
 
 <script>
     addEventListener("DOMContentLoaded", (event) => {
+
+        // Function to add a new row to the table
+
+        document.getElementById('country').addEventListener('change', function() {
+            var country = this.value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/get-cities?country=' + country, true);
+            xhr.onload = function() {
+                var cities = JSON.parse(xhr.responseText);
+
+                var citySelect = document.getElementById('city');
+                citySelect.innerHTML = '<option value="">Select city</option>';
+                for (var code in cities) {
+                    if (cities.hasOwnProperty(code)) {
+                        var option = document.createElement('option');
+                        option.value = cities[code];
+                        option.text = cities[code];
+                        citySelect.appendChild(option);
+                    }
+                }
+            };
+            xhr.send();
+        });
+        // Retrieve country and city values from local storage
+        var country = localStorage.getItem('country');
+        var city = localStorage.getItem('city');
+        // Populate country and city inputs
+        document.querySelector('.country').value = country;
+        document.querySelector('.city').value = city;
         const resultCards = document.querySelectorAll('.result-card');
         resultCards.forEach(resultCard => {
             // Add a click event listener to each result card
@@ -642,27 +728,21 @@ background: #108A00;"
                 // Get the custom data attribute 'data-request' value
                 const requestDataString = resultCard.getAttribute('data-request');
                 document.getElementById('htr').value = requestDataString;
-
-
-                // Perform your logic using the 'requestId'
-
                 // Trigger a click event on the invisible submit button if needed
                 const submitButton = document.getElementById('submit-btn');
                 submitButton.click();
             });
         });
-
         selectedValues = [];
         document.querySelectorAll('.check').forEach(el => {
             const checkboxState = localStorage.getItem(el.id);
-            console.log(checkboxState);
+            console.log(el.checked);
             if (checkboxState == "checked") {
                 el.checked = true;
             }
             if (checkboxState == "unchecked") {
                 localStorage.removeItem(el.id);
             }
-
         });
 
         document.querySelector('.clear').addEventListener('click', function(event) {
@@ -676,36 +756,10 @@ background: #108A00;"
         document.querySelector('.clear-loc').addEventListener('click', function(event) {
             document.querySelector(".country").value = "";
             document.querySelector(".city").value = "";
-
         })
 
 
-        document.querySelector('.clear-price').addEventListener('click', function(event) {
-            const rubberIpts = document.querySelectorAll(".rubber-ipt");
 
-            for (var i = 0; i < rubberIpts.length; i++) {
-                const rubberRange = rubberIpts[i].querySelector(".rubber-ipt-range");
-                const rubberMin = rubberIpts[i].querySelector(".rubber-ipt-min");
-                const rubberMax = rubberIpts[i].querySelector(".rubber-ipt-max");
-
-                // Reset the positions of rubberMin and rubberMax
-                rubberMin.style.left = "0px";
-                rubberMax.style.left = "0px";
-
-                // Reset the width of the rubberRange
-                rubberRange.style.width = "200px";
-
-                // Call updateRubberRangeMin and updateRubberRangeMax to reset the range
-                updateRubberRangeMin(0);
-                updateRubberRangeMax(0);
-
-                // Reset the minPrice and maxPrice values
-                const minPrice = rubberIpts[i].querySelector(".rubber-value-min");
-                const maxPrice = rubberIpts[i].querySelector(".rubber-value-max");
-                minPrice.value = "10";
-                maxPrice.value = "1000";
-            }
-        })
 
         const checkboxes = document.querySelectorAll('.check');
         checkboxes.forEach(checkbox => {
@@ -713,14 +767,13 @@ background: #108A00;"
                 handleCheckboxChange(checkbox);
             });
         });
-
         function handleCheckboxChange(checkbox) {
             // Get the value and ID of the clicked checkbox
             const value = checkbox.value;
             const id = checkbox.id;
-
             // Perform actions based on checkbox state (checked or unchecked)
             if (checkbox.checked) {
+                console.log("rest");
                 // Checkbox is checked, do something
                 if (!selectedValues.includes(value)) {
                     selectedValues.push(value);
@@ -733,7 +786,6 @@ background: #108A00;"
                 selectedValues.splice(index, 1);
                 document.querySelector("#checkedValues").value = selectedValues
                 localStorage.setItem(checkbox.id, 'unchecked');
-
             }
         }
 
@@ -745,14 +797,11 @@ background: #108A00;"
             const rubberMax = rubberIpts[i].querySelector(".rubber-ipt-max");
             var initialMousePosMin;
             var initialMousePosMax;
-
             // Rubber Minimum
             rubberMin.style.left = "0px";
-
             function dragTargetMin(dragOffsetMin) {
                 rubberMin.style.left = `${dragOffsetMin}px`;
             }
-
             function getDragOffsetMin(e) {
                 if (initialMousePosMin == null) {
                     initialMousePosMin = e.clientX;
@@ -760,7 +809,6 @@ background: #108A00;"
                 var mousePos = e.clientX;
                 var dragOffsetMin = mousePos - initialMousePosMin;
                 var rubberMinMax = 200 + parseInt(rubberMax.style.left, 10) - 10;
-
                 if (dragOffsetMin < 0) {
                     dragOffsetMin = 0;
                 } else if (dragOffsetMin > rubberMinMax) {
@@ -769,30 +817,23 @@ background: #108A00;"
                 if (dragOffsetMin > 190) {
                     dragOffsetMin = 190;
                 }
-
                 dragTargetMin(dragOffsetMin);
                 updateRubberRangeMin(dragOffsetMin);
                 getMinPrice(dragOffsetMin);
             }
-
             function SetDragStartMin(e) {
                 document.addEventListener("mousemove", getDragOffsetMin);
             }
-
             function stopDragMin() {
                 document.removeEventListener("mousemove", getDragOffsetMin);
             }
-
             rubberMin.addEventListener("mousedown", SetDragStartMin);
             document.addEventListener("mouseup", stopDragMin);
-
             // Rubber Maximum
             rubberMax.style.left = "0px";
-
             function dragTargetMax(dragOffsetMax) {
                 rubberMax.style.left = `${dragOffsetMax}px`;
             }
-
             function getDragOffsetMax(e) {
                 if (initialMousePosMax == null) {
                     initialMousePosMax = e.clientX;
@@ -809,30 +850,22 @@ background: #108A00;"
                 if (dragOffsetMax < -190) {
                     dragOffsetMax = -190;
                 }
-
                 dragTargetMax(dragOffsetMax);
                 updateRubberRangeMax(dragOffsetMax);
                 getMaxPrice(dragOffsetMax);
             }
-
             function SetDragStartMax() {
                 document.addEventListener("mousemove", getDragOffsetMax);
             }
-
             function stopDragMax() {
                 document.removeEventListener("mousemove", getDragOffsetMax);
             }
-
             rubberMax.addEventListener("mousedown", SetDragStartMax);
             document.addEventListener("mouseup", stopDragMax);
-
             // Update Range between Min and Max
-
             rubberRange.style.width = "200px";
-
             function updateRubberRangeMin(dragOffsetMin) {
                 rubberRange.style.left = `${dragOffsetMin}px`;
-
                 var rubberRangeWidth =
                     200 - parseInt(rubberMax.style.left, 10) * -1 - dragOffsetMin;
                 if (rubberRangeWidth <= 0) {
@@ -840,7 +873,6 @@ background: #108A00;"
                 }
                 rubberRange.style.width = `${rubberRangeWidth}px`;
             }
-
             function updateRubberRangeMax(dragOffsetMax) {
                 var rubberRangeWidth =
                     200 - parseInt(rubberMin.style.left, 10) - dragOffsetMax * -1;
@@ -849,22 +881,17 @@ background: #108A00;"
                 }
                 rubberRange.style.width = `${rubberRangeWidth}px`;
             }
-
             // Update price range
-
             const minPrice = rubberIpts[i].querySelector(".rubber-value-min");
             const maxPrice = rubberIpts[i].querySelector(".rubber-value-max");
-
             var RubberMinPrice = 10;
             var RubberMaxPrice = 1000;
-
             function getMinPrice(dragOffsetMin) {
                 rubberMinPrice =
                     (RubberMaxPrice / 200) * dragOffsetMin +
                     (RubberMinPrice - (RubberMinPrice / 200) * dragOffsetMin);
                 minPrice.value = `${rubberMinPrice}`;
             }
-
             function getMaxPrice(dragOffsetMax) {
                 rubberMaxPrice =
                     (RubberMaxPrice / 200) * (dragOffsetMax + 200) +

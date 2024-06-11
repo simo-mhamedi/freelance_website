@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('estimates', function (Blueprint $table) {
             $table->id();
-            $randomNumber = mt_rand(1000, 100000); // Generate a random number between 1000 and 100000
-            $table->integer('reference')->default($randomNumber);
+            $table->integer('reference');
             $table->unsignedBigInteger('request_id')->notNull();
             $table->foreign('request_id')
             ->references('id')->on('requests')->onDelete('cascade');

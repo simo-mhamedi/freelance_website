@@ -12,6 +12,7 @@ use App\Models\UserCategorie;
 use App\Models\UserMembership;
 use App\Models\User_categorie;
 use App\Models\user_Rate;
+use App\Models\freelancerSuggestion;
 use App\Models\user_Rating;
 use App\Models\user_Review;
 use Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware;
@@ -27,25 +28,39 @@ class EstimateController extends Controller
       public function estimate()
       {
           $user = Auth::user();
+
           if (!$user) {
               return view('home.home');
           }
+
           $requests = ModelsRequest::where('user_id', $user->id)->get();
+
           $estimate_recus = Estimate::with('client')
               ->where('client_id', $user->id)
+              ->latest() // Get the most recent estimates first
               ->simplePaginate(10);
-          return view('base.dashboard.estimates.estimate', compact('requests', 'estimate_recus'));
+
+          return view('base.dashboard.estimates.estimate', [
+              'requests' => $requests,
+              'estimate_recus' => $estimate_recus,
+          ]);
       }
       public function selectEtimates(Request $request)
       {
-          $request->session()->put('request', $request->id);
-          $requestId = $request->session()->get('request');
-          $user = Auth::user();
-          $requests = ModelsRequest::where('user_id', $user->id)->get();
-          $estimate_recus = Estimate::where('request_id', $request->id)
-              ->where('client_id', $user->id)
-              ->simplePaginate(10);
-          return view('base.dashboard.estimates.estimate', compact('requests', 'estimate_recus', 'requestId'));
+        $user = Auth::user();
+        $requestId = $request->id; // Use $request->id directly
+
+        // You can remove the session operations, as $request->id is already available
+        // $request->session()->put('request', $request->id);
+        // $requestId = $request->session()->get('request');
+
+        $requests = ModelsRequest::where('user_id', $user->id)->get();
+
+        $estimate_recus = Estimate::where('request_id', $requestId) // Use $requestId
+            ->where('client_id', $user->id)
+            ->simplePaginate(10);
+
+        return view('base.dashboard.estimates.estimate', compact('requests', 'estimate_recus', 'requestId'));
       }
 
       public function selectDateEtimates(Request $request)
@@ -124,19 +139,48 @@ class EstimateController extends Controller
       }
       public function addEstimate(Request $request)
       {
-        $estimate=new Estimate();
-        $estimate->request_id=$request->reqId;
-        $estimate->client_id=$request->clientId;
-        $estimate->freelancer_id=Auth::user()->id;
-        $estimate->estimate_date=date('Y-m-d');
+          // Validate the request data if necessary
 
-        if ($request->file != 'undefined') {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file = $request->file('file');
-            $file->storeAs('users-avatar', $fileName, 'public');
-            $estimate->file = $fileName;
-        }
-        $estimate->save();
+          // Create a new estimate
+          $rq = ModelsRequest::where('id',$request->request_id)->first();
+          $existingEstimate = Estimate::where('request_id', $rq->id)
+          ->where('freelancer_id', Auth::id())
+          ->first();
+          $estimate = new Estimate();
+          $estimate->reference= rand(1, 5000);
+          $estimate->request_id =$rq->id ;
+          $estimate->client_id = $rq->user_id;
+          $estimate->freelancer_id = Auth::user()->id;
+          $estimate->estimate_date = now(); // Use Carbon instance for current date
+          $estimate->save();
+
+
+
+            if ($existingEstimate !=null) {
+            // Return an error response
+                return response()->json(['error' => 'An estimate already exists for this request.'], 400);
+            }
+            // Prepare an array to store all the FreelancerSuggestion instances
+          $freelancerSuggestions = [];
+
+          // Loop through each article and create a FreelancerSuggestion instance
+          foreach ($request->article as $articleId => $articleData) {
+            // Extract article data
+            $prix = $articleData['prix'];
+            $note = $articleData['note'];
+
+            // Create a new FreelancerSuggestion instance
+            $freelancerSuggestion = new FreelancerSuggestion();
+            $freelancerSuggestion->prix = $prix;
+            $freelancerSuggestion->note = $note;
+            $freelancerSuggestion->freelancer_id =      $estimate->freelancer_id;
+            $freelancerSuggestion->article_id = $articleId; // Set the article_id
+
+            // Save the instance
+            $freelancerSuggestion->save();
+            }
+
+          // Mass insert the FreelancerSuggestion instances
       }
+
 }

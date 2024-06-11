@@ -243,7 +243,9 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
 </script>
+
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     addEventListener("DOMContentLoaded", (event) => {
         var count = 0;
@@ -295,6 +297,15 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            if (list.length === 0 || document.querySelector("#desc").value === "") {
+                console.log("error");
+                Swal.fire({
+                    title: "Erreur!",
+                    text: "Veuillez remplir tous les champs.",
+                    icon: "error"
+                });
+                return;
+            }
 
             $.ajax({
                 url: '/signUp-user',

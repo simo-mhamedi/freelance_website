@@ -1,4 +1,5 @@
 @extends('base.index')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <head>
     <!-- Include necessary CSS and JavaScript libraries (e.g., Bootstrap and jQuery) -->
@@ -10,9 +11,16 @@
             var article = document.getElementById("articleInput").value;
             var description = document.getElementById("descriptionInput").value;
             var quantity = document.getElementById("quantityInput").value;
-            var secteurDac = document.getElementById("secteurDacInput").value;
-            var lieuDeLivraison = document.getElementById("lieuDeLivraisonInput").value;
 
+            if (article === "" || description === "" || quantity === "" ) {
+                console.log("error");
+                Swal.fire({
+                    title: "Erreur!",
+                    text: "Veuillez remplir tous les champs.",
+                    icon: "error"
+                });
+                return;
+            }
             // Create a new row and populate it with the input values
             var table = document.getElementById("dataTable");
             var newRow = table.insertRow(-1);
@@ -20,26 +28,23 @@
             var cell1 = newRow.insertCell(0);
             var cell2 = newRow.insertCell(1);
             var cell3 = newRow.insertCell(2);
-            var cell4 = newRow.insertCell(3);
-            var cell5 = newRow.insertCell(4);
-            var cell6 = newRow.insertCell(5);
+            var cell6 = newRow.insertCell(3);
 
             cell1.innerHTML = article;
             cell2.innerHTML = description;
             cell3.innerHTML = quantity;
-            cell4.innerHTML = secteurDac;
-            cell5.innerHTML = lieuDeLivraison;
+
 
             // Add "Delete" and "Edit" buttons to the new row
-            cell6.innerHTML = '<button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>' +
-                             '<button class="btn btn-primary" onclick="editRow(this)">Edit</button>';
+            cell6.innerHTML = '<button class="btn btn-danger" onclick="deleteRow(this)" ><i  style="color:white" class="fa fa-trash"></i></button>' +
+                             '<button class="btn btn-primary" onclick="editRow(this)"><i style="color:white" class="fa fa-refresh"></i></button>';
+                             cell6.style.display = "flex";
+                             cell6.style.gap = "5px";
 
             // Clear the input fields
             document.getElementById("articleInput").value = '';
             document.getElementById("descriptionInput").value = '';
             document.getElementById("quantityInput").value = '';
-            document.getElementById("secteurDacInput").value = '';
-            document.getElementById("lieuDeLivraisonInput").value = '';
 
         }
 
@@ -58,18 +63,21 @@
             var article = cells[0].innerHTML;
             var description = cells[1].innerHTML;
             var quantity = cells[2].innerHTML;
-            var secteurDac = cells[3].innerHTML;
-            var lieuDeLivraison = cells[4].innerHTML;
-
             // Populate the modal fields with the row data
             document.getElementById("editArticleInput").value = article;
             document.getElementById("editDescriptionInput").value = description;
             document.getElementById("editQuantityInput").value = quantity;
-            document.getElementById("editSecteurDacInput").value = secteurDac;
-            document.getElementById("editLieuDeLivraisonInput").value = lieuDeLivraison;
             document.getElementById("editRowIdx").value = i;
-
             // Show the modal for editing
+            if (article === "" || description === "" || quantity === "") {
+                    console.log("error");
+                    Swal.fire({
+                        title: "Erreur!",
+                        text: "Veuillez remplir tous les champs.",
+                        icon: "error"
+                    });
+                    return;
+                }
         }
 
         // Function to save the updated row
@@ -78,9 +86,6 @@
             var article = document.getElementById("editArticleInput").value;
             var description = document.getElementById("editDescriptionInput").value;
             var quantity = document.getElementById("editQuantityInput").value;
-            var secteurDac = document.getElementById("editSecteurDacInput").value;
-            var lieuDeLivraison = document.getElementById("editLieuDeLivraisonInput").value;
-
             // Update the row with the new values
             var i = $('#editRowIdx').val();
             var table = document.getElementById("dataTable");
@@ -88,9 +93,6 @@
             cells[0].innerHTML = article;
             cells[1].innerHTML = description;
             cells[2].innerHTML = quantity;
-            cells[3].innerHTML = secteurDac;
-            cells[4].innerHTML = lieuDeLivraison;
-
             // Hide the edit modal
             $('#editModal').modal('hide');
         }
@@ -122,8 +124,8 @@
     input[type=number] {
         border: 1px solid #ddd;
         text-align: center;
-        font-size: 1.6em;
         -moz-appearance: textfield;
+        width: 100px;
     }
 
     input[type=number]::-webkit-outer-spin-button,
@@ -256,6 +258,12 @@
     .location{
         align-self: normal;
     }
+    .categotys{
+        display: flex !important;
+        flex-direction: column !important;
+        align-content: center !important;
+        justify-content: flex-start !important
+}
 </style>
 @section('content')
     <div class="backgroud-green">
@@ -266,20 +274,90 @@ position:absolute !important;
 top: 250px;
     left: 30%;
 ">
+  <div class="container categotys">
+    <label class="input_label" for="email_field">Pouvez-vous s'il vous plaît sélectionner les catégories qui font référence à cette demande</label>
+
+    <div id="accordion" class="panel-group">
+        <div class="panel">
+            @foreach ($categories as $categorie)
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a href="#{{ $categorie->id }}" class="accordion-toggle" data-toggle="collapse"
+                            data-parent="#accordion">{{ $categorie->categoryName }}</a>
+                    </h4>
+                </div>
+                <div id="{{ $categorie->id }}" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <ul style="padding:0px;" id="first-list">
+                            <center>
+                                @foreach ($subCagories as $subCagorie)
+                                    @if ($subCagorie->category_id == $categorie->id)
+                                        <li class="btn btn-primary sub" id="sub" value="{{ $subCagorie->id }}"
+                                            style=" margin: 10px;" data-category="{{ $subCagorie->id }}">
+                                            {{ $subCagorie->subCategoryName }}</li>
+                                    @endif
+                                @endforeach
+                                <!-- Add more categories as needed -->
+                            </center>
+                        </ul>
+                    </div>
+                </div>
+            @endforeach
+
+        </div>
+        <div class="form-group">
+
+            <ul style="padding:0px;" class="myList" id="second-list">
+                <center>
+
+                </center>
+            </ul>
+            <input type="hidden" id="myCategories" name="myCategories">
+        </div>
+    </div>
+</div>
         <div class="input_container">
             <label class="input_label" for="email_field">TITRE DEMANDE</label>
+
             <input required name="title"style="padding:5px !important" placeholder="EX : DEVIS ALLIMINIUM pour 100 tonnes"
                 title="Inpit title" name="input-name" type="text" class="input_field inp-title" id="email_field">
             </div>
-            <table class="table" id="dataTable">
-                <thead>
-                  <tr>
-                    <th scope="col">Artciale</th>
+            {{-- <div class="input_container">
+                <label class="input_label" for="email_field">Lieu</label>
+
+                <input required name="title"style="padding:5px !important" placeholder="Lieu"
+                    title="Inpit title" name="input-name" type="text" class="input_field inp-lieu" id="email_field">
+                </div> --}}
+
+            <div class="input_container">
+                <label class="input_label" for="email_field">Country</label>
+
+                <select class="input_field"style="padding:5px !important" id="country" name="country">
+                    <option value="">Select Country</option>
+                    @foreach($countriesObjects as $country)
+                        <option value="{{ $country->code }}">{{ $country->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+                <div class="input_container">
+                    <label class="input_label" for="email_field">City</label>
+
+                    <select class="input_field"style="padding:5px !important" id="city" name="state">
+                        <option value="">Select city</option>
+                        @foreach($states as $state)
+                            <option value="{{ $state }}">{{ $state }}</option>
+                        @endforeach
+                    </select>
+            </div>
+
+            <table class="table" id="dataTable" style="border-raduis:10px ">
+                <thead >
+                  <tr style="font-size:13px" >
+                    <th scope="col" style="border-top-left-radius: 10px">Artciale</th>
                     <th scope="col">Description</th>
                     <th scope="col">Quantity</th>
-                    <th scope="col">Secteur Dac</th>
-                    <th scope="col">Lieu de livraison</th>
-                    <th scope="col">actions</th>
+                    <th scope="col" style="border-top-right-radius: 10px">actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -292,7 +370,7 @@ top: 250px;
               <button
 
               data-toggle="modal" data-target="#deleteModal"
-              style="align-self: end" class="btn btn-success">add artciale</button>
+              style="align-self: end ;font-size:9px" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add article</button>
 
               <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
               aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -315,15 +393,7 @@ top: 250px;
                             </div>
                               <div class="form-group">
                                 <label for="exampleInputEmail1">Quantity</label>
-                                <input type="number" class="form-control" id="quantityInput" aria-describedby="emailHelp" >
-                              </div>
-                              <div class="form-group">
-                                <label for="exampleInputEmail1">Secteur Dac</label>
-                                <input type="text" class="form-control" id="secteurDacInput" aria-describedby="emailHelp" placeholder="secteur Dac">
-                              </div>
-                              <div class="form-group">
-                                <label for="exampleInputEmail1">lieu De Livraison</label>
-                                <input type="text" class="form-control" id="lieuDeLivraisonInput" aria-describedby="emailHelp" placeholder="Lieu de livraison">
+                                <input type="number" class="form-control" style="text-align: left; font-size:12px" id="quantityInput" aria-describedby="emailHelp" >
                               </div>
                       </div>
                       <div class="modal-footer">
@@ -359,14 +429,6 @@ top: 250px;
                             <label for="exampleInputEmail1">Quantity</label>
                             <input type="number" class="form-control" id="editQuantityInput" aria-describedby="emailHelp" >
                           </div>
-                          <div class="form-group">
-                            <label for="exampleInputEmail1">Secteur Dac</label>
-                            <input type="text" class="form-control" id="editSecteurDacInput" aria-describedby="emailHelp" placeholder="secteur Dac">
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleInputEmail1">lieu De Livraison</label>
-                            <input type="text" class="form-control" id="editLieuDeLivraisonInput" aria-describedby="emailHelp" placeholder="Lieu de livraison">
-                          </div>
                   </div>
                   <div class="modal-footer">
                     <button data-toggle="modal"   data-dismiss="modal" onclick="saveRow()" data-target="#addModal" class="btn btn-success">update Article</button>
@@ -400,7 +462,7 @@ top: 250px;
             </div>
         </div>
         <div class="location">
-            <label style="text-align: left" class="input_label" for="email_field">PRIX</label>
+            <label style="text-align: left" class="input_label" for="email_field">type</label>
             <div class="input_container loca-infos">
                 <div class="form-group">
                     <input type="checkbox" style="width: 12px;height:12px" id="national">
@@ -429,46 +491,7 @@ top: 250px;
             <input value="25000" min="0" max="120000" step="500" type="range" />
             <input value="50000" min="0" max="120000" step="500" type="range" />
         </div>
-        <div class="container">
-            <div id="accordion" class="panel-group">
-                <div class="panel">
-                    @foreach ($categories as $categorie)
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a href="#{{ $categorie->id }}" class="accordion-toggle" data-toggle="collapse"
-                                    data-parent="#accordion">{{ $categorie->categoryName }}</a>
-                            </h4>
-                        </div>
-                        <div id="{{ $categorie->id }}" class="panel-collapse collapse in">
-                            <div class="panel-body">
-                                <ul style="padding:0px;" id="first-list">
-                                    <center>
-                                        @foreach ($subCagories as $subCagorie)
-                                            @if ($subCagorie->category_id == $categorie->id)
-                                                <li class="btn btn-primary sub" id="sub" value="{{ $subCagorie->id }}"
-                                                    style=" margin: 10px;" data-category="{{ $subCagorie->id }}">
-                                                    {{ $subCagorie->subCategoryName }}</li>
-                                            @endif
-                                        @endforeach
-                                        <!-- Add more categories as needed -->
-                                    </center>
-                                </ul>
-                            </div>
-                        </div>
-                    @endforeach
 
-                </div>
-                <div class="form-group">
-
-                    <ul style="padding:0px;" class="myList" id="second-list">
-                        <center>
-
-                        </center>
-                    </ul>
-                    <input type="hidden" id="myCategories" name="myCategories">
-                </div>
-            </div>
-        </div>
         <button style="width: 50%" title="Sign In" type="submit" class="sign-in_btn next-btn">
             <span> Déposer demande</span>
         </button>
@@ -479,6 +502,27 @@ top: 250px;
 <script>
     addEventListener("DOMContentLoaded", (event) => {
         // Function to add a new row to the table
+
+        document.getElementById('country').addEventListener('change', function () {
+        var country = this.value;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/get-cities?country=' + country, true);
+        xhr.onload = function () {
+            var cities = JSON.parse(xhr.responseText);
+
+            var citySelect = document.getElementById('city');
+            citySelect.innerHTML = '<option value="">Select city</option>';
+            for (var code in cities) {
+            if (cities.hasOwnProperty(code)) {
+                var option = document.createElement('option');
+                option.value = cities[code];
+                option.text = cities[code];
+                citySelect.appendChild(option);
+            }
+        }
+        };
+        xhr.send();
+    });
 
         document.querySelector("#show_range").onchange = () => {
                 var rangeSlider = document.querySelector('.range-slider');
@@ -626,6 +670,10 @@ top: 250px;
                 return item.value;
             });
 
+            var selectElements = document.getElementsByTagName("select");
+            var selectedCountry = selectElements[0].value;
+            var selectedCity = selectElements[1].value;
+            console.log(selectedCity);
             var jsonList = JSON.stringify(list);
             var title = JSON.stringify(document.querySelector(".inp-title").value);
             var date_deadline = JSON.stringify(document.querySelector(".date_deadline").value);
@@ -649,6 +697,8 @@ top: 250px;
                 url: '/save-new-request',
                 type: 'POST',
                 data: {
+                    selectedCountry,
+                    selectedCity,
                     interNational:interNational,
                     national:national,
                     articls:data,

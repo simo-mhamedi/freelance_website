@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eec5fcf0c74d172e2b73512095643f88",
+    "content-hash": "514710fd3d356c893332728f9873909c",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -651,6 +651,67 @@
                 }
             ],
             "time": "2022-12-15T16:57:16+00:00"
+        },
+        {
+            "name": "dougsisk/laravel-country-state",
+            "version": "4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DougSisk/laravel-country-state.git",
+                "reference": "bec02cc3badbf252201d319f7f675654d39faf04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DougSisk/laravel-country-state/zipball/bec02cc3badbf252201d319f7f675654d39faf04",
+                "reference": "bec02cc3badbf252201d319f7f675654d39faf04",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.4|^8.0",
+                "rinvex/countries": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^8.0|^9.0|^10.0|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DougSisk\\CountryState\\CountryStateServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DougSisk\\CountryState\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Doug Sisk",
+                    "homepage": "http://dougsisk.com"
+                }
+            ],
+            "description": "Country & state helper for Laravel.",
+            "homepage": "https://github.com/DougSisk/laravel-country-state",
+            "keywords": [
+                "countries",
+                "country",
+                "laravel",
+                "state",
+                "states"
+            ],
+            "support": {
+                "issues": "https://github.com/DougSisk/laravel-country-state/issues",
+                "source": "https://github.com/DougSisk/laravel-country-state/tree/4.3"
+            },
+            "time": "2024-02-02T15:45:33+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -4949,6 +5010,89 @@
                 "source": "https://github.com/ringcentral/psr7/tree/master"
             },
             "time": "2018-05-29T20:21:04+00:00"
+        },
+        {
+            "name": "rinvex/countries",
+            "version": "v8.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rinvex/countries.git",
+                "reference": "b012697307453e7d9d2df25bd385904b3e2e9baf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rinvex/countries/zipball/b012697307453e7d9d2df25bd385904b3e2e9baf",
+                "reference": "b012697307453e7d9d2df25bd385904b3e2e9baf",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0.0"
+            },
+            "require-dev": {
+                "codedungeon/phpunit-result-printer": "^0.31.0",
+                "phpunit/phpunit": "^9.5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rinvex\\Country\\Providers\\CountryServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Rinvex\\Country\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rinvex LLC",
+                    "email": "help@rinvex.com",
+                    "homepage": "https://rinvex.com"
+                },
+                {
+                    "name": "Abdelrahman Omran",
+                    "email": "me@omranic.com",
+                    "homepage": "https://omranic.com",
+                    "role": "Project Lead"
+                },
+                {
+                    "name": "The Generous PHP Community",
+                    "homepage": "https://github.com/rinvex/countries/contributors"
+                }
+            ],
+            "description": "Rinvex Countries is a simple and lightweight package for retrieving country details with flexibility. A whole bunch of data including name, demonym, capital, iso codes, dialling codes, geo data, currencies, flags, emoji, and other attributes for all 250 countries worldwide at your fingertips.",
+            "homepage": "https://rinvex.com",
+            "keywords": [
+                "Flexible",
+                "Simple",
+                "countries",
+                "country",
+                "currencies",
+                "demonym",
+                "dialling",
+                "emoji",
+                "flags",
+                "geographic",
+                "languages",
+                "rinvex",
+                "svg"
+            ],
+            "support": {
+                "docs": "https://github.com/rinvex/countries/blob/master/README.md",
+                "email": "help@rinvex.com",
+                "issues": "https://github.com/rinvex/countries/issues",
+                "source": "https://github.com/rinvex/countries"
+            },
+            "time": "2022-12-29T20:30:43+00:00"
         },
         {
             "name": "smalot/pdfparser",
@@ -10971,5 +11115,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

@@ -194,13 +194,13 @@
                 @endauth
                 @guest
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('user-infos') }}">Connexion
+                    <a class="nav-link" href="{{ route('login') }}">Connexion
                     </a>
                 </li>
             @endguest
                 @guest
                     <li class="nav-item">
-                        <a href="{{ route('login') }}" class="btn btn-success">M'INSCRIRE <i class="fa fa-user"></i>
+                        <a href="{{ route('user-infos') }}" class="btn btn-success">M'INSCRIRE <i class="fa fa-user"></i>
                         </a>
                     </li>
                 @endguest

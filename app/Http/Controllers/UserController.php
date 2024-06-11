@@ -27,7 +27,7 @@ use JetBrains\PhpStorm\Internal\ReturnTypeContract;
 use Carbon\Carbon;
 use Smalot\PdfParser\Parser;
 use thiagoalessio\TesseractOCR\TesseractOCR;
-
+use DougSisk\CountryState\CountryState;
 class UserController extends Controller
 {
     public function addUserReview(Request $request)
@@ -123,89 +123,109 @@ class UserController extends Controller
     }
     public function searchMain()
     {
+        $countryState = new CountryState();
+
+        $countries = $countryState->getCountries();
+        $countriesObjects = [];
+         foreach ($countries as $code => $name) {
+             $countryObject = (object) ['code' => $code, 'name' => $name];
+             $countriesObjects[] = $countryObject;
+         }
+         $states = $countryState->getStates("MA");
+
         $categories = Categorie::all();
         $subCagories = SubCategorie::all();
-        $requests = ModelsRequest::with(['Sub_categorie', 'Sub_categorie.Sub_categorie'])
+        $filteredRequests = ModelsRequest::with(['Sub_categorie', 'Sub_categorie.Sub_categorie'])
             ->with(['user.userratings', 'estimates'])
-            ->take(7)
+            ->whereNot("user_id",auth()->id())
+            ->take(7)->orderByDesc("id")
             ->get();
-        $totale = $requests->count();
-        $requests->transform(function ($request) {
+        $totale = $filteredRequests->count();
+        $filteredRequests->transform(function ($request) {
             $creationDate = Carbon::parse($request->created_at);
             $request->hoursDifference = now()->diffInHours($creationDate);
             $request->minutesDifference = now()->diffInMinutes($creationDate);
             return $request;
         });
-        return view('base.search.main-search', compact('categories', 'subCagories', 'requests', 'totale'));
+        return view('base.search.main-search', compact('categories', 'subCagories','countriesObjects', 'states','filteredRequests', 'totale'));
     }
+    public function searchByKey(Request $request)
+    {
+        $filteredRequests = ModelsRequest::with(['Sub_categorie', 'Sub_categorie.Sub_categorie'])
+        ->with(['user.userratings', 'estimates'])
+        ->where('title', 'like', '%' . $request->searchKey . '%') // Check if the title contains the search key
+        ->whereNot("user_id",auth()->id())
+        ->get();
+        $totale=$filteredRequests->count();
+        $categories = Categorie::all();
+        $subCagories = SubCategorie::all();
+        $countryState = new CountryState();
+        $countries = $countryState->getCountries();
+
+        $countryState = new CountryState();
+
+        $countries = $countryState->getCountries();
+        $countriesObjects = [];
+         foreach ($countries as $code => $name) {
+             $countryObject = (object) ['code' => $code, 'name' => $name];
+             $countriesObjects[] = $countryObject;
+         }
+         $states = $countryState->getStates("MA");
+         return view('base.search.main-search', compact('categories', 'subCagories','countriesObjects', 'states','filteredRequests', 'totale'));
+        }
 
     public function searchMainProc(Request $request)
     {
-        // Filter by name
-        // Decode the JSON values and store them in variables
-        $totale = 0;
-        $checkedValues = $checkedValuesArray = explode(',', $request->checkedValues);
+        $countryState = new CountryState();
         $minPrice = $request->minPrice;
         $maxPrice = $request->maxPrice;
         $country = $request->country;
         $city = $request->city;
-        Session::put('country', $country);
-        Session::put('city', $city);
         $searchKey = $request->searchKey;
-        $requests = ModelsRequest::with(['Sub_categorie', 'Sub_categorie.Sub_categorie'])
-            ->with(['user.userratings', 'estimates'])
-            ->whereBetween('price_min', [$minPrice, $maxPrice])
-            ->orWhereBetween('price_max', [$minPrice, $maxPrice])
-            ->get();
-        if ($checkedValues[0] != '') {
-            $filteredRequests = [];
-            $total = 0;
-            foreach ($requests as $req) {
-                $hasSubCategory = false;
-                foreach ($req->Sub_categorie as $subCategory) {
-                    $subCategoryId = $subCategory->subCategory_id;
-                    // Check if the subCategory_id is in $checkedValues array
-                    if (in_array($subCategoryId, $checkedValues)) {
-                        $hasSubCategory = true;
-                        break; // No need to continue checking if the category is found
-                    }
-                }
-
-                // If the request has the selected sub-category, add it to the filteredRequests array
-                if ($hasSubCategory) {
-                    $filteredRequests[] = $req;
-                    $total++;
-                }
+        $countries = $countryState->getCountries();
+        $countriesObjects = [];
+        $states = $countryState->getStates('MA');
+         foreach ($countries as $code => $name) {
+             $countryObject = (object) ['code' => $code, 'name' => $name];
+             $countriesObjects[] = $countryObject;
+         }
+        $requests = ModelsRequest::with(['Sub_categorie', 'Sub_categorie.Sub_categorie', 'user.userratings', 'estimates'])
+            ->whereNot("user_id", auth()->id());
+            if (!empty($request->checkedValues)) {
+                $checkedValues = explode(',', $request->checkedValues);
+                $requests->whereHas('Sub_categorie', function ($query) use ($checkedValues) {
+                    $query->whereIn('subCategory_id', $checkedValues);
+                });
             }
-            $requests = $filteredRequests;
-            $totale = $total;
+        if (!empty($country)) {
+            echo "<script>localStorage.setItem('country', '" . $country . "');</script>";
+            $states = $countryState->getStates($country);
+            $country = $countryState->getCountryName($country);
+            $requests->where('country', 'like', '%' . $country . '%');
         }
-        // Filter by user's attributes (country, city, searchKey)
-        if (!empty($country) || !empty($city) || !empty($searchKey)) {
-            $requests = $requests->filter(function ($request) use ($country, $city, $searchKey) {
-                $user = User::where('id', $request->user_id);
 
-                if (!empty($country)) {
-                    $user->where('country', 'like', '%' . $country . '%');
-                }
-
-                if (!empty($city)) {
-                    $user->where('city', 'like', '%' . $city . '%');
-                }
-
-                if (!empty($searchKey)) {
-                    $user->where('companyName', 'like', '%' . $searchKey . '%');
-                }
-
-                return $user->exists();
-            });
-            $totale = $requests->count();
+        if (!empty($city)) {
+            $requests->where('city', 'like', '%' . $city . '%');
         }
+
+
+        // if (!empty($searchKey)) {
+        //     $requests->whereHas('user', function ($query) use ($searchKey) {
+        //         $query->where('companyName', 'like', '%' . $searchKey . '%');
+        //     });
+        // }
+
+        echo "<script>localStorage.setItem('city', '" . $city . "');</script>";
+
+        $totale = $requests->count();
+        $filteredRequests = $requests->get();
 
         $categories = Categorie::all();
         $subCagories = SubCategorie::all();
-        return view('base.search.main-search', compact('categories', 'subCagories', 'requests', 'totale'));
+
+        return view('base.search.main-search', compact('categories', 'subCagories','countriesObjects', 'states','filteredRequests', 'totale'));
     }
+
 
     public function offreInfos(Request $req)
     {

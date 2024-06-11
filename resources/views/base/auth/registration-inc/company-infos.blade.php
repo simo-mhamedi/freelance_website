@@ -32,14 +32,14 @@
         <div class="input_container">
             <img class="icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABEklEQVR4nO2ZQQrCMBBF3xEUbyO6V1vBK3kMNy68TRW8hODSpVgRRkQLRSxNbDuJOA/+qp9hfjJNoAXDMEKSAlsgB+SD8tfzhEibFw8tiIydZ4CMyKgamypdiAyf5gtFhQX46x3oA2vgBCy/9AQLMAeOpaLnLz3qAXrAqqawiydIgClwqCns4lEP0Ac2DoVdPOoBJm9z3FSDUu1B1wFS4NZi823JmX0EzUqTANdfDyCRypnQjYoFoHoVhqWdGin6xH2A/Ipo+cQC8FyFxzYXjBV90tYO2CmEHaP1hB4V6fIdsHsAuweajZDdA9gx2v6nbw1d6PDng4YynwBJBA3Lm2Y+AYoQWeBxyl89eDdvGIaBCnewgSY3UyfcvwAAAABJRU5ErkJggg==" alt="Your Image Alt Text">
 
-            <input  placeholder="email societe 1" value="{{ isset($data['email1']) ? $data['societeName'] : '' }}"  title="Inpit title" name="email1" type="text" class="input_field"
+            <input required  placeholder="email societe 1" value="{{ isset($data['email1']) ? $data['societeName'] : '' }}"  title="Inpit title" name="email1" type="email  " class="input_field"
                 id="email1">
         </div>
         <br>
         <div class="input_container">
             <img class="icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABEklEQVR4nO2ZQQrCMBBF3xEUbyO6V1vBK3kMNy68TRW8hODSpVgRRkQLRSxNbDuJOA/+qp9hfjJNoAXDMEKSAlsgB+SD8tfzhEibFw8tiIydZ4CMyKgamypdiAyf5gtFhQX46x3oA2vgBCy/9AQLMAeOpaLnLz3qAXrAqqawiydIgClwqCns4lEP0Ac2DoVdPOoBJm9z3FSDUu1B1wFS4NZi823JmX0EzUqTANdfDyCRypnQjYoFoHoVhqWdGin6xH2A/Ipo+cQC8FyFxzYXjBV90tYO2CmEHaP1hB4V6fIdsHsAuweajZDdA9gx2v6nbw1d6PDng4YynwBJBA3Lm2Y+AYoQWeBxyl89eDdvGIaBCnewgSY3UyfcvwAAAABJRU5ErkJggg==" alt="Your Image Alt Text">
 
-            <input  placeholder="email societe 2" value="{{ isset($data['email2']) ? $data['societeName'] : '' }}"  title="Inpit title" name="email2" type="text" class="input_field"
+            <input required  placeholder="email societe 2" value="{{ isset($data['email2']) ? $data['societeName'] : '' }}"  title="Inpit title" name="email2" type="email" class="input_field"
                 id="email2">
         </div>
         <br>
@@ -68,7 +68,7 @@
                         <span class="iconify" data-icon="flag:gb-4x3"></span>
                         <strong>+44</strong>
                     </div>
-                    <input type="tel"  value="{{ isset($data['tel']) ? $data['tel'] : '' }}"  required name="tel"  placeholder="Phone Number">
+                    <input type="tel" pattern="[0-9]{9}" value="{{ isset($data['tel']) ? $data['tel'] : '' }}" required name="tel" placeholder="Phone Number">
                 </div>
                 <div class="options">
                     <input type="text"  class="search-box"  placeholder="Search Country Name">

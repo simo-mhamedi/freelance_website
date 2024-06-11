@@ -19,7 +19,10 @@ class Estimate extends Model
     {
         return $this->belongsTo(User::class,"client_id");
     }
-
+    public function request()
+    {
+        return $this->belongsTo(request::class);
+    }
     protected $fillable = [
         'reference',
         'request_id',
